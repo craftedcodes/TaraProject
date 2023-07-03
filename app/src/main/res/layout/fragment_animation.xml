@@ -7,10 +7,12 @@
 
     </data>
 
+    <!--MAIN LAYOUT-->
     <LinearLayout
         style="@style/MainLayoutStyle"
         tools:context=".ui.AnimationFragment">
 
+        <!--ACTION BAR-->
         <LinearLayout
             style="@style/ActionBarTextViewStyle">
 
@@ -34,6 +36,7 @@
                 app:tint="@color/neutral_c_tx_light" />
         </LinearLayout>
 
+        <!--ANIMATION-->
         <app.rive.runtime.kotlin.RiveAnimationView
             android:id="@+id/rive_animation_view"
             android:layout_width="360dp"
@@ -41,6 +44,7 @@
             app:riveResource="@raw/tara_light"
             android:layout_marginVertical="8dp"/>
         <!---
+        <!-MATERIAL CARD VIEW ATTENTION
                 <com.google.android.material.card.MaterialCardView
                     style="@style/AttentionCardView">
 
@@ -67,12 +71,15 @@
 
         </com.google.android.material.card.MaterialCardView>
         -->
+
+        <!--GET HELP BUTTON-->
         <Button
             android:id="@+id/get_help_btn"
             style="@style/PrimaryButtonStyle"
             android:layout_margin="64dp"
             android:text="@string/get_help"/>
 
+        <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/GratitudeFabStyle"
             android:id="@+id/gratitude_nav_btn"
