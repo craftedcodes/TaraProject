@@ -1,14 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.AffirmationFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <data>
 
-</FrameLayout>
+    </data>
+
+    <!--MAIN LAYOUT-->
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.AffirmationFragment">
+
+    <!--ACTION BAR-->
+    <LinearLayout
+        style="@style/ActionBarTextViewStyle">
+
+        <ImageButton
+            style="@style/ActionBarButtonStyle"
+            android:id="@+id/home_btn_logo"
+            android:contentDescription="@string/tara"
+            android:src="@drawable/logo01" />
+
+        <TextView
+            style="@style/LogoTextViewStyle"
+            android:id="@+id/home_btn_text"
+            android:text="@string/tara"
+            android:layout_width="280dp"/>
+
+        <ImageButton
+            style="@style/ActionBarButtonStyle"
+            android:id="@+id/profile_btn_logo"
+            android:contentDescription="@string/tara"
+            android:src="@drawable/iconprofile"
+            app:tint="@color/neutral_c_tx_light" />
+
+    </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="540dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/placeholder_image"
+                android:scaleType="centerCrop"
+                android:alpha="0.4"
+                android:contentDescription="@string/lotus_image" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/textview_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Foto von Janine Joles auf Unsplash" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/animation_nav_image_btn"
+                        style="@style/NavButtonStyle"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/chevronleft"
+                        android:background="#00000000"
+                        android:layout_marginHorizontal="8dp"
+                        android:contentDescription="@string/navigation_to_animation" />
+
+                    <TextView
+                        android:id="@+id/affirmation_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/psychedelic_lotus"
+                        android:textSize="52sp"
+                        android:textColor="@color/primary_c_tx_light"
+                        android:layout_marginHorizontal="16dp"
+                        android:shadowColor="#8D000000"
+                        android:shadowRadius="8"
+                        android:shadowDx="8"
+                        android:shadowDy="4"
+                        android:textAlignment="center"
+                        android:text="It's okay to not be okay." />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/imagebutton_bottom_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:backgroundTint="#A1C86A72"
+                    android:contentDescription="@string/refresh_button"
+                    android:shadowColor="#000000"
+                    android:shadowDx="8"
+                    android:shadowDy="4"
+                    android:shadowRadius="8"
+                    android:src="@drawable/iconrefresh"
+                    app:tint="@color/secondary_c_bg_light" />
+
+            </LinearLayout>
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/fab_to_gratitude_journal"
+            style="@style/MainLayoutStyle"
+            android:layout_marginBottom="8dp">
+
+            <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gratitude_nav_btn"
+                style="@style/GratitudeFabStyle"
+                android:contentDescription="@string/gratitude_data"
+                android:src="@drawable/icongratitudenote"
+                />
+
+            <ImageButton
+                android:id="@+id/gratitude_journal_nav_btn"
+                style="@style/NavButtonStyle"
+                android:src="@drawable/chevrondown"
+                android:contentDescription="@string/navigation_to_affirmation"
+                android:layout_marginBottom="8dp"
+                android:background="@color/white"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

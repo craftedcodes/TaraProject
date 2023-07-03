@@ -34,15 +34,31 @@
                 android:contentDescription="@string/tara"
                 android:src="@drawable/iconprofile"
                 app:tint="@color/neutral_c_tx_light" />
+
         </LinearLayout>
+
+        <LinearLayout
+            style="@style/CenteredHorizontalLinearLayoutStyle">
 
         <!--ANIMATION-->
         <app.rive.runtime.kotlin.RiveAnimationView
             android:id="@+id/rive_animation_view"
-            android:layout_width="360dp"
-            android:layout_height="360dp"
+            android:layout_width="300dp"
+            android:layout_height="320dp"
             app:riveResource="@raw/tara_light"
-            android:layout_marginVertical="8dp"/>
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="32dp"/>
+
+            <ImageButton
+                android:id="@+id/affirmation_nav_image_btn"
+                style="@style/NavButtonStyle"
+                android:src="@drawable/chevronright"
+                android:contentDescription="@string/navigation_to_affirmation"
+                android:layout_marginStart="8dp"
+                android:background="@color/white"/>
+
+        </LinearLayout>
+
         <!---
         <!-MATERIAL CARD VIEW ATTENTION
                 <com.google.android.material.card.MaterialCardView
@@ -76,16 +92,32 @@
         <Button
             android:id="@+id/get_help_btn"
             style="@style/PrimaryButtonStyle"
-            android:layout_margin="64dp"
+            android:layout_margin="52dp"
             android:text="@string/get_help"/>
 
+        <LinearLayout
+            android:id="@+id/fab_to_gratitude_journal"
+            style="@style/MainLayoutStyle"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="56dp">
+
         <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="@style/GratitudeFabStyle"
-            android:id="@+id/gratitude_nav_btn"
-            android:contentDescription="@string/gratitude_data"
-            android:src="@drawable/icongratitudenote"
-            />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gratitude_nav_btn"
+                style="@style/GratitudeFabStyle"
+                android:contentDescription="@string/gratitude_data"
+                android:src="@drawable/icongratitudenote"
+                />
+
+            <ImageButton
+                android:id="@+id/gratitude_journal_nav_btn"
+                style="@style/NavButtonStyle"
+                android:src="@drawable/chevrondown"
+                android:contentDescription="@string/navigation_to_affirmation"
+                android:layout_marginBottom="8dp"
+                android:background="@color/white"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

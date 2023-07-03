@@ -70,4 +70,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="to_cover_data_storage">To cover data storage and the service we provide you, as well as feed our developers (they become wild beasts without pizza and Coke 😂), we are forced to request a subscription fee from you. But, please, be assured we try our best to keep it as low as possible.</string>
+    <string name="navigation_to_affirmation">Navigation to affirmation</string>
+    <string name="lotus_image">Lotus Image</string>
+    <string name="navigation_to_animation">Navigation to animation</string>
+    <string name="refresh_button">Refresh button</string>
 </resources>
