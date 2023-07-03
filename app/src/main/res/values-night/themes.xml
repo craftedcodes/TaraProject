@@ -2,6 +2,20 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.AbschlussAufgabe" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:colorBackground">@color/bg_dark</item>
+        <item name="colorPrimary">@color/primary_bg_dark</item>
+        <item name="colorPrimaryDark">@color/secondary_bg_dark</item>
+        <item name="colorError">@color/error_bg_dark</item>
+        <item name="android:textColorPrimary">@color/bg_tx_dark</item>
+        <item name="colorOnPrimary">@color/primary_c_tx_dark</item>
+        <item name="colorOnSecondary">@color/secondary_c_tx_dark</item>
+        <item name="colorOnError">@color/error_c_tx_dark</item>
+        <item name="colorSurface">@color/surface_c_bg_dark</item>
+        <item name="colorOnSurface">@color/surface_c_tx_dark</item>
+        <item name="android:outlineProvider">@color/outline_bg_dark</item>
+        <item name="android:colorButtonNormal">@color/neutral_c_bg_dark</item>
+        <item name="android:colorControlNormal">@color/neutral_c_tx_dark</item>
     </style>
+
+    <style name="Theme.AbschlussAufgabe" parent="Base.Theme.AbschlussAufgabe" />
 </resources>

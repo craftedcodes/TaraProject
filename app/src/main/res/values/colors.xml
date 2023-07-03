@@ -2,4 +2,52 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Light Mode -->
+    <!-- Background -->
+    <color name="outline_bg_light">#85736C</color>
+    <color name="bg_light">#F8FDFF</color>
+    <color name="error_bg_light">#BA1A1A</color>
+    <color name="primary_bg_light">#984719</color>
+    <color name="secondary_bg_light">#735C00</color>
+    <!-- Text -->
+    <color name="bgl_tx_light">#001F25</color>
+    <color name="other_tx_light">#FFFFFFFF</color>
+    <!-- Container Background -->
+    <color name="neutral_c_bg_light">#F4DED5</color>
+    <color name="surface_c_bg_light">#F8FDFF</color>
+    <color name="error_c_bg_light">#FFDAD6</color>
+    <color name="primary_c_bg_light">#FFDBCC</color>
+    <color name="secondary_c_bg_light">#FFE088</color>
+    <!-- Container Text -->
+    <color name="neutral_c_tx_light">#52443D</color>
+    <color name="surface_c_tx_light">#001F25</color>
+    <color name="error_c_tx_light">#410002</color>
+    <color name="primary_c_tx_light">#351000</color>
+    <color name="secondary_c_tx_light">#241A00</color>
+
+    <!-- Dark Mode -->
+    <!-- Background -->
+    <color name="outline_bg_dark">#A08D85</color>
+    <color name="bg_dark">#001F25</color>
+    <color name="error_bg_dark">#FFB4AB</color>
+    <color name="primary_bg_dark">#FFB693</color>
+    <color name="secondary_bg_dark">#E9C348</color>
+    <!-- Text -->
+    <color name="bg_tx_dark">#A6EEFF</color>
+    <color name="error_tx_dark">#690005</color>
+    <color name="primary_tx_dark">#561F00</color>
+    <color name="secondary_tx_dark">#3C2F00</color>
+    <!-- Container Background -->
+    <color name="neutral_c_bg_dark">#52443D</color>
+    <color name="surface_c_bg_dark">#001F25</color>
+    <color name="error_c_bg_dark">#93000A</color>
+    <color name="primary_c_bg_dark">#7A3001</color>
+    <color name="secondary_c_bg_dark">#574500</color>
+    <!-- Container Text -->
+    <color name="neutral_c_tx_dark">#D7C2B9</color>
+    <color name="surface_c_tx_dark">#A6EEFF</color>
+    <color name="error_c_tx_dark">#FFDAD6</color>
+    <color name="primary_c_tx_dark">#FFDBCC</color>
+    <color name="secondary_c_tx_dark">#FFE088</color>
 </resources>

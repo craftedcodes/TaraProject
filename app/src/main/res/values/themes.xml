@@ -2,7 +2,19 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.AbschlussAufgabe" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">@color/bg_light</item>
+        <item name="colorPrimary">@color/primary_bg_light</item>
+        <item name="colorPrimaryDark">@color/secondary_bg_light</item>
+        <item name="colorError">@color/error_bg_light</item>
+        <item name="android:textColorPrimary">@color/bgl_tx_light</item>
+        <item name="colorOnPrimary">@color/primary_c_tx_light</item>
+        <item name="colorOnSecondary">@color/secondary_c_tx_light</item>
+        <item name="colorOnError">@color/error_c_tx_light</item>
+        <item name="colorSurface">@color/surface_c_bg_light</item>
+        <item name="colorOnSurface">@color/surface_c_tx_light</item>
+        <item name="android:outlineProvider">@color/outline_bg_light</item>
+        <item name="android:colorButtonNormal">@color/neutral_c_bg_light</item>
+        <item name="android:colorControlNormal">@color/neutral_c_tx_light</item>
     </style>
 
     <style name="Theme.AbschlussAufgabe" parent="Base.Theme.AbschlussAufgabe" />
