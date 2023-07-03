@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <data>
 
-</FrameLayout>
+    </data>
+
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.HomeFragment">
+
+        <TextView
+            android:text="@string/tara"
+            style="@style/ActionBarTextViewStyle"/>
+
+        <app.rive.runtime.kotlin.RiveAnimationView
+            android:id="@+id/rive_animation_view"
+            android:layout_width="360dp"
+            android:layout_height="360dp"
+            app:riveResource="@raw/tara_light"
+            android:layout_marginVertical="8dp"/>
+
+        <Button
+            style="@style/PrimaryButtonStyle"
+            android:id="@+id/login_navigation_btn"
+            android:text="@string/login" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_account_yet"
+            android:textSize="12sp"
+            android:fontFamily="@font/merriweathersans_variablefont_wght"
+            android:layout_marginVertical="4dp"/>
+
+        <TextView
+            android:id="@+id/register_now_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/merriweathersans_variablefont_wght"
+            android:textAllCaps="true"
+            android:text="@string/register_now"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/AttentionCardView"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/iconausruf"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/unlock" />
+
+                <TextView
+                    style="@style/AttentionTextView"
+                    android:text="@string/unlock"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</layout>

@@ -1,14 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.RegisterFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <data>
 
-</FrameLayout>
+    </data>
+
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.RegisterFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/tara"
+            android:fontFamily="@font/psychedelic_lotus"
+            android:textColor="@color/primary_bg_light"
+            android:textSize="24sp"
+            android:shadowColor="#7E000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="8"
+            android:layout_marginVertical="8dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_margin="32dp"
+            android:backgroundTint="@color/secondary_c_bg_light">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables"
+                android:layout_margin="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/iconausruf"
+                    app:tint="@color/secondary_c_tx_light"
+                    android:contentDescription="@string/to_cover_data_storage"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:gravity="center_vertical"
+                    android:text="@string/to_cover_data_storage"
+                    android:textColor="@color/secondary_c_tx_light"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/e_mail_tf"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="16dp"
+            android:hint="@string/your_mail_address_ym_com"
+            android:visibility="visible"
+            android:background="@drawable/contact_border"
+            app:errorEnabled="true"
+            app:helperText="@string/e_mail"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:helperTextTextColor="@color/secondary_c_tx_light"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_tf"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="16dp"
+            android:visibility="visible"
+            android:background="@drawable/contact_border"
+            app:errorEnabled="true"
+            app:helperText="@string/password"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:helperTextTextColor="@color/secondary_c_tx_light"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/repeat_password_tf"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="16dp"
+            android:visibility="visible"
+            android:background="@drawable/contact_border"
+            app:errorEnabled="true"
+            app:helperText="@string/repeat_password"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:helperTextTextColor="@color/secondary_c_tx_light"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/quit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                android:text="@string/quit"
+                android:textColor="@color/error_bg_light"
+                app:strokeColor="@color/error_bg_light"
+                app:strokeWidth="1dp"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/register_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_bg_light"
+                android:text="@string/register"
+                android:fontFamily="@font/psychedelic_lotus"
+                android:textColor="@color/white"
+                android:layout_margin="8dp"
+                style="?android:attr/buttonBarButtonStyle" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
