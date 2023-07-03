@@ -104,7 +104,7 @@
         <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/gratitude_nav_btn"
-                style="@style/GratitudeFabStyle"
+                style="@style/FabStyle"
                 android:contentDescription="@string/gratitude_data"
                 android:src="@drawable/icongratitudenote"
                 />

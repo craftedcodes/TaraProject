@@ -120,8 +120,8 @@
             <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/gratitude_nav_btn"
-                style="@style/GratitudeFabStyle"
-                android:contentDescription="@string/gratitude_data"
+                style="@style/FabStyle"
+                android:contentDescription="@string/navigation_to_gratitude_journal"
                 android:src="@drawable/icongratitudenote"
                 />
 
@@ -129,7 +129,7 @@
                 android:id="@+id/gratitude_journal_nav_btn"
                 style="@style/NavButtonStyle"
                 android:src="@drawable/chevrondown"
-                android:contentDescription="@string/navigation_to_affirmation"
+                android:contentDescription="@string/navigation_to_animation"
                 android:layout_marginBottom="8dp"
                 android:background="@color/white"/>
 

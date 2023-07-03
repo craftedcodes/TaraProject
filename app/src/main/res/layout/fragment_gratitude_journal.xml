@@ -1,14 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.GratitudeJournalFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <data>
 
-</FrameLayout>
+    </data>
+
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.GratitudeJournalFragment">
+
+        <!--ACTION BAR-->
+        <LinearLayout
+            style="@style/ActionBarTextViewStyle">
+
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/home_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/logo01" />
+
+            <TextView
+                style="@style/LogoTextViewStyle"
+                android:id="@+id/home_btn_text"
+                android:text="@string/tara"
+                android:layout_width="280dp"/>
+
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/profile_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconprofile"
+                app:tint="@color/neutral_c_tx_light" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fab_to_gratitude_journal"
+            style="@style/MainLayoutStyle">
+
+            <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
+
+            <ImageButton
+                android:id="@+id/animation_nav_btn"
+                style="@style/NavButtonStyle"
+                android:src="@drawable/chevronup"
+                android:contentDescription="@string/navigation_to_animation"
+                android:background="@color/white"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gratitude_nav_btn"
+                style="@style/FabStyle"
+                android:contentDescription="@string/navigation_to_animation"
+                android:src="@drawable/animationicon"
+                />
+
+        </LinearLayout>
+
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="true"
+            android:spinnersShown="false"/>
+
+    </LinearLayout>
+</layout>
