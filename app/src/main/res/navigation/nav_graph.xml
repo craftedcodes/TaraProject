@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.abschlussaufgabe.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.abschlussaufgabe.ui.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment2"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.abschlussaufgabe.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/animationFragment"
+        android:name="com.example.abschlussaufgabe.ui.AnimationFragment"
+        android:label="fragment_animation"
+        tools:layout="@layout/fragment_animation" >
+        <action
+            android:id="@+id/action_animationFragment_to_affirmationFragment"
+            app:destination="@id/affirmationFragment" />
+        <action
+            android:id="@+id/action_animationFragment_to_gratitudeJournalFragment"
+            app:destination="@id/gratitudeJournalFragment" />
+        <action
+            android:id="@+id/action_animationFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/affirmationFragment"
+        android:name="com.example.abschlussaufgabe.ui.AffirmationFragment"
+        android:label="fragment_affirmation"
+        tools:layout="@layout/fragment_affirmation" >
+        <action
+            android:id="@+id/action_affirmationFragment_to_gratitudeJournalFragment"
+            app:destination="@id/gratitudeJournalFragment" />
+        <action
+            android:id="@+id/action_affirmationFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_affirmationFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeJournalFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeJournalFragment"
+        android:label="fragment_gratitude_journal"
+        tools:layout="@layout/fragment_gratitude_journal" >
+        <action
+            android:id="@+id/action_gratitudeJournalFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_gratitudeJournalFragment_to_gratitudeDetailFragment"
+            app:destination="@id/gratitudeDetailFragment" />
+        <action
+            android:id="@+id/action_gratitudeJournalFragment_to_gratitudeTextFragment"
+            app:destination="@id/gratitudeTextFragment" />
+        <action
+            android:id="@+id/action_gratitudeJournalFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeDetailFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeDetailFragment"
+        android:label="fragment_gratitude_detail"
+        tools:layout="@layout/fragment_gratitude_detail" >
+        <action
+            android:id="@+id/action_gratitudeDetailFragment_to_gratitudeEditFragment"
+            app:destination="@id/gratitudeEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeTextFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeTextFragment"
+        android:label="fragment_gratitude_text"
+        tools:layout="@layout/fragment_gratitude_text" >
+        <action
+            android:id="@+id/action_gratitudeTextFragment_to_gratitudeGalleryFragment"
+            app:destination="@id/gratitudeGalleryFragment" />
+        <action
+            android:id="@+id/action_gratitudeTextFragment_to_gratitudeJournalFragment"
+            app:destination="@id/gratitudeJournalFragment" />
+        <action
+            android:id="@+id/action_gratitudeTextFragment_to_gratitudeAudioFragment"
+            app:destination="@id/gratitudeAudioFragment" />
+        <action
+            android:id="@+id/action_gratitudeTextFragment_to_gratitudeCameraFragment"
+            app:destination="@id/gratitudeCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeGalleryFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeGalleryFragment"
+        android:label="fragment_gratitude_gallery"
+        tools:layout="@layout/fragment_gratitude_gallery" >
+        <action
+            android:id="@+id/action_gratitudeGalleryFragment_to_gratitudeJournalFragment"
+            app:destination="@id/gratitudeJournalFragment" />
+        <action
+            android:id="@+id/action_gratitudeGalleryFragment_to_gratitudeAudioFragment"
+            app:destination="@id/gratitudeAudioFragment" />
+        <action
+            android:id="@+id/action_gratitudeGalleryFragment_to_gratitudeCameraFragment"
+            app:destination="@id/gratitudeCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeAudioFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeAudioFragment"
+        android:label="fragment_gratitude_audio"
+        tools:layout="@layout/fragment_gratitude_audio" >
+        <action
+            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeGalleryFragment"
+            app:destination="@id/gratitudeGalleryFragment" />
+        <action
+            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeTextFragment"
+            app:destination="@id/gratitudeTextFragment" />
+        <action
+            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeJournalFragment"
+            app:destination="@id/gratitudeJournalFragment" />
+        <action
+            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeCameraFragment"
+            app:destination="@id/gratitudeCameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeCameraFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeCameraFragment"
+        android:label="fragment_gratitude_camera"
+        tools:layout="@layout/fragment_gratitude_camera" >
+        <action
+            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeAudioFragment"
+            app:destination="@id/gratitudeAudioFragment" />
+        <action
+            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeGalleryFragment"
+            app:destination="@id/gratitudeGalleryFragment" />
+        <action
+            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeTextFragment"
+            app:destination="@id/gratitudeTextFragment" />
+        <action
+            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeJournalFragment"
+            app:destination="@id/gratitudeJournalFragment" />
+        <action
+            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeJournalFragment2"
+            app:destination="@id/gratitudeJournalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gratitudeEditFragment"
+        android:name="com.example.abschlussaufgabe.ui.GratitudeEditFragment"
+        android:label="fragment_gratitude_edit"
+        tools:layout="@layout/fragment_gratitude_edit" >
+        <action
+            android:id="@+id/action_gratitudeEditFragment_to_gratitudeDetailFragment"
+            app:destination="@id/gratitudeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileBarChartFragment"
+        android:name="com.example.abschlussaufgabe.ui.ProfileBarChartFragment"
+        android:label="fragment_profile_bar_chart"
+        tools:layout="@layout/fragment_profile_bar_chart" >
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_profileHeartChartFragment"
+            app:destination="@id/profileHeartChartFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_profileHeatMapFragment"
+            app:destination="@id/profileHeatMapFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileHeartChartFragment"
+        android:name="com.example.abschlussaufgabe.ui.ProfileHeartChartFragment"
+        android:label="fragment_profile_heart_chart"
+        tools:layout="@layout/fragment_profile_heart_chart" >
+        <action
+            android:id="@+id/action_profileHeartChartFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_profileHeartChartFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+        <action
+            android:id="@+id/action_profileHeartChartFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_profileHeartChartFragment_to_profileHeatMapFragment"
+            app:destination="@id/profileHeatMapFragment" />
+        <action
+            android:id="@+id/action_profileHeartChartFragment_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileHeatMapFragment"
+        android:name="com.example.abschlussaufgabe.ui.ProfileHeatMapFragment"
+        android:label="fragment_profile_heat_map"
+        tools:layout="@layout/fragment_profile_heat_map" >
+        <action
+            android:id="@+id/action_profileHeatMapFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_profileHeatMapFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_profileHeatMapFragment_to_profileHeartChartFragment"
+            app:destination="@id/profileHeartChartFragment" />
+        <action
+            android:id="@+id/action_profileHeatMapFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+        <action
+            android:id="@+id/action_profileHeatMapFragment_to_animationFragment2"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_profileHeatMapFragment_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emergencyContactFragment"
+        android:name="com.example.abschlussaufgabe.ui.EmergencyContactFragment"
+        android:label="fragment_emergency_contact"
+        tools:layout="@layout/fragment_emergency_contact" >
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_profileHeartChartFragment"
+            app:destination="@id/profileHeartChartFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_profileHeatMapFragment"
+            app:destination="@id/profileHeatMapFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_emergencyContactAvatarsFragment"
+            app:destination="@id/emergencyContactAvatarsFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emergencyContactAvatarsFragment"
+        android:name="com.example.abschlussaufgabe.ui.EmergencyContactAvatarsFragment"
+        android:label="fragment_emergency_contact_avatars"
+        tools:layout="@layout/fragment_emergency_contact_avatars" >
+        <action
+            android:id="@+id/action_emergencyContactAvatarsFragment_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.abschlussaufgabe.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_profileBarChartFragment"
+            app:destination="@id/profileBarChartFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_faqFragment"
+            app:destination="@id/faqFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_termsConditionsFragment"
+            app:destination="@id/termsConditionsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_imprintFragment"
+            app:destination="@id/imprintFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/faqFragment"
+        android:name="com.example.abschlussaufgabe.ui.FaqFragment"
+        android:label="fragment_faq"
+        tools:layout="@layout/fragment_faq" >
+        <action
+            android:id="@+id/action_faqFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_faqFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_faqFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.abschlussaufgabe.ui.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" >
+        <action
+            android:id="@+id/action_aboutFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_aboutFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_aboutFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="com.example.abschlussaufgabe.ui.PrivacyFragment"
+        android:label="fragment_privacy"
+        tools:layout="@layout/fragment_privacy" >
+        <action
+            android:id="@+id/action_privacyFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_privacyFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_privacyFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/termsConditionsFragment"
+        android:name="com.example.abschlussaufgabe.ui.TermsConditionsFragment"
+        android:label="fragment_terms_conditions"
+        tools:layout="@layout/fragment_terms_conditions" >
+        <action
+            android:id="@+id/action_termsConditionsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_termsConditionsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_termsConditionsFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imprintFragment"
+        android:name="com.example.abschlussaufgabe.ui.ImprintFragment"
+        android:label="fragment_imprint"
+        tools:layout="@layout/fragment_imprint" >
+        <action
+            android:id="@+id/action_imprintFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_imprintFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_imprintFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.abschlussaufgabe.ui.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" >
+        <action
+            android:id="@+id/action_contactFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_contactFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_contactFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+    </fragment>
+</navigation>
