@@ -85,7 +85,7 @@
     <style name="FabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">16dp</item>
+        <item name="android:layout_margin">8dp</item>
         <item name="android:background">@drawable/fab_bg</item>
         <item name="backgroundTint">@color/primary_bg_light</item>
         <item name="android:foregroundTint">@color/white</item>
@@ -96,7 +96,18 @@
     </style>
 
     <style name="NavButtonStyle" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+    </style>
+
+    <style name="DialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <!-- Hintergrund des Headers -->
+        <item name="colorAccent">@color/surface_c_tx_light</item>
+        <!-- Ausgewählter Tag -->
+        <item name="android:colorControlActivated">@color/surface_c_tx_light</item>
+        <!-- Tage des Monats -->
+        <item name="android:textColorPrimary">@color/surface_c_tx_light</item>
+        <!-- Wochentage -->
+        <item name="android:textColorSecondary">@color/surface_c_tx_light</item>
     </style>
 </resources>
