@@ -59,15 +59,48 @@
 
         </LinearLayout>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="24dp"/>
+        <LinearLayout
+            style="@style/HorizontalLayoutStyle">
+
+        <!--TEXTFIELD DATE START SEARCH-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/start_date_sf"
+            style="@style/DateTextInputFieldStyle"
+            app:helperText="Start Date"
+            />
+
+        <!--TEXTFIELD DATE END SEARCH-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/end_date_sf"
+            style="@style/DateTextInputFieldStyle"
+            app:helperText="End Date"
+            />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/filter_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:fontFamily="@font/merriweathersans_variablefont_wght"
+            android:text="@string/filter"
+            android:textColor="@color/secondary_c_tx_light"
+            android:backgroundTint="@color/white"
+            android:layout_margin="16dp"
+            app:strokeColor="@color/error_bg_light"
+            app:strokeWidth="1dp"
+            android:textSize="20sp"
+            android:shadowColor="#61000000"
+            android:shadowRadius="8"
+            android:shadowDx="8"
+            android:shadowDy="4"
+            tools:ignore="ButtonStyle"
+            />
+
         <!--RECYCLER VIEW-->
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/outer_rv_gratitude_journal"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:layout_margin="32dp"
+           style="@style/RecyclerViewStyle"
            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>

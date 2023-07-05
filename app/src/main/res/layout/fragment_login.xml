@@ -42,15 +42,28 @@
             android:id="@+id/password_tf"
             style="@style/TextInputFieldStyle"
             app:helperText="@string/password"/>
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            style="@style/HorizontalLayoutStyle">
 
             <Button
                 android:id="@+id/quit_btn"
-                style="@style/QuitButtonStyle" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="54dp"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                android:text="@string/quit"
+                android:textColor="@color/error_bg_light"
+                android:backgroundTint="@color/white"
+                app:strokeColor="@color/error_bg_light"
+                app:strokeWidth="1dp"
+                android:textSize="20sp"
+                android:shadowColor="#61000000"
+                android:shadowRadius="8"
+                android:shadowDx="8"
+                android:shadowDy="4"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/login_btn"

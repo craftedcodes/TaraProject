@@ -10,35 +10,41 @@
     <!--MAIN LAYOUT-->
     <LinearLayout
         style="@style/MainLayoutStyle"
+        android:orientation="vertical"
+        android:weightSum="10"
         tools:context=".ui.AffirmationFragment">
 
-    <!--ACTION BAR-->
-    <LinearLayout
-        style="@style/ActionBarTextViewStyle">
+        <!--ACTION BAR-->
+        <LinearLayout
+            style="@style/ActionBarTextViewStyle"
+            android:layout_weight="1">
 
-        <ImageButton
-            style="@style/ActionBarButtonStyle"
-            android:id="@+id/home_btn_logo"
-            android:contentDescription="@string/tara"
-            android:src="@drawable/logo01" />
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/home_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/logo01" />
 
-        <TextView
-            style="@style/LogoTextViewStyle"
-            android:id="@+id/home_btn_text"
-            android:text="@string/tara"
-            android:layout_width="280dp"/>
+            <TextView
+                style="@style/LogoTextViewStyle"
+                android:id="@+id/home_btn_text"
+                android:text="@string/tara"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
 
-        <ImageButton
-            style="@style/ActionBarButtonStyle"
-            android:id="@+id/profile_btn_logo"
-            android:contentDescription="@string/tara"
-            android:src="@drawable/iconprofile"
-            app:tint="@color/neutral_c_tx_light" />
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/profile_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconprofile"
+                app:tint="@color/neutral_c_tx_light" />
 
-    </LinearLayout>
+        </LinearLayout>
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="540dp">
+            android:layout_height="0dp"
+            android:layout_weight="7">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,6 +52,7 @@
                 android:scaleType="centerCrop"
                 android:alpha="0.4"
                 android:contentDescription="@string/lotus_image" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -60,7 +67,7 @@
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Foto von Janine Joles auf Unsplash" />
+                    android:text="@string/placeholder_appreciation" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,7 +87,8 @@
 
                     <TextView
                         android:id="@+id/affirmation_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/psychedelic_lotus"
@@ -93,7 +101,8 @@
                         android:shadowDx="8"
                         android:shadowDy="4"
                         android:textAlignment="center"
-                        android:text="It's okay to not be okay." />
+                        android:text="@string/placeholder_affirmation"
+                        tools:ignore="NestedWeights" />
 
                 </LinearLayout>
 
@@ -116,6 +125,9 @@
         <LinearLayout
             android:id="@+id/fab_to_gratitude_journal"
             style="@style/MainLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:layout_marginBottom="8dp">
 
             <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->

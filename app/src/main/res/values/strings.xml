@@ -75,4 +75,7 @@
     <string name="navigation_to_animation">Navigation to animation</string>
     <string name="refresh_button">Refresh button</string>
     <string name="navigation_to_gratitude_journal">Navigation to gratitude journal</string>
+    <string name="filter">Filter</string>
+    <string name="placeholder_affirmation">It\'s okay to not be okay.</string>
+    <string name="placeholder_appreciation">Foto von Janine Joles auf Unsplash</string>
 </resources>
