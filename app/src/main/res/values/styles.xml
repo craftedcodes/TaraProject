@@ -8,7 +8,7 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <!--STYLE ACTIONBAR-->
+    <!--STYLE ACTION BAR-->
     <style name="ActionBarLinearLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -55,7 +55,7 @@
         <item name="android:background">@drawable/rounded_button</item>
         <item name="backgroundTint">@color/primary_bg_light</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/psychedelic_lotus</item>
         <item name="android:layout_margin">8dp</item>
@@ -63,6 +63,20 @@
         <item name="android:shadowDx">8</item>
         <item name="android:shadowDy">8</item>
         <item name="android:shadowRadius">8</item>
+    </style>
+
+    <!--STYLE QUIT BUTTON-->
+    <style name="QuitButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="minHeight">64dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:fontFamily">@font/merriweathersans_variablefont_wght</item>
+        <item name="android:text">@string/quit</item>
+        <item name="android:textColor">@color/error_bg_light</item>
+        <item name="android:textSize">20sp</item>
+        <item name="background">@drawable/rounded_error_button</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <!--STYLE ATTENTION CARD-->
@@ -73,6 +87,8 @@
         <item name="android:layout_margin">24dp</item>
         <item name="cardCornerRadius">32dp</item>
     </style>
+
+    <!--STYLE ATTENTION TEXT-->
     <style name="AttentionTextView" parent="TextAppearance.AppCompat">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -81,6 +97,7 @@
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
     </style>
+
     <!--STYLE FAB-->
     <style name="FabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="android:layout_width">wrap_content</item>
@@ -95,11 +112,13 @@
         <item name="rippleColor">@color/white</item>
     </style>
 
+    <!--STYLE NAVIGATION BUTTON-->
     <style name="NavButtonStyle" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
     </style>
 
+    <!--STYLE DIALOG THEME-->
     <style name="DialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
         <!-- Hintergrund des Headers -->
         <item name="colorAccent">@color/surface_c_tx_light</item>
@@ -109,5 +128,23 @@
         <item name="android:textColorPrimary">@color/surface_c_tx_light</item>
         <!-- Wochentage -->
         <item name="android:textColorSecondary">@color/surface_c_tx_light</item>
+    </style>
+
+    <!--STYLE TEXT INPUT FIELD-->
+    <style name="TextInputFieldStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:visibility">visible</item>
+        <item name="errorEnabled">true</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="helperTextTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
+        <item name="helperTextTextColor">@color/secondary_c_tx_light</item>
+        <item name="hintEnabled">true</item>
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
+        <item name="android:background">@drawable/contact_border</item>
     </style>
 </resources>
