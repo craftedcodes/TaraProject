@@ -7,13 +7,14 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         style="@style/MainLayoutStyle"
         tools:context=".ui.GratitudeJournalFragment">
 
         <!--ACTION BAR-->
         <LinearLayout
-            style="@style/ActionBarTextViewStyle">
+            android:id="@+id/action_bar"
+            style="@style/ActionBarStyle">
 
             <ImageButton
                 style="@style/ActionBarButtonStyle"
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_below="@id/action_bar">
 
             <ImageButton
                 android:id="@+id/animation_nav_btn"
@@ -58,6 +60,18 @@
                 android:src="@drawable/animationicon" />
 
         </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/animation_fab"
+            android:layout_above="@+id/fab_bottom_right">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
         <LinearLayout
             style="@style/HorizontalLayoutStyle">
@@ -75,7 +89,14 @@
             style="@style/DateTextInputFieldStyle"
             app:helperText="End Date"
             />
+
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/please_enter_the_dates_in_format_dd_mm_yyyy"
+            android:fontFamily="@font/merriweathersans_variablefont_wght"
+            android:textColor="@color/neutral_c_tx_light"/>
 
         <Button
             android:id="@+id/filter_btn"
@@ -87,7 +108,7 @@
             android:textColor="@color/secondary_c_tx_light"
             android:backgroundTint="@color/white"
             android:layout_margin="16dp"
-            app:strokeColor="@color/error_bg_light"
+            app:strokeColor="@color/surface_c_tx_light"
             app:strokeWidth="1dp"
             android:textSize="20sp"
             android:shadowColor="#61000000"
@@ -104,5 +125,19 @@
            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
+
+        </ScrollView>
+
+        <!--FloatingActionButton Bottom Right-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_bottom_right"
+            style="@style/GratitudeFabStyle"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/write_entry"
+            android:pointerIcon="zoom_in"
+            android:src="@drawable/icongratitudenote"
+            app:fabCustomSize="80dp" />
+    </RelativeLayout>
 
 </layout>

@@ -83,22 +83,13 @@
             android:id="@+id/action_gratitudeJournalFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
         <action
-            android:id="@+id/action_gratitudeJournalFragment_to_gratitudeDetailFragment"
-            app:destination="@id/gratitudeDetailFragment" />
-        <action
             android:id="@+id/action_gratitudeJournalFragment_to_gratitudeTextFragment"
             app:destination="@id/gratitudeTextFragment" />
         <action
             android:id="@+id/action_gratitudeJournalFragment_to_profileBarChartFragment"
             app:destination="@id/profileBarChartFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gratitudeDetailFragment"
-        android:name="com.example.abschlussaufgabe.ui.GratitudeDetailFragment"
-        android:label="fragment_gratitude_detail"
-        tools:layout="@layout/fragment_gratitude_detail" >
         <action
-            android:id="@+id/action_gratitudeDetailFragment_to_gratitudeEditFragment"
+            android:id="@+id/action_gratitudeJournalFragment_to_gratitudeEditFragment"
             app:destination="@id/gratitudeEditFragment" />
     </fragment>
     <fragment
@@ -107,86 +98,19 @@
         android:label="fragment_gratitude_text"
         tools:layout="@layout/fragment_gratitude_text" >
         <action
-            android:id="@+id/action_gratitudeTextFragment_to_gratitudeGalleryFragment"
-            app:destination="@id/gratitudeGalleryFragment" />
-        <action
             android:id="@+id/action_gratitudeTextFragment_to_gratitudeJournalFragment"
-            app:destination="@id/gratitudeJournalFragment" />
-        <action
-            android:id="@+id/action_gratitudeTextFragment_to_gratitudeAudioFragment"
-            app:destination="@id/gratitudeAudioFragment" />
-        <action
-            android:id="@+id/action_gratitudeTextFragment_to_gratitudeCameraFragment"
-            app:destination="@id/gratitudeCameraFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gratitudeGalleryFragment"
-        android:name="com.example.abschlussaufgabe.ui.GratitudeGalleryFragment"
-        android:label="fragment_gratitude_gallery"
-        tools:layout="@layout/fragment_gratitude_gallery" >
-        <action
-            android:id="@+id/action_gratitudeGalleryFragment_to_gratitudeJournalFragment"
-            app:destination="@id/gratitudeJournalFragment" />
-        <action
-            android:id="@+id/action_gratitudeGalleryFragment_to_gratitudeAudioFragment"
-            app:destination="@id/gratitudeAudioFragment" />
-        <action
-            android:id="@+id/action_gratitudeGalleryFragment_to_gratitudeCameraFragment"
-            app:destination="@id/gratitudeCameraFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gratitudeAudioFragment"
-        android:name="com.example.abschlussaufgabe.ui.GratitudeAudioFragment"
-        android:label="fragment_gratitude_audio"
-        tools:layout="@layout/fragment_gratitude_audio" >
-        <action
-            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeGalleryFragment"
-            app:destination="@id/gratitudeGalleryFragment" />
-        <action
-            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeTextFragment"
-            app:destination="@id/gratitudeTextFragment" />
-        <action
-            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeJournalFragment"
-            app:destination="@id/gratitudeJournalFragment" />
-        <action
-            android:id="@+id/action_gratitudeAudioFragment_to_gratitudeCameraFragment"
-            app:destination="@id/gratitudeCameraFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gratitudeCameraFragment"
-        android:name="com.example.abschlussaufgabe.ui.GratitudeCameraFragment"
-        android:label="fragment_gratitude_camera"
-        tools:layout="@layout/fragment_gratitude_camera" >
-        <action
-            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeAudioFragment"
-            app:destination="@id/gratitudeAudioFragment" />
-        <action
-            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeGalleryFragment"
-            app:destination="@id/gratitudeGalleryFragment" />
-        <action
-            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeTextFragment"
-            app:destination="@id/gratitudeTextFragment" />
-        <action
-            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeJournalFragment"
-            app:destination="@id/gratitudeJournalFragment" />
-        <action
-            android:id="@+id/action_gratitudeCameraFragment_to_gratitudeJournalFragment2"
             app:destination="@id/gratitudeJournalFragment" />
     </fragment>
     <fragment
         android:id="@+id/gratitudeEditFragment"
         android:name="com.example.abschlussaufgabe.ui.GratitudeEditFragment"
         android:label="fragment_gratitude_edit"
-        tools:layout="@layout/fragment_gratitude_edit" >
-        <action
-            android:id="@+id/action_gratitudeEditFragment_to_gratitudeDetailFragment"
-            app:destination="@id/gratitudeDetailFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_gratitude_edit" />
     <fragment
         android:id="@+id/profileBarChartFragment"
-        android:name="com.example.abschlussaufgabe.ui.ProfileBarChartFragment"
+        android:name="com.example.abschlussaufgabe.ui.ProfileFragment"
         android:label="fragment_profile_bar_chart"
-        tools:layout="@layout/fragment_profile_bar_chart" >
+        tools:layout="@layout/fragment_chart_profile" >
         <action
             android:id="@+id/action_profileBarChartFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -208,9 +132,9 @@
     </fragment>
     <fragment
         android:id="@+id/profileHeartChartFragment"
-        android:name="com.example.abschlussaufgabe.ui.ProfileHeartChartFragment"
+        android:name="com.example.abschlussaufgabe.ui.HeartProfileFragment"
         android:label="fragment_profile_heart_chart"
-        tools:layout="@layout/fragment_profile_heart_chart" >
+        tools:layout="@layout/fragment_heart_profile" >
         <action
             android:id="@+id/action_profileHeartChartFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -229,9 +153,9 @@
     </fragment>
     <fragment
         android:id="@+id/profileHeatMapFragment"
-        android:name="com.example.abschlussaufgabe.ui.ProfileHeatMapFragment"
+        android:name="com.example.abschlussaufgabe.ui.HeatMapProfileFragment"
         android:label="fragment_profile_heat_map"
-        tools:layout="@layout/fragment_profile_heat_map" >
+        tools:layout="@layout/fragment_heat_map_profile" >
         <action
             android:id="@+id/action_profileHeatMapFragment_to_homeFragment"
             app:destination="@id/homeFragment" />

@@ -16,7 +16,7 @@
 
         <!--ACTION BAR-->
         <LinearLayout
-            style="@style/ActionBarTextViewStyle"
+            style="@style/ActionBarStyle"
             android:layout_weight="1">
 
             <ImageButton
@@ -30,7 +30,8 @@
                 android:id="@+id/home_btn_text"
                 android:text="@string/tara"
                 android:layout_width="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
 
             <ImageButton
                 style="@style/ActionBarButtonStyle"

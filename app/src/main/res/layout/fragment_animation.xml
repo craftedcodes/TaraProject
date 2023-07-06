@@ -6,20 +6,15 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         style="@style/MainLayoutStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.AnimationFragment">
 
+        <!--ACTION BAR-->
         <LinearLayout
-            style="@style/ActionBarTextViewStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/action_bar_layout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            style="@style/ActionBarStyle"
+            android:layout_weight="1">
 
             <ImageButton
                 style="@style/ActionBarButtonStyle"
@@ -32,8 +27,8 @@
                 android:id="@+id/home_btn_text"
                 android:text="@string/tara"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
 
             <ImageButton
                 style="@style/ActionBarButtonStyle"
@@ -44,57 +39,89 @@
 
         </LinearLayout>
 
-        <app.rive.runtime.kotlin.RiveAnimationView
-            android:id="@+id/rive_animation_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/action_bar_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:riveResource="@raw/tara_light"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="32dp"/>
+        <RelativeLayout
+            android:id="@+id/animation_right_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10">
 
-        <ImageButton
-            android:id="@+id/affirmation_nav_image_btn"
-            style="@style/NavButtonStyle"
-            android:src="@drawable/chevronright"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rive_animation_view"
-            app:layout_constraintBottom_toBottomOf="@id/rive_animation_view"
-            android:contentDescription="@string/navigation_to_affirmation"
-            android:layout_marginStart="8dp"
-            android:background="@color/white"/>
+            <app.rive.runtime.kotlin.RiveAnimationView
+                android:id="@+id/rive_animation_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:riveResource="@raw/tara_light"
+                android:layout_marginVertical="8dp"
+                android:layout_centerInParent="true"/>
+
+            <ImageButton
+                android:id="@+id/animation_nav_image_btn"
+                style="@style/NavButtonStyle"
+                android:src="@drawable/chevronright"
+                android:background="#00000000"
+                android:layout_marginHorizontal="8dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/navigation_to_animation" />
+
+        </RelativeLayout>
+
+        <!--
+        <com.google.android.material.card.MaterialCardView
+            style="@style/AttentionCardView"
+            android:layout_weight="2">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/iconausruf"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/activate_get_help_button" />
+                <TextView
+                    style="@style/AttentionTextView"
+                    android:text="@string/activate_get_help_button"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        -->
 
         <Button
             android:id="@+id/get_help_btn"
             style="@style/PrimaryButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/rive_animation_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_weight="0.2"
             android:text="@string/get_help"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/gratitude_nav_btn"
-            style="@style/FabStyle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:contentDescription="@string/gratitude_data"
-            android:src="@drawable/icongratitudenote"/>
+        <LinearLayout
+            android:id="@+id/fab_to_gratitude_journal"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="48dp">
 
-        <ImageButton
-            android:id="@+id/gratitude_journal_nav_btn"
-            style="@style/NavButtonStyle"
-            android:src="@drawable/chevrondown"
-            android:contentDescription="@string/navigation_to_affirmation"
-            app:layout_constraintStart_toStartOf="@+id/gratitude_nav_btn"
-            app:layout_constraintTop_toTopOf="@+id/gratitude_nav_btn"
-            android:background="@color/white"/>
+            <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gratitude_nav_btn"
+                style="@style/FabStyle"
+                android:contentDescription="@string/gratitude_data"
+                android:src="@drawable/icongratitudenote"
+                />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/gratitude_journal_nav_btn"
+                style="@style/NavButtonStyle"
+                android:src="@drawable/chevrondown"
+                android:contentDescription="@string/navigation_to_affirmation"
+                android:layout_marginBottom="8dp"
+                android:background="@color/white"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </layout>

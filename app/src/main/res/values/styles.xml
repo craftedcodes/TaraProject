@@ -19,7 +19,7 @@
     <!--STYLE ACTION BAR-->
     <style name="ActionBarLinearLayoutStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center</item>
     </style>
@@ -44,6 +44,16 @@
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">8</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--STYLE ACTION BAR-->
+    <style name="ActionBarStyle" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:gravity">center</item>
@@ -106,6 +116,22 @@
         <item name="android:longClickable">false</item>
         <item name="tint">@color/white</item>
         <item name="rippleColor">@color/white</item>
+        <item name="maxImageSize">36dp</item>
+    </style>
+
+    <!--STYLE GRATITUDE FAB-->
+    <style name="GratitudeFabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:background">@drawable/fab_bg</item>
+        <item name="backgroundTint">@color/primary_c_bg_light</item>
+        <item name="android:foregroundTint">@color/primary_c_tx_light</item>
+        <item name="android:foregroundTintMode">add</item>
+        <item name="android:longClickable">false</item>
+        <item name="tint">@color/primary_c_tx_light</item>
+        <item name="rippleColor">@color/white</item>
+        <item name="maxImageSize">40dp</item>
     </style>
 
     <!--STYLE NAVIGATION BUTTON-->
@@ -139,7 +165,7 @@
         <item name="errorEnabled">true</item>
         <item name="helperTextEnabled">true</item>
         <item name="helperTextTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
-        <item name="helperTextTextColor">@color/secondary_c_tx_light</item>
+        <item name="helperTextTextColor">@color/neutral_c_tx_light</item>
         <item name="hintEnabled">true</item>
         <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
         <item name="android:background">@drawable/contact_border</item>
@@ -170,6 +196,8 @@
     <style name="RecyclerViewStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_margin">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 </resources>

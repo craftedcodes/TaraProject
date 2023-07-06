@@ -84,4 +84,8 @@
     <string name="trash_icon">Trash Icon</string>
     <string name="edit_button">Edit Button</string>
     <string name="dropdown_menu">Dropdown Menu</string>
+    <string name="please_enter_the_dates_in_format_dd_mm_yyyy">Please enter the dates in format DD-MM-YYYY</string>
+    <string name="write_entry">Write Entry</string>
+    <string name="back_button">back button</string>
+    <string name="gallery">Gallery</string>
 </resources>

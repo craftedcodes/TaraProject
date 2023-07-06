@@ -1,14 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.GratitudeTextFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <data>
 
-</FrameLayout>
+    </data>
+
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.GratitudeTextFragment"
+        android:baselineAligned="false">
+
+        <!--ACTION BAR-->
+        <LinearLayout
+            style="@style/ActionBarStyle"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                style="@style/ActionBarButtonStyle"
+                android:src="@drawable/iconarrowback"
+                android:contentDescription="@string/back_button" />
+
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/home_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/logo01" />
+
+            <TextView
+                style="@style/LogoTextViewStyle"
+                android:id="@+id/home_btn_text"
+                android:text="@string/tara"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/profile_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconprofile"
+                app:tint="@color/neutral_c_tx_light" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/my_gratitude_moment"
+            android:fontFamily="@font/psychedelic_lotus"
+            android:layout_marginHorizontal="32dp"
+            android:textSize="32sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_tf"
+            style="@style/TextInputFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="@string/date"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_tf"
+            style="@style/TextInputFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="What made you happy?"
+            android:layout_weight="4"/>
+
+        <LinearLayout
+            style="@style/HorizontalLayoutStyle"
+            android:gravity="end"
+            android:layout_marginHorizontal="32dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gallery_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iconphoto"
+                app:maxImageSize="40dp"
+                android:backgroundTint="@color/surface_c_tx_light"
+                app:tint="@color/surface_c_bg_light"
+                android:contentDescription="@string/gallery" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/HorizontalLayoutStyle"
+            android:layout_weight="1">
+
+        <Button
+            android:id="@+id/save_btn"
+            style="@style/PrimaryButtonStyle"
+            android:text="@string/save"
+            app:icon="@drawable/iconsave"
+            app:iconTint="@color/white"
+            tools:ignore="InefficientWeight" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
