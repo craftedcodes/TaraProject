@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginVertical="4dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/date_cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="8dp"
+            android:elevation="@dimen/cardview_default_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/placeholder_image"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/placeholder_entry_text" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
+
+                    <TextView
+                        android:id="@+id/date_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_date"
+                        android:fontFamily="@font/psychedelic_lotus"
+                        android:textSize="32sp"
+                        android:textColor="@color/bgl_tx_light" />
+
+                    <TextView
+                        android:id="@+id/text_preview_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_entry_text"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght"
+                        android:textSize="24sp"
+                        android:textColor="@color/neutral_c_tx_light"
+                        android:layout_marginVertical="4dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="end"
+                        android:gravity="end">
+
+                        <ImageButton
+                            android:id="@+id/delete_btn"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:src="@drawable/icontrash"
+                            android:background="@color/white"
+                            android:layout_marginEnd="16dp"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/trash_icon" />
+
+                        <ImageButton
+                            android:id="@+id/edit_btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/iconfountainpen"
+                            android:background="@color/white"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/edit_button" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</layout>

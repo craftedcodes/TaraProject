@@ -78,4 +78,10 @@
     <string name="filter">Filter</string>
     <string name="placeholder_affirmation">It\'s okay to not be okay.</string>
     <string name="placeholder_appreciation">Foto von Janine Joles auf Unsplash</string>
+    <string name="password_forgotten">Password forgotten</string>
+    <string name="placeholder_date">August 15, 2022</string>
+    <string name="placeholder_entry_text">Got a flower</string>
+    <string name="trash_icon">Trash Icon</string>
+    <string name="edit_button">Edit Button</string>
+    <string name="dropdown_menu">Dropdown Menu</string>
 </resources>
