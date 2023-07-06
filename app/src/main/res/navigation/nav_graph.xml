@@ -110,7 +110,7 @@
         android:id="@+id/profileBarChartFragment"
         android:name="com.example.abschlussaufgabe.ui.ProfileFragment"
         android:label="fragment_profile_bar_chart"
-        tools:layout="@layout/fragment_chart_profile" >
+        tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileBarChartFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
