@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,64 +13,170 @@
 
         <!--ACTION BAR-->
         <LinearLayout
-            style="@style/ActionBarStyle"
-            android:layout_weight="1">
+            style="@style/ActionBarStyle">
 
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
-                android:src="@drawable/iconarrowback"
-                android:contentDescription="@string/back_button" />
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/iconarrowback" />
 
             <ImageButton
-                style="@style/ActionBarButtonStyle"
                 android:id="@+id/logo_home_btn"
+                style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
             <TextView
-                style="@style/LogoTextViewStyle"
                 android:id="@+id/text_home_btn"
-                android:text="@string/tara"
+                style="@style/LogoTextViewStyle"
+                android:textAlignment="textStart"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:layout_marginStart="24dp"
+                android:text="@string/tara"
                 tools:ignore="NestedWeights" />
 
-            <ImageButton
-                style="@style/ActionBarButtonStyle"
-                android:id="@+id/settings_btn"
-                android:contentDescription="@string/tara"
-                android:src="@drawable/iconsettings"
-                app:tint="@color/neutral_c_tx_light" />
-
         </LinearLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:backgroundTint="#203E45"
-            android:layout_weight="4">
-        <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-            android:id="@+id/aa_chart_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            android:backgroundTint="#203E45"
-            />
+            android:layout_weight="3"
+            android:backgroundTint="#203E45">
+
+            <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+                android:id="@+id/aa_chart_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:backgroundTint="#203E45" />
+
         </com.google.android.material.card.MaterialCardView>
 
-        <RadioGroup
+        <LinearLayout style="@style/HorizontalLayoutStyle">
+
+            <ImageButton
+                android:id="@+id/line_chart_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="16dp"
+                android:alpha="1"
+                android:backgroundTint="@color/white"
+                android:contentDescription="@string/line_chart"
+                android:scaleType="centerCrop"
+                android:src="@drawable/iconlinechart"
+                app:tint="@color/neutral_c_tx_light" />
+
+            <ImageButton
+                android:id="@+id/heart_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="16dp"
+                android:alpha="0.6"
+                android:backgroundTint="@color/white"
+                android:contentDescription="@string/heart_graphic"
+                android:scaleType="centerCrop"
+                android:src="@drawable/iconheart"
+                android:visibility="gone"
+                app:tint="@color/neutral_c_tx_light" />
+
+            <ImageButton
+                android:id="@+id/heat_map_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="16dp"
+                android:alpha="0.6"
+                android:backgroundTint="@color/white"
+                android:contentDescription="@string/heat_map"
+                android:scaleType="centerCrop"
+                android:src="@drawable/iconheatmap"
+                android:visibility="gone"
+                app:tint="@color/neutral_c_tx_light" />
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/attention_card"
+            style="@style/AttentionCardView"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/iconexclamation"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/no_emergency_contact_registered_yet" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+            <TextView
+                style="@style/AttentionTextView"
+                android:textAlignment="center"
+                android:text="@string/no_emergency_contact_registered_yet"/>
+
+                    <Button
+                        android:id="@+id/add_contact_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/error_c_bg_light"
+                        android:text="@string/add_contact"
+                        android:fontFamily="@font/psychedelic_lotus"
+                        android:textColor="@color/error_c_tx_light"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/export_btn"
+            style="@style/PrimaryButtonStyle"
+            android:text="@string/export_gratitude_journal_entries"
+            android:layout_weight="0.04"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_weight="0.4"
+            >
 
-            <RadioButton
-                android:id="@+id/chart_btn"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:backgroundTint="@color/neutral_c_tx_light"
-                android:buttonTint="@color/neutral_c_tx_light"
-                android:outlineProvider="paddedBounds" />
-        </RadioGroup>
+            <ImageButton
+                android:id="@+id/logout_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/iconlogout"
+                app:tint="@color/neutral_c_tx_light"
+                android:background="@color/white"
+                android:contentDescription="@string/logout"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                android:id="@+id/settings_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/iconsettings"
+                app:tint="@color/neutral_c_tx_light"
+                android:background="@color/white"
+                android:contentDescription="@string/settings"
+                android:layout_weight="1" />
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

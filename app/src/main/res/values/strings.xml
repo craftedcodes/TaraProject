@@ -88,4 +88,8 @@
     <string name="write_entry">Write Entry</string>
     <string name="back_button">back button</string>
     <string name="gallery">Gallery</string>
+    <string name="line_chart">Line chart</string>
+    <string name="heart_graphic">Heart graphic</string>
+    <string name="heat_map">Heat map</string>
+    <string name="export_gratitude_journal_entries">Export Gratitude Journal Entries</string>
 </resources>
