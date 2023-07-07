@@ -6,7 +6,7 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         style="@style/MainLayoutStyle"
         tools:context=".ui.HomeFragment">
 
@@ -14,39 +14,31 @@
             android:id="@+id/tara_text"
             android:text="@string/tara"
             style="@style/ActionBarTextViewStyle"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:gravity="center"/>
 
         <app.rive.runtime.kotlin.RiveAnimationView
             android:id="@+id/rive_animation_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tara_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
             app:riveResource="@raw/tara_light"
-            android:layout_marginVertical="8dp"/>
+            android:layout_marginVertical="8dp"
+            tools:ignore="InefficientWeight" />
 
         <Button
             android:id="@+id/login_navigation_btn"
             style="@style/PrimaryButtonStyle"
             android:text="@string/login"
-            app:layout_constraintTop_toBottomOf="@id/rive_animation_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/no_account_yet_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_account_yet"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:fontFamily="@font/merriweathersans_variablefont_wght"
-            android:layout_marginVertical="4dp"
-            app:layout_constraintTop_toBottomOf="@id/login_navigation_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginVertical="4dp" />
 
         <TextView
             android:id="@+id/register_now_tv"
@@ -60,17 +52,11 @@
             android:text="@string/register_now"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/no_account_yet_tv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:gravity="center" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/attention_card"
-            style="@style/AttentionCardView"
-            app:layout_constraintTop_toBottomOf="@id/register_now_tv"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            style="@style/AttentionCardView">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,5 +81,5 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

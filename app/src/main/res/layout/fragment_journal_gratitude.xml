@@ -9,7 +9,7 @@
 
     <RelativeLayout
         style="@style/MainLayoutStyle"
-        tools:context=".ui.GratitudeJournalFragment">
+        tools:context=".ui.JournalGratitudeFragment">
 
         <!--ACTION BAR-->
         <LinearLayout

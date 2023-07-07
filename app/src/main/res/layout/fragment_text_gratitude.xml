@@ -9,7 +9,7 @@
 
     <LinearLayout
         style="@style/MainLayoutStyle"
-        tools:context=".ui.GratitudeTextFragment"
+        tools:context=".ui.EntryGratitudeFragment"
         android:baselineAligned="false">
 
         <!--ACTION BAR-->

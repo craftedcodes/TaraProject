@@ -76,9 +76,9 @@
     </fragment>
     <fragment
         android:id="@+id/gratitudeJournalFragment"
-        android:name="com.example.abschlussaufgabe.ui.GratitudeJournalFragment"
+        android:name="com.example.abschlussaufgabe.ui.JournalGratitudeFragment"
         android:label="fragment_gratitude_journal"
-        tools:layout="@layout/fragment_gratitude_journal" >
+        tools:layout="@layout/fragment_journal_gratitude" >
         <action
             android:id="@+id/action_gratitudeJournalFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
@@ -94,9 +94,9 @@
     </fragment>
     <fragment
         android:id="@+id/gratitudeTextFragment"
-        android:name="com.example.abschlussaufgabe.ui.GratitudeTextFragment"
+        android:name="com.example.abschlussaufgabe.ui.EntryGratitudeFragment"
         android:label="fragment_gratitude_text"
-        tools:layout="@layout/fragment_gratitude_text" >
+        tools:layout="@layout/fragment_text_gratitude" >
         <action
             android:id="@+id/action_gratitudeTextFragment_to_gratitudeJournalFragment"
             app:destination="@id/gratitudeJournalFragment" />
@@ -118,62 +118,11 @@
             android:id="@+id/action_profileBarChartFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
         <action
-            android:id="@+id/action_profileBarChartFragment_to_profileHeartChartFragment"
-            app:destination="@id/profileHeartChartFragment" />
-        <action
-            android:id="@+id/action_profileBarChartFragment_to_profileHeatMapFragment"
-            app:destination="@id/profileHeatMapFragment" />
-        <action
             android:id="@+id/action_profileBarChartFragment_to_emergencyContactFragment"
             app:destination="@id/emergencyContactFragment" />
         <action
             android:id="@+id/action_profileBarChartFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/profileHeartChartFragment"
-        android:name="com.example.abschlussaufgabe.ui.HeartProfileFragment"
-        android:label="fragment_profile_heart_chart"
-        tools:layout="@layout/fragment_heart_profile" >
-        <action
-            android:id="@+id/action_profileHeartChartFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_profileHeartChartFragment_to_profileBarChartFragment"
-            app:destination="@id/profileBarChartFragment" />
-        <action
-            android:id="@+id/action_profileHeartChartFragment_to_animationFragment"
-            app:destination="@id/animationFragment" />
-        <action
-            android:id="@+id/action_profileHeartChartFragment_to_profileHeatMapFragment"
-            app:destination="@id/profileHeatMapFragment" />
-        <action
-            android:id="@+id/action_profileHeartChartFragment_to_emergencyContactFragment"
-            app:destination="@id/emergencyContactFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/profileHeatMapFragment"
-        android:name="com.example.abschlussaufgabe.ui.HeatMapProfileFragment"
-        android:label="fragment_profile_heat_map"
-        tools:layout="@layout/fragment_heat_map_profile" >
-        <action
-            android:id="@+id/action_profileHeatMapFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_profileHeatMapFragment_to_animationFragment"
-            app:destination="@id/animationFragment" />
-        <action
-            android:id="@+id/action_profileHeatMapFragment_to_profileHeartChartFragment"
-            app:destination="@id/profileHeartChartFragment" />
-        <action
-            android:id="@+id/action_profileHeatMapFragment_to_profileBarChartFragment"
-            app:destination="@id/profileBarChartFragment" />
-        <action
-            android:id="@+id/action_profileHeatMapFragment_to_animationFragment2"
-            app:destination="@id/animationFragment" />
-        <action
-            android:id="@+id/action_profileHeatMapFragment_to_emergencyContactFragment"
-            app:destination="@id/emergencyContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/emergencyContactFragment"
@@ -184,15 +133,6 @@
             android:id="@+id/action_emergencyContactFragment_to_profileBarChartFragment"
             app:destination="@id/profileBarChartFragment" />
         <action
-            android:id="@+id/action_emergencyContactFragment_to_profileHeartChartFragment"
-            app:destination="@id/profileHeartChartFragment" />
-        <action
-            android:id="@+id/action_emergencyContactFragment_to_profileHeatMapFragment"
-            app:destination="@id/profileHeatMapFragment" />
-        <action
-            android:id="@+id/action_emergencyContactFragment_to_emergencyContactAvatarsFragment"
-            app:destination="@id/emergencyContactAvatarsFragment" />
-        <action
             android:id="@+id/action_emergencyContactFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
@@ -201,15 +141,6 @@
         <action
             android:id="@+id/action_emergencyContactFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/emergencyContactAvatarsFragment"
-        android:name="com.example.abschlussaufgabe.ui.EmergencyContactAvatarsFragment"
-        android:label="fragment_emergency_contact_avatars"
-        tools:layout="@layout/fragment_emergency_contact_avatars" >
-        <action
-            android:id="@+id/action_emergencyContactAvatarsFragment_to_emergencyContactFragment"
-            app:destination="@id/emergencyContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -240,9 +171,6 @@
         <action
             android:id="@+id/action_settingsFragment_to_imprintFragment"
             app:destination="@id/imprintFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_contactFragment"
-            app:destination="@id/contactFragment" />
     </fragment>
     <fragment
         android:id="@+id/faqFragment"
@@ -317,21 +245,6 @@
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_imprintFragment_to_animationFragment"
-            app:destination="@id/animationFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/contactFragment"
-        android:name="com.example.abschlussaufgabe.ui.ContactFragment"
-        android:label="fragment_contact"
-        tools:layout="@layout/fragment_contact" >
-        <action
-            android:id="@+id/action_contactFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_contactFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_contactFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
     </fragment>
 </navigation>
