@@ -122,6 +122,7 @@
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/outer_rv_gratitude_journal"
            style="@style/RecyclerViewStyle"
+           tools:listitem="@layout/material_cv_outer_rv"
            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>

@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder_date"
                         android:fontFamily="@font/psychedelic_lotus"
-                        android:textSize="32sp"
+                        android:textSize="24sp"
                         android:textColor="@color/bgl_tx_light" />
 
                     <TextView
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder_entry_text"
                         android:fontFamily="@font/merriweathersans_variablefont_wght"
-                        android:textSize="24sp"
+                        android:textSize="16sp"
                         android:textColor="@color/neutral_c_tx_light"
                         android:layout_marginVertical="4dp"
                         />
