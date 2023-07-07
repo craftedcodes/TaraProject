@@ -16,7 +16,7 @@
     <item name="android:gravity">center</item>
     </style>
 
-    <!--STYLE ACTION BAR-->
+    <!--STYLE ACTION BAR LINEAR-->
     <style name="ActionBarLinearLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
@@ -52,7 +52,7 @@
     <!--STYLE ACTION BAR-->
     <style name="ActionBarStyle" parent="TextAppearance.AppCompat">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
@@ -192,10 +192,19 @@
         <item name="android:background">@drawable/contact_border</item>
     </style>
 
-    <!--STYLE RECYCLER VIEW-->
-    <style name="RecyclerViewStyle">
+    <!--STYLE OUTER RECYCLER VIEW-->
+    <style name="OuterRecyclerViewStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">540dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <!--STYLE INNER RECYCLER VIEW-->
+    <style name="InnerRecyclerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">800dp</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>

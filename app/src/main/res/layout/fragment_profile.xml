@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <data>
 
-</FrameLayout>
+    </data>
+
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.ProfileFragment">
+
+        <!--ACTION BAR-->
+        <LinearLayout
+            style="@style/ActionBarStyle"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                style="@style/ActionBarButtonStyle"
+                android:src="@drawable/iconarrowback"
+                android:contentDescription="@string/back_button" />
+
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/logo_home_btn"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/logo01" />
+
+            <TextView
+                style="@style/LogoTextViewStyle"
+                android:id="@+id/text_home_btn"
+                android:text="@string/tara"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/settings_btn"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconsettings"
+                app:tint="@color/neutral_c_tx_light" />
+
+        </LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:backgroundTint="#203E45"
+            android:layout_weight="4">
+        <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+            android:id="@+id/aa_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:backgroundTint="#203E45"
+            />
+        </com.google.android.material.card.MaterialCardView>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp">
+
+            <RadioButton
+                android:id="@+id/chart_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="@color/neutral_c_tx_light"
+                android:buttonTint="@color/neutral_c_tx_light"
+                android:outlineProvider="paddedBounds" />
+        </RadioGroup>
+    </LinearLayout>
+</layout>

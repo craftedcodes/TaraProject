@@ -9,11 +9,13 @@
 
     <RelativeLayout
         style="@style/MainLayoutStyle"
+        android:fitsSystemWindows="true"
         tools:context=".ui.JournalGratitudeFragment">
 
         <!--ACTION BAR-->
         <LinearLayout
             android:id="@+id/action_bar"
+            android:layout_alignParentTop="true"
             style="@style/ActionBarStyle">
 
             <ImageButton
@@ -57,7 +59,7 @@
                 android:id="@+id/animation_fab_nav_btn"
                 style="@style/FabStyle"
                 android:contentDescription="@string/navigation_to_animation"
-                android:src="@drawable/animationicon" />
+                android:src="@drawable/iconanimation" />
 
         </LinearLayout>
 
@@ -121,7 +123,7 @@
         <!--RECYCLER VIEW-->
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/outer_rv_gratitude_journal"
-           style="@style/RecyclerViewStyle"
+           style="@style/OuterRecyclerViewStyle"
            tools:listitem="@layout/material_cv_outer_rv"
            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

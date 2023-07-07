@@ -42,7 +42,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/iconausruf"
+                    android:src="@drawable/iconexclamation"
                     app:tint="@color/secondary_c_tx_light"
                     android:contentDescription="@string/to_cover_data_storage"
                     android:layout_marginEnd="16dp"/>

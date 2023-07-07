@@ -69,7 +69,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/iconausruf"
+                    android:src="@drawable/iconexclamation"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/unlock" />
 
