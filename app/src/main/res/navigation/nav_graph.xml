@@ -96,7 +96,7 @@
         android:id="@+id/gratitudeTextFragment"
         android:name="com.example.abschlussaufgabe.ui.EntryGratitudeFragment"
         android:label="fragment_gratitude_text"
-        tools:layout="@layout/fragment_text_gratitude" >
+        tools:layout="@layout/fragment_entry_gratitude" >
         <action
             android:id="@+id/action_gratitudeTextFragment_to_gratitudeJournalFragment"
             app:destination="@id/gratitudeJournalFragment" />
@@ -123,6 +123,15 @@
         <action
             android:id="@+id/action_profileBarChartFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_heartFragment"
+            app:destination="@id/heartFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_heatMapFragment"
+            app:destination="@id/heatMapFragment" />
+        <action
+            android:id="@+id/action_profileBarChartFragment_to_chartFragment"
+            app:destination="@id/chartFragment" />
     </fragment>
     <fragment
         android:id="@+id/emergencyContactFragment"
@@ -247,4 +256,18 @@
             android:id="@+id/action_imprintFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/heartFragment"
+        android:name="com.example.abschlussaufgabe.ui.HeartFragment"
+        android:label="fragment_heart"
+        tools:layout="@layout/fragment_heart" />
+    <fragment
+        android:id="@+id/heatMapFragment"
+        android:name="com.example.abschlussaufgabe.ui.HeatMapFragment"
+        android:label="fragment_heat_map"
+        tools:layout="@layout/fragment_heat_map" />
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.example.abschlussaufgabe.ui.ChartFragment"
+        android:label="ChartFragment" />
 </navigation>

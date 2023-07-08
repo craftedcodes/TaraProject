@@ -1,35 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <!-- Data binding section for the layout -->
     </data>
 
+    <!-- Main RelativeLayout with the style of MainLayoutStyle -->
     <RelativeLayout
         style="@style/MainLayoutStyle"
         android:fitsSystemWindows="true"
         tools:context=".ui.JournalGratitudeFragment">
 
-        <!--ACTION BAR-->
+        <!-- ActionBar LinearLayout -->
         <LinearLayout
             android:id="@+id/action_bar"
             android:layout_alignParentTop="true"
             style="@style/ActionBarStyle">
 
+            <!-- Home button -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/home_btn_logo"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
+            <!-- Home button text -->
             <TextView
                 style="@style/LogoTextViewStyle"
                 android:id="@+id/home_btn_text"
                 android:text="@string/tara"
                 android:layout_width="280dp"/>
 
+            <!-- Profile button -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/profile_btn_logo"
@@ -39,7 +42,7 @@
 
         </LinearLayout>
 
-        <!--FLOATING ACTION NAVIGATION BUTTON TO GRATITUDE JOURNAL-->
+        <!-- Floating Action Button for navigation to Gratitude Journal -->
         <LinearLayout
             android:id="@+id/animation_fab"
             android:layout_width="match_parent"
@@ -48,6 +51,7 @@
             android:gravity="center"
             android:layout_below="@id/action_bar">
 
+            <!-- Navigation button -->
             <ImageButton
                 android:id="@+id/animation_nav_btn"
                 style="@style/NavButtonStyle"
@@ -55,6 +59,7 @@
                 android:contentDescription="@string/navigation_to_animation"
                 android:src="@drawable/chevronup" />
 
+            <!-- Floating Action Button for navigation -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/animation_fab_nav_btn"
                 style="@style/FabStyle"
@@ -63,75 +68,81 @@
 
         </LinearLayout>
 
+        <!-- ScrollView for the content below the ActionBar and above the FloatingActionButton -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/animation_fab"
             android:layout_above="@+id/fab_bottom_right">
 
+            <!-- Main LinearLayout for the ScrollView content -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
 
-        <LinearLayout
-            style="@style/HorizontalLayoutStyle">
+                <!-- LinearLayout for the start and end date TextInputFields -->
+                <LinearLayout
+                    style="@style/HorizontalLayoutStyle">
 
-        <!--TEXTFIELD DATE START SEARCH-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/start_date_sf"
-            style="@style/DateTextInputFieldStyle"
-            app:helperText="Start Date"
-            />
+                    <!-- TextInputField for the start date -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/start_date_tf"
+                        style="@style/DateTextInputFieldStyle"
+                        app:helperText="Start Date"
+                        />
 
-        <!--TEXTFIELD DATE END SEARCH-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/end_date_sf"
-            style="@style/DateTextInputFieldStyle"
-            app:helperText="End Date"
-            />
+                    <!-- TextInputField for the end date -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/end_date_tf"
+                        style="@style/DateTextInputFieldStyle"
+                        app:helperText="End Date"
+                        />
 
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/please_enter_the_dates_in_format_dd_mm_yyyy"
-            android:fontFamily="@font/merriweathersans_variablefont_wght"
-            android:textColor="@color/neutral_c_tx_light"/>
+                </LinearLayout>
 
-        <Button
-            android:id="@+id/filter_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="54dp"
-            android:fontFamily="@font/merriweathersans_variablefont_wght"
-            android:text="@string/filter"
-            android:textColor="@color/secondary_c_tx_light"
-            android:backgroundTint="@color/white"
-            android:layout_margin="16dp"
-            app:strokeColor="@color/surface_c_tx_light"
-            app:strokeWidth="1dp"
-            android:textSize="20sp"
-            android:shadowColor="#61000000"
-            android:shadowRadius="8"
-            android:shadowDx="8"
-            android:shadowDy="4"
-            tools:ignore="ButtonStyle"
-            />
+                <!-- TextView for the date format instruction -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/please_enter_the_dates_in_format_dd_mm_yyyy"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:textColor="@color/neutral_c_tx_light"/>
 
-        <!--RECYCLER VIEW-->
-       <androidx.recyclerview.widget.RecyclerView
-           android:id="@+id/outer_rv_gratitude_journal"
-           style="@style/OuterRecyclerViewStyle"
-           tools:listitem="@layout/material_cv_outer_rv"
-           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <!-- Filter button -->
+                <Button
+                    android:id="@+id/filter_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="54dp"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:text="@string/filter"
+                    android:textColor="@color/secondary_c_tx_light"
+                    android:backgroundTint="@color/white"
+                    android:layout_margin="16dp"
+                    app:strokeColor="@color/surface_c_tx_light"
+                    app:strokeWidth="1dp"
+                    android:textSize="20sp"
+                    android:shadowColor="#61000000"
+                    android:shadowRadius="8"
+                    android:shadowDx="8"
+                    android:shadowDy="4"
+                    tools:ignore="ButtonStyle"
+                    />
 
-    </LinearLayout>
+                <!-- RecyclerView for the gratitude journal entries -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/outer_rv_gratitude_journal"
+                    style="@style/OuterRecyclerViewStyle"
+                    tools:listitem="@layout/material_cv_outer_rv"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
 
         </ScrollView>
 
-        <!--FloatingActionButton Bottom Right-->
+        <!-- FloatingActionButton for writing a new entry -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_bottom_right"
             style="@style/GratitudeFabStyle"
@@ -141,6 +152,7 @@
             android:pointerIcon="zoom_in"
             android:src="@drawable/icongratitudenote"
             app:fabCustomSize="80dp" />
+
     </RelativeLayout>
 
 </layout>

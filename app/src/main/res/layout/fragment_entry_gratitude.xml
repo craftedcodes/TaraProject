@@ -3,32 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Data binding section -->
     <data>
 
     </data>
 
+    <!-- Main layout container -->
     <LinearLayout
         style="@style/MainLayoutStyle"
         tools:context=".ui.EntryGratitudeFragment"
         android:baselineAligned="false">
 
-        <!--ACTION BAR-->
+        <!-- Action bar layout -->
         <LinearLayout
             style="@style/ActionBarStyle"
             android:layout_weight="1">
 
+            <!-- Back button -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:src="@drawable/iconarrowback"
                 android:contentDescription="@string/back_button" />
 
+            <!-- Home button -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/home_btn_logo"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
+            <!-- Home button text -->
             <TextView
                 style="@style/LogoTextViewStyle"
                 android:id="@+id/home_btn_text"
@@ -37,6 +42,7 @@
                 android:layout_weight="1"
                 tools:ignore="NestedWeights" />
 
+            <!-- Profile button -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/profile_btn_logo"
@@ -46,6 +52,7 @@
 
         </LinearLayout>
 
+        <!-- Gratitude moment title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,6 +61,7 @@
             android:layout_marginHorizontal="32dp"
             android:textSize="32sp" />
 
+        <!-- Date input field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/date_tf"
             style="@style/TextInputFieldStyle"
@@ -61,6 +69,7 @@
             android:layout_height="wrap_content"
             app:helperText="@string/date"/>
 
+        <!-- Text input field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_tf"
             style="@style/TextInputFieldStyle"
@@ -69,11 +78,13 @@
             app:helperText="What made you happy?"
             android:layout_weight="4"/>
 
+        <!-- Gallery button container -->
         <LinearLayout
             style="@style/HorizontalLayoutStyle"
             android:gravity="end"
             android:layout_marginHorizontal="32dp">
 
+            <!-- Gallery button -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/gallery_btn"
                 android:layout_width="wrap_content"
@@ -86,17 +97,19 @@
 
         </LinearLayout>
 
+        <!-- Save button container -->
         <LinearLayout
             style="@style/HorizontalLayoutStyle"
             android:layout_weight="1">
 
-        <Button
-            android:id="@+id/save_btn"
-            style="@style/PrimaryButtonStyle"
-            android:text="@string/save"
-            app:icon="@drawable/iconsave"
-            app:iconTint="@color/white"
-            tools:ignore="InefficientWeight" />
+            <!-- Save button -->
+            <Button
+                android:id="@+id/save_btn"
+                style="@style/PrimaryButtonStyle"
+                android:text="@string/save"
+                app:icon="@drawable/iconsave"
+                app:iconTint="@color/white"
+                tools:ignore="InefficientWeight" />
 
         </LinearLayout>
 

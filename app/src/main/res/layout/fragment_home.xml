@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <!-- Data binding section for the layout -->
     </data>
 
+    <!-- Main LinearLayout with the style of MainLayoutStyle -->
     <LinearLayout
         style="@style/MainLayoutStyle"
         tools:context=".ui.HomeFragment">
 
+        <!-- TextView for displaying the app name -->
         <TextView
             android:id="@+id/tara_text"
             android:text="@string/tara"
             style="@style/ActionBarTextViewStyle"
             android:gravity="center"/>
 
+        <!-- RiveAnimationView for displaying animations -->
         <app.rive.runtime.kotlin.RiveAnimationView
             android:id="@+id/rive_animation_view"
             android:layout_width="match_parent"
@@ -25,12 +28,14 @@
             android:layout_marginVertical="8dp"
             tools:ignore="InefficientWeight" />
 
+        <!-- Login button -->
         <Button
             android:id="@+id/login_navigation_btn"
             style="@style/PrimaryButtonStyle"
             android:text="@string/login"
             android:gravity="center" />
 
+        <!-- TextView for displaying the "No account yet" message -->
         <TextView
             android:id="@+id/no_account_yet_tv"
             android:layout_width="wrap_content"
@@ -40,6 +45,7 @@
             android:fontFamily="@font/merriweathersans_variablefont_wght"
             android:layout_marginVertical="4dp" />
 
+        <!-- TextView for displaying the "Register now" message -->
         <TextView
             android:id="@+id/register_now_tv"
             android:layout_width="wrap_content"
@@ -54,10 +60,12 @@
             android:textStyle="bold"
             android:gravity="center" />
 
+        <!-- MaterialCardView for displaying attention message -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/attention_card"
             style="@style/AttentionCardView">
 
+            <!-- LinearLayout for arranging the attention icon and text -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -66,6 +74,7 @@
                 android:gravity="center_vertical"
                 tools:ignore="UseCompoundDrawables">
 
+                <!-- ImageView for displaying the attention icon -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -73,6 +82,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/unlock" />
 
+                <!-- TextView for displaying the attention text -->
                 <TextView
                     style="@style/AttentionTextView"
                     android:text="@string/unlock"/>
@@ -82,4 +92,5 @@
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+
 </layout>

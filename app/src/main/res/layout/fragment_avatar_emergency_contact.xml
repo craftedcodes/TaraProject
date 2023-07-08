@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- Data binding section for the layout -->
+    </data>
+
+    <!-- Material CardView that contains the GridLayout -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.AvatarEmergencyContactFragment">
+
+        <!-- GridLayout with 4 columns. ImageView elements will be added programmatically -->
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="4"
+            android:padding="16dp"
+            android:alignmentMode="alignMargins"
+            android:columnOrderPreserved="false"
+            android:rowOrderPreserved="false">
+            <!-- ImageView elements will be added programmatically -->
+        </GridLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

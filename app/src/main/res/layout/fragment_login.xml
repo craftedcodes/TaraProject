@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <!-- Data binding section for the layout -->
     </data>
 
+    <!-- Main LinearLayout with the style of MainLayoutStyle -->
     <LinearLayout
         style="@style/MainLayoutStyle"
         android:layout_width="match_parent"
@@ -15,6 +15,7 @@
         android:orientation="vertical"
         tools:context=".ui.LoginFragment">
 
+        <!-- TextView for the title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -28,8 +29,10 @@
             android:text="@string/tara"
             android:textAlignment="center"
             android:textColor="@color/primary_bg_light"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            />
 
+        <!-- ImageView for the logo -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -39,6 +42,7 @@
             android:contentDescription="@string/tara"
             android:src="@drawable/logo01" />
 
+        <!-- TextInputLayout for the email input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/e_mail_tf"
             style="@style/TextInputFieldStyle"
@@ -47,6 +51,7 @@
             android:hint="@string/your_mail_address_ym_com"
             app:helperText="@string/e_mail" />
 
+        <!-- TextInputLayout for the password input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_tf"
             style="@style/TextInputFieldStyle"
@@ -54,6 +59,7 @@
             android:layout_height="wrap_content"
             app:helperText="@string/password" />
 
+        <!-- LinearLayout for the quit and login buttons -->
         <LinearLayout
             style="@style/HorizontalLayoutStyle"
             android:layout_width="match_parent"
@@ -62,6 +68,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <!-- Quit button -->
             <Button
                 android:id="@+id/quit_btn"
                 android:layout_width="wrap_content"
@@ -81,6 +88,7 @@
                 app:strokeWidth="1dp"
                 tools:ignore="ButtonStyle" />
 
+            <!-- Login button -->
             <Button
                 android:id="@+id/login_btn"
                 style="@style/PrimaryButtonStyle"
@@ -89,6 +97,7 @@
                 android:text="@string/login" />
         </LinearLayout>
 
+        <!-- TextView for the forgotten password option -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -102,4 +111,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
 </layout>

@@ -3,180 +3,356 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Data binding section -->
     <data>
 
     </data>
 
-    <LinearLayout
-        style="@style/MainLayoutStyle"
+    <!-- Main layout container -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:context=".ui.ProfileFragment">
 
-        <!--ACTION BAR-->
+        <!-- Top action bar -->
         <LinearLayout
-            style="@style/ActionBarStyle">
+            style="@style/ActionBarStyle"
+            android:layout_alignParentTop="true">
 
+            <!-- Back button -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/back_button"
                 android:src="@drawable/iconarrowback" />
 
+            <!-- Home button -->
             <ImageButton
-                android:id="@+id/logo_home_btn"
+                android:id="@+id/home_btn_logo"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
+            <!-- Home button text -->
             <TextView
-                android:id="@+id/text_home_btn"
+                android:id="@+id/home_btn_text"
                 style="@style/LogoTextViewStyle"
-                android:textAlignment="textStart"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginStart="24dp"
                 android:text="@string/tara"
                 tools:ignore="NestedWeights" />
 
+            <!-- Profile button -->
+            <ImageButton
+                android:id="@+id/profile_btn_logo"
+                style="@style/ActionBarButtonStyle"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconprofile"
+                android:visibility="invisible"
+                app:tint="@color/neutral_c_tx_light" />
+
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
+        <!-- Main content scroll view -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_weight="3"
-            android:backgroundTint="#203E45">
+            android:layout_height="720dp"
+            android:layout_centerInParent="true"
+            android:fillViewport="true">
 
-            <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-                android:id="@+id/aa_chart_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp"
-                android:backgroundTint="#203E45" />
+            <!-- Main layout style -->
+            <LinearLayout style="@style/MainLayoutStyle">
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout style="@style/HorizontalLayoutStyle">
-
-            <ImageButton
-                android:id="@+id/line_chart_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="16dp"
-                android:alpha="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="@string/line_chart"
-                android:scaleType="centerCrop"
-                android:src="@drawable/iconlinechart"
-                app:tint="@color/neutral_c_tx_light" />
-
-            <ImageButton
-                android:id="@+id/heart_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="16dp"
-                android:alpha="0.6"
-                android:backgroundTint="@color/white"
-                android:contentDescription="@string/heart_graphic"
-                android:scaleType="centerCrop"
-                android:src="@drawable/iconheart"
-                android:visibility="gone"
-                app:tint="@color/neutral_c_tx_light" />
-
-            <ImageButton
-                android:id="@+id/heat_map_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="16dp"
-                android:alpha="0.6"
-                android:backgroundTint="@color/white"
-                android:contentDescription="@string/heat_map"
-                android:scaleType="centerCrop"
-                android:src="@drawable/iconheatmap"
-                android:visibility="gone"
-                app:tint="@color/neutral_c_tx_light" />
-
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/attention_card"
-            style="@style/AttentionCardView"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_margin="8dp"
-                android:gravity="center_vertical"
-                tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/iconexclamation"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/no_emergency_contact_registered_yet" />
-
-                <LinearLayout
+                <!-- Chart view card -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-            <TextView
-                style="@style/AttentionTextView"
-                android:textAlignment="center"
-                android:text="@string/no_emergency_contact_registered_yet"/>
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_weight="3"
+                    android:backgroundTint="#203E45">
 
-                    <Button
-                        android:id="@+id/add_contact_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/error_c_bg_light"
-                        android:text="@string/add_contact"
-                        android:fontFamily="@font/psychedelic_lotus"
-                        android:textColor="@color/error_c_tx_light"/>
+                    <!-- Chart view -->
+                    <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+                        android:id="@+id/aa_chart_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="16dp"
+                        android:backgroundTint="#203E45" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Chart type selection buttons -->
+                <LinearLayout style="@style/HorizontalLayoutStyle">
+
+                    <!-- Line chart button -->
+                    <ImageButton
+                        android:id="@+id/line_chart_btn"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:alpha="1"
+                        android:backgroundTint="@color/white"
+                        android:contentDescription="@string/line_chart"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/iconlinechart"
+                        app:tint="@color/neutral_c_tx_light" />
+
+                    <!-- Heart graphic button -->
+                    <ImageButton
+                        android:id="@+id/heart_btn"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:alpha="0.6"
+                        android:backgroundTint="@color/white"
+                        android:contentDescription="@string/heart_graphic"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/iconheart"
+                        android:visibility="gone"
+                        app:tint="@color/neutral_c_tx_light" />
+
+                    <!-- Heat map button -->
+                    <ImageButton
+                        android:id="@+id/heat_map_btn"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:alpha="0.6"
+                        android:backgroundTint="@color/white"
+                        android:contentDescription="@string/heat_map"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/iconheatmap"
+                        android:visibility="gone"
+                        app:tint="@color/neutral_c_tx_light" />
 
                 </LinearLayout>
 
+                <!-- Attention card view -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/attention_card"
+                    style="@style/AttentionCardView"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+                    <!-- Attention card layout -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <!-- Attention icon -->
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_margin="8dp"
+                            android:contentDescription="@string/no_emergency_contact_registered_yet"
+                            android:src="@drawable/iconexclamation" />
+
+                        <!-- Attention text and add contact button -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <!-- Attention text -->
+                            <TextView
+                                style="@style/AttentionTextView"
+                                android:text="@string/no_emergency_contact_registered_yet"
+                                android:textAlignment="center" />
+
+                            <!-- Add contact button -->
+                            <Button
+                                android:id="@+id/add_contact_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/error_c_bg_light"
+                                android:fontFamily="@font/psychedelic_lotus"
+                                android:text="@string/add_contact"
+                                android:textColor="@color/error_c_tx_light" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Contact card view -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginVertical="16dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:visibility="gone">
+
+                    <!-- Contact card layout -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <!-- Contact details layout -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <!-- Contact avatar -->
+                            <ImageView
+                                android:id="@+id/avatar_iv"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="1"
+                                android:contentDescription="@string/avatar_image"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/avatar01"
+                            tools:ignore="NestedWeights" />
+
+                            <!-- Contact details -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <!-- Contact name -->
+                                <TextView
+                                    android:id="@+id/name_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/psychedelic_lotus"
+                                    android:text="@string/mom"
+                                    android:textColor="@color/primary_bg_light"
+                                    android:textSize="24sp" />
+
+                                <!-- Contact number -->
+                                <TextView
+                                    android:id="@+id/number_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginVertical="4dp"
+                                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                                    android:text="@string/_0123_234786239"
+                                    android:textColor="@color/outline_bg_light"
+                                    android:textSize="16sp" />
+
+                                <!-- Contact message -->
+                                <TextView
+                                    android:id="@+id/message_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="24dp"
+                                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                                    android:text="@string/i_have_a_panic_attack_right_now_please_call_me"
+                                    android:textColor="@color/outline_bg_light"
+                                    android:textSize="16sp" />
+
+                                <!-- Contact action buttons -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:gravity="end"
+                                    android:orientation="horizontal">
+
+                                    <!-- Delete contact button -->
+                                    <ImageButton
+                                        android:id="@+id/delete_btn"
+                                        android:layout_width="52dp"
+                                        android:layout_height="52dp"
+                                        android:layout_marginEnd="16dp"
+                                        android:background="@color/white"
+                                        android:contentDescription="@string/trash_icon"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/icontrash"
+                                        tools:ignore="TooDeepLayout" />
+
+                                    <!-- Edit contact button -->
+                                    <ImageButton
+                                        android:id="@+id/edit_btn"
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginEnd="16dp"
+                                        android:background="@color/white"
+                                        android:contentDescription="@string/edit_button"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/iconfountainpen" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Note text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_weight="0.001"
+                            android:fontFamily="@font/merriweathersans_variablefont_wght"
+                            android:text="@string/please_note"
+                            android:textColor="@color/outline_bg_light"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Export gratitude journal entries button -->
+                <Button
+                    android:id="@+id/export_btn"
+                    style="@style/PrimaryButtonStyle"
+                    android:layout_weight="0.04"
+                    android:text="@string/export_gratitude_journal_entries" />
+
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </ScrollView>
 
-        <Button
-            android:id="@+id/export_btn"
-            style="@style/PrimaryButtonStyle"
-            android:text="@string/export_gratitude_journal_entries"
-            android:layout_weight="0.04"/>
-
+        <!-- Bottom action bar -->
         <LinearLayout
+            android:id="@+id/bottom_action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
             android:gravity="center_vertical"
-            android:layout_weight="0.4"
-            >
+            android:orientation="horizontal">
 
+            <!-- Logout button -->
             <ImageButton
                 android:id="@+id/logout_btn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/iconlogout"
-                app:tint="@color/neutral_c_tx_light"
+                android:layout_weight="1"
                 android:background="@color/white"
                 android:contentDescription="@string/logout"
-                android:layout_weight="1"
+                android:src="@drawable/iconlogout"
+                app:tint="@color/neutral_c_tx_light"
                 tools:ignore="NestedWeights" />
 
+            <!-- Settings button -->
             <ImageButton
                 android:id="@+id/settings_btn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/iconsettings"
-                app:tint="@color/neutral_c_tx_light"
+                android:layout_weight="1"
                 android:background="@color/white"
                 android:contentDescription="@string/settings"
-                android:layout_weight="1" />
+                android:src="@drawable/iconsettings"
+                app:tint="@color/neutral_c_tx_light" />
 
         </LinearLayout>
-    </LinearLayout>
+
+    </RelativeLayout>
+
 </layout>

@@ -3,16 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Data binding section -->
     <data>
 
     </data>
 
+    <!-- Main layout container -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginVertical="4dp"
         android:orientation="vertical">
 
+        <!-- Material card view for date -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/date_cv"
             android:layout_width="match_parent"
@@ -21,6 +24,7 @@
             android:layout_marginVertical="4dp"
             android:elevation="@dimen/cardview_default_elevation">
 
+            <!-- Layout for date text and image -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +33,7 @@
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-
+                <!-- Text view for date -->
                 <TextView
                     android:id="@+id/date_tv"
                     android:layout_width="0dp"
@@ -40,20 +44,18 @@
                     android:textColor="@color/bgl_tx_light"
                     android:textSize="24sp" />
 
-
+                <!-- Image view for dropdown menu -->
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:contentDescription="@string/dropdown_menu"
                     android:src="@drawable/chevronright" />
 
-
             </LinearLayout>
-
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!--RECYCLER VIEW-->
+        <!-- Recycler view for gratitude journal entries -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inner_rv_gratitude_journal"
             style="@style/InnerRecyclerViewStyle"
