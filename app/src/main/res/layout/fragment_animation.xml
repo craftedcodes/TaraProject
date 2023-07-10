@@ -59,7 +59,7 @@
 
             <!-- Navigation button for animation -->
             <ImageButton
-                android:id="@+id/animation_nav_image_btn"
+                android:id="@+id/affirmation_nav_image_btn"
                 style="@style/NavButtonStyle"
                 android:src="@drawable/chevronright"
                 android:background="#00000000"
@@ -112,7 +112,7 @@
         <LinearLayout
             android:id="@+id/fab_to_gratitude_journal"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:gravity="center"

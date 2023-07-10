@@ -144,7 +144,7 @@
 
         <!-- FloatingActionButton for writing a new entry -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_bottom_right"
+            android:id="@+id/new_entry_fab"
             style="@style/GratitudeFabStyle"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"

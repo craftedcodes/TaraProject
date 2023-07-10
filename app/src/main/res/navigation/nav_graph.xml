@@ -42,5 +42,84 @@
     <fragment
         android:id="@+id/animationFragment"
         android:name="com.example.abschlussaufgabe.ui.AnimationFragment"
-        android:label="AnimationFragment" />
+        android:label="AnimationFragment" >
+        <action
+            android:id="@+id/action_animationFragment_to_affirmationFragment"
+            app:destination="@id/affirmationFragment" />
+        <action
+            android:id="@+id/action_animationFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_animationFragment_to_journalGratitudeFragment"
+            app:destination="@id/journalGratitudeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/affirmationFragment"
+        android:name="com.example.abschlussaufgabe.ui.AffirmationFragment"
+        android:label="AffirmationFragment" >
+        <action
+            android:id="@+id/action_affirmationFragment_to_journalGratitudeFragment"
+            app:destination="@id/journalGratitudeFragment" />
+        <action
+            android:id="@+id/action_affirmationFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_affirmationFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/journalGratitudeFragment"
+        android:name="com.example.abschlussaufgabe.ui.JournalGratitudeFragment"
+        android:label="JournalGratitudeFragment" >
+        <action
+            android:id="@+id/action_journalGratitudeFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_journalGratitudeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_journalGratitudeFragment_to_entryGratitudeFragment"
+            app:destination="@id/entryGratitudeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.abschlussaufgabe.ui.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emergencyContactFragment"
+        android:name="com.example.abschlussaufgabe.ui.EmergencyContactFragment"
+        android:label="EmergencyContactFragment" >
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_avatarEmergencyContactFragment"
+            app:destination="@id/avatarEmergencyContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/avatarEmergencyContactFragment"
+        android:name="com.example.abschlussaufgabe.ui.AvatarEmergencyContactFragment"
+        android:label="AvatarEmergencyContactFragment" >
+        <action
+            android:id="@+id/action_avatarEmergencyContactFragment_to_emergencyContactFragment"
+            app:destination="@id/emergencyContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/entryGratitudeFragment"
+        android:name="com.example.abschlussaufgabe.ui.EntryGratitudeFragment"
+        android:label="EntryGratitudeFragment" >
+        <action
+            android:id="@+id/action_entryGratitudeFragment_to_journalGratitudeFragment"
+            app:destination="@id/journalGratitudeFragment" />
+    </fragment>
 </navigation>
