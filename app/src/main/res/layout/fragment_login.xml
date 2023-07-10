@@ -44,20 +44,39 @@
 
         <!-- TextInputLayout for the email input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/e_mail_tf"
-            style="@style/TextInputFieldStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/your_mail_address_ym_com"
-            app:helperText="@string/e_mail" />
+            android:layout_marginHorizontal="32dp"
+            app:endIconMode="clear_text"
+            app:helperText="@string/e_mail"
+            app:helperTextEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/e_mail_tf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/your_mail_address_ym_com"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TextInputLayout for the password input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_tf"
-            style="@style/TextInputFieldStyle"
+            android:layout_marginHorizontal="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="@string/password" />
+            app:helperText="@string/password"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_tf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/min_12_glyphs"
+                android:inputType="textPassword"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- LinearLayout for the quit and login buttons -->
         <LinearLayout

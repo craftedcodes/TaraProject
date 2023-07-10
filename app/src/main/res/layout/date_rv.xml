@@ -59,7 +59,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inner_rv_gratitude_journal"
             style="@style/InnerRecyclerViewStyle"
-            tools:listitem="@layout/material_cv_inner_rv"
+            tools:listitem="@layout/entry_rv"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>

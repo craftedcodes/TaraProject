@@ -97,4 +97,5 @@
     <string name="_0123_234786239">0123/234786239</string>
     <string name="i_have_a_panic_attack_right_now_please_call_me">I have a panic attack right now. Please call me.</string>
     <string name="please_note">Please note that every time you tap the \'Get Help\' button, an SMS is sent and you will incur costs accordingly.</string>
+    <string name="repeat_the_chosen_password">Repeat the chosen password</string>
 </resources>
