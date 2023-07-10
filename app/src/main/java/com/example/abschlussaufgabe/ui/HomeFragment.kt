@@ -35,8 +35,10 @@ class HomeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		binding.loginNavigationBtn.setOnClickListener {
-			findNavController().navigate(Home)
+		binding.registerNowTv.setOnClickListener {
+			findNavController().navigate(R.id.action_homeFragment_to_registerFragment)
 		}
+		
+		
 	}
 }
