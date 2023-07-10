@@ -256,18 +256,4 @@
             android:id="@+id/action_imprintFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/heartFragment"
-        android:name="com.example.abschlussaufgabe.ui.HeartFragment"
-        android:label="fragment_heart"
-        tools:layout="@layout/fragment_heart" />
-    <fragment
-        android:id="@+id/heatMapFragment"
-        android:name="com.example.abschlussaufgabe.ui.HeatMapFragment"
-        android:label="fragment_heat_map"
-        tools:layout="@layout/fragment_heat_map" />
-    <fragment
-        android:id="@+id/chartFragment"
-        android:name="com.example.abschlussaufgabe.ui.ChartFragment"
-        android:label="ChartFragment" />
 </navigation>
