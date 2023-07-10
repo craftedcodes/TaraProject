@@ -105,6 +105,9 @@
         <action
             android:id="@+id/action_emergencyContactFragment_to_avatarEmergencyContactFragment"
             app:destination="@id/avatarEmergencyContactFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
     </fragment>
     <fragment
         android:id="@+id/avatarEmergencyContactFragment"
@@ -121,5 +124,11 @@
         <action
             android:id="@+id/action_entryGratitudeFragment_to_journalGratitudeFragment"
             app:destination="@id/journalGratitudeFragment" />
+        <action
+            android:id="@+id/action_entryGratitudeFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_entryGratitudeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

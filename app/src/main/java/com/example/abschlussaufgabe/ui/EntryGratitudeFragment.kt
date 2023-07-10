@@ -1,60 +1,64 @@
 package com.example.abschlussaufgabe.ui
 
+// Required imports for the class.
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
+import com.example.abschlussaufgabe.databinding.FragmentEntryGratitudeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EntryGratitudeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+// EntryGratitudeFragment class, a subclass of Fragment
 class EntryGratitudeFragment : Fragment() {
-	// TODO: Rename and change types of parameters
-	private var param1: String? = null
-	private var param2: String? = null
 	
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		arguments?.let {
-			param1 = it.getString(ARG_PARAM1)
-			param2 = it.getString(ARG_PARAM2)
-		}
-	}
+	// Lateinit variable for the data binding object
+	private lateinit var binding: FragmentEntryGratitudeBinding
 	
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View? {
+	// Inflate the layout for this fragment using data binding within onCreateView
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+		
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_entry_gratitude, container, false)
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_entry_gratitude, container, false)
+		
+		// Return the root view for the Fragment's UI
+		return binding.root
 	}
 	
-	companion object {
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment using the provided parameters.
-		 *
-		 * @param param1 Parameter 1.
-		 * @param param2 Parameter 2.
-		 * @return A new instance of fragment GratitudeTextFragment.
-		 */
-		// TODO: Rename and change types and number of parameters
-		@JvmStatic
-		fun newInstance(param1: String, param2: String) =
-			EntryGratitudeFragment().apply {
-				arguments = Bundle().apply {
-					putString(ARG_PARAM1, param1)
-					putString(ARG_PARAM2, param2)
-				}
-			}
+	// The onViewCreated method is called after onCreateView(). It is used to perform additional view setup
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		
+		// Set an onClickListener for the back button.
+		// When this button is clicked, it navigates back in the back stack.
+		binding.backBtn.setOnClickListener {
+			findNavController().popBackStack()
+		}
+		
+		// Set an onClickListener for the home button logo.
+		// When this button is clicked, it navigates to the animation fragment.
+		binding.homeBtnLogo.setOnClickListener {
+			findNavController().navigate(R.id.action_entryGratitudeFragment_to_animationFragment)
+		}
+		
+		// Set an onClickListener for the home button text.
+		// When this text is clicked, it also navigates to the animation fragment.
+		binding.homeBtnText.setOnClickListener {
+			findNavController().navigate(R.id.action_entryGratitudeFragment_to_animationFragment)
+		}
+		
+		// Set an onClickListener for the profile button logo.
+		// When this button is clicked, it navigates to the profile fragment.
+		binding.profileBtnLogo.setOnClickListener {
+			findNavController().navigate(R.id.action_entryGratitudeFragment_to_profileFragment)
+		}
+		
+		// Set an onClickListener for the save button.
+		// When this button is clicked, it navigates to the journalGratitudeFragment.
+		binding.saveBtn.setOnClickListener {
+			findNavController().navigate(R.id.action_entryGratitudeFragment_to_journalGratitudeFragment)
+		}
 	}
 }
