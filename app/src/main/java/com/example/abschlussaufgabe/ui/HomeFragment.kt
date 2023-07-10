@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 		
 		binding.loginNavigationBtn.setOnClickListener {
-			findNavController().navigate(HomeFra)
+			findNavController().navigate(Home)
 		}
 	}
 }
