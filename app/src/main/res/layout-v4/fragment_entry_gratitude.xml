@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Data binding section -->
+    <data>
+
+    </data>
+
+    <!-- Main layout container -->
+    <LinearLayout
+        style="@style/MainLayoutStyle"
+        tools:context=".ui.EntryGratitudeFragment"
+        android:baselineAligned="false">
+
+        <!-- Action bar layout -->
+        <LinearLayout
+            style="@style/ActionBarStyle"
+            android:layout_weight="1">
+
+            <!-- Back button -->
+            <ImageButton
+                android:id="@+id/back_btn"
+                style="@style/ActionBarButtonStyle"
+                android:src="@drawable/iconarrowback"
+                android:contentDescription="@string/back_button" />
+
+            <!-- Home button -->
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/home_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/logo01" />
+
+            <!-- Home button text -->
+            <TextView
+                style="@style/LogoTextViewStyle"
+                android:id="@+id/home_btn_text"
+                android:text="@string/tara"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <!-- Profile button -->
+            <ImageButton
+                style="@style/ActionBarButtonStyle"
+                android:id="@+id/profile_btn_logo"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconprofile"
+                app:tint="@color/neutral_c_tx_light" />
+
+        </LinearLayout>
+
+        <!-- Gratitude moment title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/my_gratitude_moment"
+            android:fontFamily="@font/psychedelic_lotus"
+            android:layout_marginHorizontal="32dp"
+            android:textSize="32sp" />
+
+        <!-- Date input field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginHorizontal="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="@string/date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_tf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/dd_mm_yyyy"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Text input field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_weight="4">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_tf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint="What made you happy?"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Gallery button container -->
+        <LinearLayout
+            style="@style/HorizontalLayoutStyle"
+            android:gravity="end"
+            android:layout_marginHorizontal="32dp">
+
+            <!-- Gallery button -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gallery_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iconphoto"
+                app:maxImageSize="40dp"
+                android:backgroundTint="@color/surface_c_tx_light"
+                app:tint="@color/surface_c_bg_light"
+                android:contentDescription="@string/gallery" />
+
+        </LinearLayout>
+
+        <!-- Save button container -->
+        <LinearLayout
+            style="@style/HorizontalLayoutStyle"
+            android:layout_weight="1">
+
+            <!-- Save button -->
+            <Button
+                android:id="@+id/save_btn"
+                style="@style/PrimaryButtonStyle"
+                android:text="@string/save"
+                app:icon="@drawable/iconsave"
+                app:iconTint="@color/white"
+                tools:ignore="InefficientWeight" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
