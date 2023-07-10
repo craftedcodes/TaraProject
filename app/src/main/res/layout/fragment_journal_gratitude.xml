@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/animation_fab"
-            android:layout_above="@+id/fab_bottom_right">
+            android:layout_above="@+id/new_entry_fab">
 
             <!-- Main LinearLayout for the ScrollView content -->
             <LinearLayout
