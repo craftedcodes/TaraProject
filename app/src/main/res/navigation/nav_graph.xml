@@ -123,15 +123,6 @@
         <action
             android:id="@+id/action_profileBarChartFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_profileBarChartFragment_to_heartFragment"
-            app:destination="@id/heartFragment" />
-        <action
-            android:id="@+id/action_profileBarChartFragment_to_heatMapFragment"
-            app:destination="@id/heatMapFragment" />
-        <action
-            android:id="@+id/action_profileBarChartFragment_to_chartFragment"
-            app:destination="@id/chartFragment" />
     </fragment>
     <fragment
         android:id="@+id/emergencyContactFragment"
