@@ -74,28 +74,49 @@
 
         <!-- TextInputLayout for entering the name -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name_tv"
-            style="@style/TextInputFieldStyle"
+            android:layout_marginHorizontal="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="@string/name" />
+            app:helperText="@string/name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_the_name_of_your_contact"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TextInputLayout for entering the phone number -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/number_tv"
-            style="@style/TextInputFieldStyle"
+            android:layout_marginHorizontal="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="@string/phone_number" />
+            app:helperText="@string/phone_number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/number_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/_01234567890"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TextInputLayout for entering the emergency message -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/message_tv"
-            style="@style/TextInputFieldStyle"
+            android:layout_marginHorizontal="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="Write here your emergency message"
-            android:layout_weight="3"/>
+            app:helperText="Emergency message"
+            android:layout_weight="3">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/message_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/write_here_your_emergency_message"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- LinearLayout for quit and save buttons -->
         <LinearLayout

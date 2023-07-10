@@ -63,20 +63,33 @@
 
         <!-- Date input field -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/date_tf"
-            style="@style/TextInputFieldStyle"
+            android:layout_marginHorizontal="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="@string/date"/>
+            app:helperText="@string/date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_tf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/dd_mm_yyyy"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Text input field -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_tf"
-            style="@style/TextInputFieldStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText="What made you happy?"
-            android:layout_weight="4"/>
+            android:layout_marginHorizontal="32dp"
+            android:layout_weight="4">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_tf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint="What made you happy?"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Gallery button container -->
         <LinearLayout

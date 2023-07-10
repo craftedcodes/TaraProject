@@ -88,17 +88,31 @@
 
                     <!-- TextInputField for the start date -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/start_date_tf"
                         style="@style/DateTextInputFieldStyle"
                         app:helperText="Start Date"
-                        />
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/start_date_tf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/dd_mm_yyyy"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- TextInputField for the end date -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/end_date_tf"
                         style="@style/DateTextInputFieldStyle"
                         app:helperText="End Date"
-                        />
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/end_date_tf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/dd_mm_yyyy"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 

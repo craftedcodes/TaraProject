@@ -123,6 +123,7 @@
                 android:hint="@string/repeat_the_chosen_password"
                 android:inputType="textPassword"
                 />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Button container -->
