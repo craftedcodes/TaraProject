@@ -88,7 +88,10 @@
 
                     <!-- TextInputField for the start date -->
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/DateTextInputFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="16dp"
                         app:helperText="Start Date"
                         >
 
@@ -102,7 +105,10 @@
 
                     <!-- TextInputField for the end date -->
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/DateTextInputFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="16dp"
                         app:helperText="End Date"
                         >
 
@@ -149,7 +155,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/outer_rv_gratitude_journal"
                     style="@style/OuterRecyclerViewStyle"
-                    tools:listitem="@layout/date_rv"
+                    tools:listitem="@layout/entry_rv"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
