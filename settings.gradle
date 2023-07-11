@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "AbschlussAufgabe"
+rootProject.name = "Tara"
 include ':app'
