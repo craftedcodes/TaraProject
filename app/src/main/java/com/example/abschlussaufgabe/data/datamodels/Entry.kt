@@ -1,6 +1,7 @@
 package com.example.abschlussaufgabe.data.datamodels
 
 // Required imports for the class.
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.sql.Blob
@@ -24,5 +25,6 @@ data class Entry(
 	var text: String?,
 	
 	// Define a nullable field media of type Blob, which is generally used for storing binary data.
-	var media: Blob?
+	//@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+	//val image: ByteArray
 )

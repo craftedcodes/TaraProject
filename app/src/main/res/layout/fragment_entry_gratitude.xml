@@ -86,8 +86,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_tf"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hint="What made you happy?"/>
+                android:layout_height="wrap_content"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

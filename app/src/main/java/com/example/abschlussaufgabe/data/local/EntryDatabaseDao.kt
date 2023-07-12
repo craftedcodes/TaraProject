@@ -24,8 +24,8 @@ interface EntryDatabaseDao {
     fun getById(id: Long): LiveData<Entry>
 	
 	@Query("DELETE FROM entry")
-	suspend fun deleteAll()
+	suspend fun deleteAll(): Int
 	
 	@Query("DELETE FROM entry WHERE id = :id")
-    suspend fun delete(id: Long)
+    suspend fun delete(id: Long): Int
 }
