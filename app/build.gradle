@@ -67,11 +67,14 @@ dependencies {
     implementation "io.coil-kt:coil:1.1.1"
 
     // Room Dependencies
-    implementation "androidx.room:room-runtime:2.4.2"
-    kapt "androidx.room:room-compiler:2.4.2"
-    implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-runtime:2.5.2"
+    kapt "androidx.room:room-compiler:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
 
+    // AA Chart Model Dependency
     implementation 'com.github.AAChartModel:AAChartCore-Kotlin:7.2.1'
+
+    // Rive Dependencies
     implementation "app.rive:rive-android:5.0.0"
     implementation "androidx.startup:startup-runtime:1.1.1"
 }

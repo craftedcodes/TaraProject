@@ -1,15 +1,16 @@
+// This package contains the data model classes for the application.
 package com.example.abschlussaufgabe.data.datamodels
 
-// Required imports for the class.
+// Importing necessary libraries and classes.
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.sql.Blob
 
-// Defining an Entity in Room. This represents a SQLite table in the database.
+// Defining an Entity for Room database. This represents a SQLite table named "entry".
 @Entity(tableName = "entry")
 
-// A data class represents an Entry in the database.
+// A data class that represents an Entry in the database.
 data class Entry(
 	// The PrimaryKey annotation is a must for every entity.
 	// This is to uniquely identify each entry in the database.
@@ -25,6 +26,24 @@ data class Entry(
 	var text: String?,
 	
 	// Define a nullable field media of type Blob, which is generally used for storing binary data.
-	//@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-	//val image: ByteArray
-)
+	// The ColumnInfo annotation is used to specify additional information about the column.
+	@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+	val image: ByteArray
+) {
+	// Override the equals method to compare Entry objects based on their content.
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (javaClass != other?.javaClass) return false
+		
+		other as Entry
+		
+		if (!image.contentEquals(other.image)) return false
+		
+		return true
+	}
+	
+	// Override the hashCode method to provide a hash value based on the content of the Entry object.
+	override fun hashCode(): Int {
+		return image.contentHashCode()
+	}
+}

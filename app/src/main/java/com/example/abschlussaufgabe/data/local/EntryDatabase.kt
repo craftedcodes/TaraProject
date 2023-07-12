@@ -16,7 +16,7 @@ abstract class EntryDatabase : RoomDatabase() {
 	
 	// Abstract variable. Room will generate the necessary code for it.
 	// It is used to access database operations associated with the EntryDao.
-	abstract val entryDao: EntryDatabaseDao
+	abstract val entryDatabaseDao: EntryDatabaseDao
 	
 	companion object {
 		// Instance of the Room database. Making it private to prevent direct access from other classes.

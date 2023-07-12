@@ -48,9 +48,7 @@
             android:layout_height="0dp"
             android:layout_weight="10">
 
-
             <!-- Rive animation view -->
-            <!--
             <app.rive.runtime.kotlin.RiveAnimationView
                 android:id="@+id/rive_animation_view"
                 android:layout_width="match_parent"
@@ -58,7 +56,7 @@
                 app:riveResource="@raw/tara_light"
                 android:layout_marginVertical="8dp"
                 android:layout_centerInParent="true"/>
-                -->
+
             <!-- Navigation button for animation -->
             <ImageButton
                 android:id="@+id/affirmation_nav_image_btn"

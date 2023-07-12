@@ -19,7 +19,6 @@
             android:gravity="center"/>
 
         <!-- RiveAnimationView for displaying animations -->
-        <!--
         <app.rive.runtime.kotlin.RiveAnimationView
             android:id="@+id/rive_animation_view"
             android:layout_width="match_parent"
@@ -27,7 +26,7 @@
             android:layout_weight="4"
             app:riveResource="@raw/tara_light"
             android:layout_marginVertical="8dp"
-            tools:ignore="InefficientWeight" />-->
+            tools:ignore="InefficientWeight" />
 
         <!-- Login button -->
         <Button

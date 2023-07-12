@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import app.rive.runtime.kotlin.core.Loop
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAnimationBinding
 
@@ -28,9 +29,9 @@ class AnimationFragment : Fragment() {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_animation, container, false)
 		
 		// Initialize the Rive Animation View with the resource and the loop type.
-		//val riveView = binding.riveAnimationView
-		//riveView.setRiveResource(R.raw.tara_light)
-		//riveView.play("Timeline 1", Loop.LOOP)
+		val riveView = binding.riveAnimationView
+		riveView.setRiveResource(R.raw.tara_light)
+		riveView.play("Timeline 1", Loop.LOOP)
 		
 		// Return the root view of the inflated layout.
 		return binding.root
