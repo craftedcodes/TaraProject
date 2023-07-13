@@ -36,25 +36,25 @@ class AffirmationFragment : Fragment() {
 		// Set onClickListener for the profile button logo.
 		// When clicked, it navigates to the profile fragment.
 		binding.profileBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_affirmationFragment_to_profileFragment)
+			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToProfileFragment())
 		}
 		
 		// Set onClickListener for the home button logo.
 		// When clicked, it navigates to the animation fragment.
 		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_affirmationFragment_to_animationFragment)
+			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToAnimationFragment())
 		}
 		
 		// Set onClickListener for the animation navigation image button.
 		// When clicked, it navigates to the animation fragment.
 		binding.animationNavImageBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_affirmationFragment_to_animationFragment)
+			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToAnimationFragment())
 		}
 		
 		// Set onClickListener for the gratitude navigation button.
 		// When clicked, it navigates to the gratitude journal fragment.
 		binding.gratitudeNavBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_affirmationFragment_to_journalGratitudeFragment)
+			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToJournalGratitudeFragment())
 		}
 	}
 }

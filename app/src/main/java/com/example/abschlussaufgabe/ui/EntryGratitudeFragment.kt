@@ -40,25 +40,25 @@ class EntryGratitudeFragment : Fragment() {
 		// Set an onClickListener for the home button logo.
 		// When this button is clicked, it navigates to the animation fragment.
 		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_entryGratitudeFragment_to_animationFragment)
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the home button text.
 		// When this text is clicked, it also navigates to the animation fragment.
 		binding.homeBtnText.setOnClickListener {
-			findNavController().navigate(R.id.action_entryGratitudeFragment_to_animationFragment)
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the profile button logo.
 		// When this button is clicked, it navigates to the profile fragment.
 		binding.profileBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_entryGratitudeFragment_to_profileFragment)
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToProfileFragment())
 		}
 		
 		// Set an onClickListener for the save button.
 		// When this button is clicked, it navigates to the journalGratitudeFragment.
 		binding.saveBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_entryGratitudeFragment_to_journalGratitudeFragment)
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
 		}
 	}
 }

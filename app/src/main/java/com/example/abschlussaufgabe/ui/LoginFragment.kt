@@ -36,7 +36,7 @@ class LoginFragment : Fragment() {
 		// Set onClickListener for the login button.
 		// When clicked, it navigates to the animation fragment.
 		binding.loginBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_loginFragment_to_animationFragment)
+			findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
 		}
 	}
 }

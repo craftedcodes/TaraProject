@@ -2,6 +2,7 @@ package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,16 +42,19 @@ class HomeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
+		//val accessKey = System.getProperty("accessKey")
+		//Log.e("accessKey", accessKey)
+		
 		// Set onClickListener for the "Register Now" text view.
 		// When clicked, it navigates to the registration fragment.
 		binding.registerNowTv.setOnClickListener {
-			findNavController().navigate(R.id.action_homeFragment_to_registerFragment)
+			findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
 		}
 		
 		// Set onClickListener for the login navigation button.
 		// When clicked, it navigates to the login fragment.
 		binding.loginNavigationBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+			findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
 		}
 	}
 }

@@ -70,25 +70,25 @@ class ProfileFragment : Fragment() {
 		// The onClickListener for the home button logo.
 		// When the logo is clicked, the user is navigated to the animation fragment.
 		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_profileFragment_to_animationFragment)
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAnimationFragment())
 		}
 		
 		// The onClickListener for the home button text.
 		// When the text is clicked, it also navigates the user to the animation fragment.
 		binding.homeBtnText.setOnClickListener {
-			findNavController().navigate(R.id.action_profileFragment_to_animationFragment)
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAnimationFragment())
 		}
 		
 		// The onClickListener for the add contact button.
 		// When this button is clicked, the user is navigated to the emergency contact fragment.
 		binding.addContactBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_profileFragment_to_emergencyContactFragment)
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEmergencyContactFragment())
 		}
 		
 		// The onClickListener for the logout button.
 		// When clicked, the user is navigated to the home fragment, effectively logging them out.
 		binding.logoutBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
 		}
 	}
 }

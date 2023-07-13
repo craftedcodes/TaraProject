@@ -44,19 +44,19 @@ class AnimationFragment : Fragment() {
 		// Set onClickListener for the profile button.
 		// When clicked, it navigates to the profile fragment.
 		binding.profileBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_animationFragment_to_profileFragment)
+			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToProfileFragment())
 		}
 		
 		// Set onClickListener for the animation navigation image button.
 		// When clicked, it navigates to the affirmation fragment.
 		binding.affirmationNavImageBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_animationFragment_to_affirmationFragment)
+			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToAffirmationFragment())
 		}
 		
 		// Set onClickListener for the floating action button to the gratitude journal.
 		// When clicked, it navigates to the gratitude journal fragment.
 		binding.gratitudeNavBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_animationFragment_to_journalGratitudeFragment)
+			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToJournalGratitudeFragment())
 		}
 	}
 }

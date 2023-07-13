@@ -37,31 +37,31 @@ class EmergencyContactFragment : Fragment() {
 		// Set an onClickListener for the home button logo.
 		// When clicked, it will navigate to the animation fragment.
 		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_emergencyContactFragment_to_animationFragment)
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the home button text.
 		// When clicked, it will also navigate to the animation fragment.
 		binding.homeBtnText.setOnClickListener {
-			findNavController().navigate(R.id.action_emergencyContactFragment_to_animationFragment)
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the avatar ImageView.
 		// When clicked, it will navigate to the avatarEmergencyContactFragment.
 		binding.avatarIv.setOnClickListener {
-			findNavController().navigate(R.id.action_emergencyContactFragment_to_avatarEmergencyContactFragment)
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAvatarEmergencyContactFragment())
 		}
 		
 		// Set an onClickListener for the quit button.
 		// When clicked, it will navigate to the profile fragment.
 		binding.quitBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_emergencyContactFragment_to_profileFragment)
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
 		}
 		
 		// Set an onClickListener for the save button.
 		// When clicked, it will also navigate to the profile fragment.
 		binding.saveBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_emergencyContactFragment_to_profileFragment)
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
 		}
 	}
 }

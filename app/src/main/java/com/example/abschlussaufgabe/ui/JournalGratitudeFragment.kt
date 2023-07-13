@@ -35,31 +35,31 @@ class JournalGratitudeFragment() : Fragment() {
 		// Set an onClickListener for the home button logo.
 		// When this button is clicked, navigate to the animation fragment.
 		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_journalGratitudeFragment_to_animationFragment)
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the home button text.
 		// When this text is clicked, also navigate to the animation fragment.
 		binding.homeBtnText.setOnClickListener {
-			findNavController().navigate(R.id.action_journalGratitudeFragment_to_animationFragment)
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the profile button logo.
 		// When this button is clicked, navigate to the profile fragment.
 		binding.profileBtnLogo.setOnClickListener {
-			findNavController().navigate(R.id.action_journalGratitudeFragment_to_profileFragment)
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToProfileFragment())
 		}
 		
 		// Set an onClickListener for the animationFabNavBtn.
 		// When this button is clicked, navigate to the animation fragment.
 		binding.animationFabNavBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_journalGratitudeFragment_to_animationFragment)
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the newEntryFab.
 		// When this button is clicked, navigate to the entryGratitudeFragment.
 		binding.newEntryFab.setOnClickListener {
-			findNavController().navigate(R.id.action_journalGratitudeFragment_to_entryGratitudeFragment)
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment())
 		}
 	}
 }

@@ -45,7 +45,7 @@ class RegisterFragment : Fragment() {
 		// Set onClickListener for the register button.
 		// When clicked, it navigates to the login fragment.
 		binding.registerBtn.setOnClickListener {
-			findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+			findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
 		}
 	}
 }
