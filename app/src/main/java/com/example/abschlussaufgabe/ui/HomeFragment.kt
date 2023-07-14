@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import app.rive.runtime.kotlin.core.Loop
+import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentHomeBinding
 
@@ -44,6 +45,8 @@ class HomeFragment : Fragment() {
 		
 		//val accessKey = System.getProperty("accessKey")
 		//Log.e("accessKey", accessKey)
+		Log.e("hallo02", BuildConfig.APIKEY)
+		Log.e("hallo03", "Nervensäge")
 		
 		// Set onClickListener for the "Register Now" text view.
 		// When clicked, it navigates to the registration fragment.

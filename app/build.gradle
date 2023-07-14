@@ -23,6 +23,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            def accessKey = project.properties['Access_Key']
+            buildConfigField("String", "ACCESSKEY", accessKey)
+            def apiKey = project.properties['Api_Key']
+            buildConfigField("String", "APIKEY", apiKey)
+        }
+        debug {
+            def accessKey = project.properties['Access_Key']
+            buildConfigField("String", "ACCESSKEY", accessKey)
+            def apiKey = project.properties['Api_Key']
+            buildConfigField("String", "APIKEY", apiKey)
         }
     }
     compileOptions {
@@ -34,6 +44,7 @@ android {
     }
     buildFeatures {
         dataBinding true
+        buildConfig true
     }
 }
 
