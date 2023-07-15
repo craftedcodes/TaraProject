@@ -86,7 +86,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_tf"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:hint="@string/which_beautiful_things_have_happened"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +107,8 @@
                 app:maxImageSize="40dp"
                 android:backgroundTint="@color/surface_c_tx_light"
                 app:tint="@color/surface_c_bg_light"
-                android:contentDescription="@string/gallery" />
+                android:contentDescription="@string/gallery"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
 
@@ -114,6 +117,27 @@
             style="@style/HorizontalLayoutStyle"
             android:layout_weight="1">
 
+            <!-- Quit button -->
+            <Button
+                android:id="@+id/quit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                android:minHeight="54dp"
+                android:shadowColor="#61000000"
+                android:shadowDx="8"
+                android:shadowDy="4"
+                android:shadowRadius="8"
+                android:text="@string/quit"
+                android:textColor="@color/error_bg_light"
+                android:textSize="20sp"
+                app:strokeColor="@color/error_bg_light"
+                app:strokeWidth="1dp"
+                tools:ignore="ButtonStyle"
+                android:layout_marginTop="16dp" />
+
             <!-- Save button -->
             <Button
                 android:id="@+id/save_btn"
@@ -121,7 +145,7 @@
                 android:text="@string/save"
                 app:icon="@drawable/iconsave"
                 app:iconTint="@color/white"
-                tools:ignore="InefficientWeight" />
+                tools:ignore="InefficientWeight"/>
 
         </LinearLayout>
 

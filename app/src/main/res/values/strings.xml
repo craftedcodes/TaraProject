@@ -103,4 +103,5 @@
     <string name="_01234567890">01234567890</string>
     <string name="write_here_your_emergency_message">Write here your emergency message</string>
     <string name="which_beautiful_things_have_happened">Which beautiful things have happened?</string>
+    <string name="which_great_things_have_happened_today">Which great things have happened today?</string>
 </resources>

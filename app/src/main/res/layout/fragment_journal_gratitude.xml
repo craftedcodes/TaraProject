@@ -122,14 +122,6 @@
 
                 </LinearLayout>
 
-                <!-- TextView for the date format instruction -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/please_enter_the_dates_in_format_dd_mm_yyyy"
-                    android:fontFamily="@font/merriweathersans_variablefont_wght"
-                    android:textColor="@color/neutral_c_tx_light"/>
-
                 <!-- Filter button -->
                 <Button
                     android:id="@+id/filter_btn"
