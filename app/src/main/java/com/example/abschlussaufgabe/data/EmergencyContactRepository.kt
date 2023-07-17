@@ -39,4 +39,14 @@ class EmergencyContactRepository(private val database: LocalDatabase) {
 			Log.e(EMERGENCY_CONTACT_TAG, "Error inserting emergency contact")
 		}
 	}
+	
+	// Method to update an emergency contact in the database.
+	// Logs an error message if an exception is thrown.
+	suspend fun updateEmergencyContact(emergencyContact: EmergencyContact) {
+		try {
+            database.databaseDao().updateEmergencyContact(emergencyContact)
+        } catch (e: Exception) {
+            Log.e(EMERGENCY_CONTACT_TAG, "Error updating emergency contact")
+        }
+	}
 }

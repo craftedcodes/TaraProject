@@ -9,28 +9,36 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+// Define the base URL for the Unsplash API
 const val IMAGE_BASE_URL = "https://api.unsplash.com/"
 
+// Create a Moshi object with the KotlinJsonAdapterFactory
 private val moshiImage = Moshi.Builder()
 	.add(KotlinJsonAdapterFactory())
-    .build()
-
-private val retrofitImage = Retrofit.Builder()
-	.addConverterFactory(MoshiConverterFactory.create(moshiImage))
-    .baseUrl(IMAGE_BASE_URL)
 	.build()
 
+// Create a Retrofit object with the Moshi converter and the base URL
+private val retrofitImage = Retrofit.Builder()
+	.addConverterFactory(MoshiConverterFactory.create(moshiImage))
+	.baseUrl(IMAGE_BASE_URL)
+	.build()
+
+// Get the access key from the BuildConfig
 private val accessKey = BuildConfig.ACCESSKEY
+
+// Define the API service interface
 interface ImageApiService {
 	
+	// Define a GET request to the "search/photos" endpoint that returns an UnsplashResponse
 	@GET("search/photos")
 	suspend fun searchPhotos(
 		@Query("query") query: String,
 		@Query("orientation") orientation: String,
-		@Query("client_id") clientId: String
 	): UnsplashResponse
 }
 
+// Create a singleton object for the API service
 object ImageApi {
+	// Lazily initialize the API service
 	val retrofitService: ImageApiService by lazy { retrofitImage.create(ImageApiService::class.java)}
 }
