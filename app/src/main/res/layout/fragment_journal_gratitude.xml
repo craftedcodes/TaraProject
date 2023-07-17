@@ -163,7 +163,7 @@
             android:contentDescription="@string/write_entry"
             android:pointerIcon="zoom_in"
             android:src="@drawable/icongratitudenote"
-            app:fabCustomSize="80dp" />
+            app:fabCustomSize="80dp"/>
 
     </RelativeLayout>
 
