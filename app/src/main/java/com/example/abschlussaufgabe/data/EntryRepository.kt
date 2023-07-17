@@ -5,7 +5,6 @@ package com.example.abschlussaufgabe.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.abschlussaufgabe.data.datamodels.Entry
-import com.example.abschlussaufgabe.data.local.EntryDatabase
 
 // Constant for logging.
 const val ENTRY_TAG = "EntryRepository"
