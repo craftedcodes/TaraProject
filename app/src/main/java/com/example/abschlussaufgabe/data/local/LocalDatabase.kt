@@ -27,7 +27,7 @@ abstract class LocalDatabase : RoomDatabase() {
 		private lateinit var INSTANCE: LocalDatabase
 		// Method to get the database instance.
 		// If the instance is not initialized, it will be created.
-		fun getEmergencyContactDatabase(context: Context): LocalDatabase {
+		fun getDatabase(context: Context): LocalDatabase {
 			synchronized(LocalDatabase::class.java) {
 				if (!::INSTANCE.isInitialized) {
 					// Building the database instance.

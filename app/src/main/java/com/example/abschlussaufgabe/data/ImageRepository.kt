@@ -55,5 +55,14 @@ class ImageRepository(private val api: ImageApi, private val database: LocalData
 			Log.e(IMAGE_TAG, "Error deleting image")
 		}
 	}
+	
+	// Function to delete all images from the local database
+	suspend fun deleteAllImages() {
+		try {
+			database.databaseDao().deleteAllImages()
+		} catch (e: Exception) {
+			Log.e(IMAGE_TAG, "Error deleting all images")
+		}
+	}
 }
 

@@ -49,4 +49,12 @@ class EmergencyContactRepository(private val database: LocalDatabase) {
             Log.e(EMERGENCY_CONTACT_TAG, "Error updating emergency contact")
         }
 	}
+	
+	suspend fun getEmergencyContact() {
+		try {
+			database.databaseDao().getEmergencyContact()
+		} catch (e: Exception) {
+			Log.e(EMERGENCY_CONTACT_TAG, "Could not get emergency contact")
+		}
+	}
 }
