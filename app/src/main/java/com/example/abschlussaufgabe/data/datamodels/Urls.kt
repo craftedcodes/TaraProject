@@ -9,6 +9,5 @@ import androidx.room.Entity
 
 // Data class declaration for Urls
 data class Urls(
-	val full: String, // Full URL of the image
 	val regular: String, // Regular URL of the image
 )

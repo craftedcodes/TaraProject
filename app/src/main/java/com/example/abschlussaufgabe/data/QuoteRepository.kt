@@ -16,7 +16,7 @@ class QuoteRepository(private val api: QuoteApi, private val database: LocalData
 	
 	// Public list that exposes the private _quotes list
 	val quotes: List<Quote>
-		get() = _quotes
+		get() = _quotes[0].data
 	
 	// Function to get quotes from the API and store them in the local database
 	suspend fun getQuotes() {

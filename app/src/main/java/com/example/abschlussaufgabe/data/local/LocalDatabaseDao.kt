@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.abschlussaufgabe.data.datamodels.EmergencyContact
 import com.example.abschlussaufgabe.data.datamodels.Entry
+import com.example.abschlussaufgabe.data.datamodels.GoogleSheetResponse
 import com.example.abschlussaufgabe.data.datamodels.ImageResult
 import com.example.abschlussaufgabe.data.datamodels.Quote
 
@@ -161,5 +162,5 @@ interface LocalDatabaseDao {
 	
 	// Function to get all quotes from the database
 	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
-	fun getAllQuotes(): List<Quote>
+	fun getAllQuotes(): List<GoogleSheetResponse>
 }
