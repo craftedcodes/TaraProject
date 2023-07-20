@@ -15,6 +15,7 @@
         <!-- ActionBar LinearLayout -->
         <LinearLayout
             android:id="@+id/action_bar"
+            android:layout_width="match_parent"
             android:layout_alignParentTop="true"
             style="@style/ActionBarStyle">
 
@@ -147,7 +148,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/outer_rv_gratitude_journal"
                     style="@style/OuterRecyclerViewStyle"
+                    android:layout_width="match_parent"
                     tools:listitem="@layout/entry_rv"
+                    android:gravity="center_horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>

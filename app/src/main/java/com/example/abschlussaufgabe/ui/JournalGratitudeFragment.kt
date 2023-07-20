@@ -7,14 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentJournalGratitudeBinding
+import com.example.abschlussaufgabe.util.EntryAdapter
+import com.example.abschlussaufgabe.viewModel.EntryViewModel
 
 // This is the JournalGratitudeFragment class which extends the Fragment class.
 class JournalGratitudeFragment() : Fragment() {
 	// Declare a late-initialized variable for the FragmentJournalGratitudeBinding instance.
 	private lateinit var binding: FragmentJournalGratitudeBinding
+	private val viewModel : EntryViewModel by viewModels()
 	
 	// This is the onCreateView function which inflates the layout for this fragment.
 	override fun onCreateView(
@@ -31,6 +36,8 @@ class JournalGratitudeFragment() : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Always call the superclass's implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
+		
+		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), viewModel.fakeEntry.value!!)
 		
 		// Set an onClickListener for the home button logo.
 		// When this button is clicked, navigate to the animation fragment.

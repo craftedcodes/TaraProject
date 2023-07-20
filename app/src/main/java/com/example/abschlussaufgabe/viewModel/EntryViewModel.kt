@@ -22,6 +22,8 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	// Define LiveData objects for the entries from the repository
 	val entries = repository.entries
 	
+	val fakeEntry = repository.fakeEntries()
+	
 	// Define MutableLiveData objects for the loading, error, and done states
 	private val _loading = MutableLiveData<ApiStatus>()
 	val loading: LiveData<ApiStatus>
