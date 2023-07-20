@@ -12,6 +12,7 @@
         style="@style/MainLayoutStyle"
         android:orientation="vertical"
         android:weightSum="10"
+        android:background="@color/white"
         tools:context=".ui.AffirmationFragment">
 
         <!--Action bar-->

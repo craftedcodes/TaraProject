@@ -33,9 +33,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	val done: LiveData<Boolean>
 		get() = _done
 	
-	// Define a MutableLiveData object for the delete status
-	val _deleteStatus = MutableLiveData<Boolean>()
-	
 	// Define function to load the entries from the repository
 	fun loadEntry() {
 		viewModelScope.launch {
