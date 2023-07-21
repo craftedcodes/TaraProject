@@ -19,20 +19,15 @@ import kotlinx.coroutines.withContext
 // A custom RecyclerView.Adapter class for displaying entries in a RecyclerView.
 class EntryAdapter(
 	// The context is passed in the constructor for later use.
-	private val context: Context
+	private val context: Context,
+	data: List<Entry>
 ) : RecyclerView.Adapter<EntryAdapter.ItemViewHolder>() {
 	
 	// A ViewHolder class that holds references to the views for each data item.
 	class ItemViewHolder(val binding: EntryRvBinding) : RecyclerView.ViewHolder(binding.root)
 	
 	// A private variable to hold the list of entries.
-	private var entries: List<Entry> = listOf()
-	
-	// A method to update the entries in the adapter.
-	fun updateEntries(newEntries: List<Entry>) {
-		this.entries = newEntries
-		notifyDataSetChanged()
-	}
+	private var entries: List<Entry> = data
 	
 	// This method creates new ViewHolders for the RecyclerView.
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -76,7 +71,6 @@ class EntryAdapter(
 		
 		// Set an OnClickListener for the edit button
 		holder.binding.editBtn.setOnClickListener {
-			//onEdit(entry)
 		}
 	}
 }

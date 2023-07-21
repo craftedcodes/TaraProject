@@ -41,18 +41,7 @@ class JournalGratitudeFragment() : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 		
 		// Create an instance of EntryAdapter and pass the context to it.
-		val adapter = EntryAdapter(requireContext())
-
-// Set the created adapter as the adapter for the RecyclerView in the binding.
-		binding.outerRvGratitudeJournal.adapter = adapter
-
-// Observe the LiveData of entries in the ViewModel.
-// This sets up an observer that gets triggered every time the entries data changes.
-		viewModel.entries.observe(viewLifecycleOwner) { entries ->
-			// Check if the entries data is not null.
-			// If it's not null, update the entries in the adapter.
-			entries?.let { adapter.updateEntries(it) }
-		}
+		val adapter = viewModel.entries.value?.let { EntryAdapter(requireContext(), it) }
 
 		// Set the created adapter as the adapter for the RecyclerView in the binding.
 		binding.outerRvGratitudeJournal.adapter = adapter
@@ -62,7 +51,7 @@ class JournalGratitudeFragment() : Fragment() {
 		viewModel.entries.observe(viewLifecycleOwner) { entries ->
 			// Check if the entries data is not null.
 			// If it's not null, update the entries in the adapter.
-			entries?.let { adapter.updateEntries(it) }
+			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
 		}
 		
 		// Set an onClickListener for the home button logo.
