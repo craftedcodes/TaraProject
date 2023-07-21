@@ -26,5 +26,5 @@ data class EmergencyContact(
 	
 	// A nullable field to store the contact's image URI.
 	// The question mark after the type declaration denotes that it can hold null values.
-	var image: String?
+	var image: Int?
 )

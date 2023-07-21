@@ -82,7 +82,7 @@ class ProfileFragment : Fragment() {
 		// The onClickListener for the add contact button.
 		// When this button is clicked, the user is navigated to the emergency contact fragment.
 		binding.addContactBtn.setOnClickListener {
-			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEmergencyContactFragment())
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEmergencyContactFragment(avatarImage = 0))
 		}
 		
 		// The onClickListener for the logout button.

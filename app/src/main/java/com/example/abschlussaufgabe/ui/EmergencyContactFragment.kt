@@ -55,13 +55,13 @@ class EmergencyContactFragment : Fragment() {
 		// Set an onClickListener for the quit button.
 		// When clicked, it will navigate to the profile fragment.
 		binding.quitBtn.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
 		}
 		
 		// Set an onClickListener for the save button.
 		// When clicked, it will also navigate to the profile fragment.
 		binding.saveBtn.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
 		}
 	}
 }

@@ -36,7 +36,7 @@ class AffirmationFragment : Fragment() {
 		// Set onClickListener for the profile button logo.
 		// When clicked, it navigates to the profile fragment.
 		binding.profileBtnLogo.setOnClickListener {
-			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToProfileFragment())
+			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
 		}
 		
 		// Set onClickListener for the home button logo.

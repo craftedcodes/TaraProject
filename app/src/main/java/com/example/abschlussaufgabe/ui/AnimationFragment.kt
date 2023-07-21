@@ -44,7 +44,7 @@ class AnimationFragment : Fragment() {
 		// Set onClickListener for the profile button.
 		// When clicked, it navigates to the profile fragment.
 		binding.profileBtn.setOnClickListener {
-			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToProfileFragment())
+			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
 		}
 		
 		// Set onClickListener for the animation navigation image button.

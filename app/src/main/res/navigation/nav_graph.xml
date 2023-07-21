@@ -94,6 +94,21 @@
         <action
             android:id="@+id/action_profileFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="ec_name"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ec_number"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ec_message"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ec_avatar"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/emergencyContactFragment"
@@ -108,6 +123,9 @@
         <action
             android:id="@+id/action_emergencyContactFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
+        <argument
+            android:name="avatar_image"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/avatarEmergencyContactFragment"
@@ -116,6 +134,9 @@
         <action
             android:id="@+id/action_avatarEmergencyContactFragment_to_emergencyContactFragment"
             app:destination="@id/emergencyContactFragment" />
+        <action
+            android:id="@+id/action_avatarEmergencyContactFragment_to_animationFragment"
+            app:destination="@id/animationFragment" />
     </fragment>
     <fragment
         android:id="@+id/entryGratitudeFragment"

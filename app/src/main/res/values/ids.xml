@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="chart_radio_btn" type="id" />
+    <item name="action_avatarEmergencyContactFragment_to_emergencyContactFragment2" type="id" />
+    <item name="action_avatarEmergencyContactFragment_to_animationFragment" type="id" />
 </resources>

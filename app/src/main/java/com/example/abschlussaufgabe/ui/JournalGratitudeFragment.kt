@@ -69,7 +69,7 @@ class JournalGratitudeFragment() : Fragment() {
 		// Set an onClickListener for the profile button logo.
 		// When this button is clicked, navigate to the profile fragment.
 		binding.profileBtnLogo.setOnClickListener {
-			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToProfileFragment())
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
 		}
 		
 		// Set an onClickListener for the animationFabNavBtn.
