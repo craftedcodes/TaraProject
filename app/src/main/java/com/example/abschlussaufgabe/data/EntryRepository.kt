@@ -2,11 +2,8 @@
 package com.example.abschlussaufgabe.data
 
 // Importing necessary libraries and classes.
-import android.media.Image
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 
@@ -25,12 +22,12 @@ class EntryRepository(private val database: LocalDatabase) {
 		get() = _entries
 	
 	init {
-		fakeEntries()
+		getEntries()
 	}
 	
 	// Method to retrieve all entries from the database.
 	// Logs an error message if an exception is thrown.
-	suspend fun getEntries() {
+	fun getEntries() {
 		Log.e(ENTRY_TAG, "getEntries")
 		try {
 			database.databaseDao().getAllEntries()
@@ -111,12 +108,4 @@ class EntryRepository(private val database: LocalDatabase) {
 		}
 	}
 	
-	fun fakeEntries() : MutableLiveData<List<Entry>> {
-		val fakeEntries = MutableLiveData<List<Entry>>()
-		fakeEntries.value = listOf(
-			Entry(0,"20.07.2023", "Eine Löwin ist entlaufen.", null),
-			Entry(1,"21.07.2023", "Eine Löwin ist gefunden.",null),
-		)
-		return fakeEntries
-	}
 }

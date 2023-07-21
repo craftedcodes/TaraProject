@@ -20,9 +20,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	private val repository = EntryRepository(LocalDatabase.getDatabase(application))
 	
 	// Define LiveData objects for the entries from the repository
-	val entries = repository.entries
-	
-	val fakeEntry = repository.fakeEntries()
+	val entries: LiveData<List<Entry>> = repository.entries
 	
 	// Define MutableLiveData objects for the loading, error, and done states
 	private val _loading = MutableLiveData<ApiStatus>()
@@ -77,6 +75,4 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 			_loading.value = ApiStatus.DONE
 		}
 	}
-	
-	
 }
