@@ -105,4 +105,5 @@
     <string name="which_beautiful_things_have_happened">Which beautiful things have happened?</string>
     <string name="which_great_things_have_happened_today">Which great things have happened today?</string>
     <string name="tap_picture_to_choose_another_avatar">Tap picture to choose another avatar</string>
+    <string name="please_remember">Please remember that whenever you click the Get Help button, an SMS will be sent and you will incur charges from your mobile operator as a result.</string>
 </resources>

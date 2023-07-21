@@ -167,6 +167,49 @@
 
         </LinearLayout>
 
+        <!-- Information card view -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_margin="32dp"
+            android:backgroundTint="@color/secondary_c_bg_light">
+
+            <!-- This LinearLayout contains an information card. The card has a MaterialCardView as its root layout,
+     which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
+     an ImageView that serves as an information icon and a TextView that displays the information text.
+     The ImageView and TextView are arranged horizontally and centered vertically within the LinearLayout. -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables"
+                android:layout_margin="16dp">
+
+                <!-- Information icon -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/iconexclamation"
+                    app:tint="@color/secondary_c_tx_light"
+                    android:contentDescription="@string/to_cover_data_storage"
+                    android:layout_marginEnd="16dp"/>
+
+                <!-- Information text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:gravity="center_vertical"
+                    android:text="@string/please_remember"
+                    android:textColor="@color/secondary_c_tx_light"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </layout>
