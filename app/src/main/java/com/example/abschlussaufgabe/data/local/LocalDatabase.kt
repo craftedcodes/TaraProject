@@ -15,7 +15,7 @@ import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.helper.TConverter
 
 // Annotation to define a Room database with the entities it contains and its version.
-@Database(entities = [EmergencyContact::class, Entry::class, ImageResult::class, Quote::class, GoogleSheetResponse::class], version = 1)
+@Database(entities = [EmergencyContact::class, Entry::class, ImageResult::class, Quote::class, GoogleSheetResponse::class], version = 2)
 @TypeConverters(TConverter::class)
 // Abstract class for the Room database.
 // It extends RoomDatabase and contains all the DAOs for the database.

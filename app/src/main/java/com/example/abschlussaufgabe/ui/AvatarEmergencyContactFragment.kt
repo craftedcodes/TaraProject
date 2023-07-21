@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAvatarEmergencyContactBinding
 
@@ -40,9 +41,6 @@ class AvatarEmergencyContactFragment : Fragment() {
 			R.drawable.avatar09,
 			R.drawable.avatar10,
 			R.drawable.avatar11,
-			R.drawable.avatar12,
-			R.drawable.avatar13,
-			R.drawable.avatar14,
 			R.drawable.avatar15,
 			R.drawable.avatar16,
 			R.drawable.avatar17,
@@ -91,5 +89,24 @@ class AvatarEmergencyContactFragment : Fragment() {
 		
 		// Return the root view.
 		return binding.root
+	}
+	
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		
+        // Set the OnClickListener for the back button.
+		binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+		
+		// Set the OnClickListener for the home logo button.
+		binding.homeBtnLogo.setOnClickListener {
+            findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToAnimationFragment())
+        }
+		
+		// Set the OnClickListener for the home text button.
+		binding.homeBtnText.setOnClickListener {
+            findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToAnimationFragment())
+        }
 	}
 }

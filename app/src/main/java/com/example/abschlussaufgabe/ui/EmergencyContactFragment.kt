@@ -31,7 +31,7 @@ class EmergencyContactFragment : Fragment() {
 		// Set an onClickListener for the back button.
 		// When clicked, it will navigate back in the back stack.
 		binding.backBtn.setOnClickListener {
-			findNavController().popBackStack()
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment(ecName = null, ecNumber = null,ecMessage = null, ecAvatar = 0))
 		}
 		
 		// Set an onClickListener for the home button logo.
