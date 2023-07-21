@@ -130,5 +130,17 @@
         <action
             android:id="@+id/action_entryGratitudeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <argument
+            android:name="entry_date"
+            app:argType="String"
+            app:nullable="true" />
+        <argument
+            android:name="entry_text"
+            app:argType="String"
+            app:nullable="true" />
+        <argument
+            android:name="entry_image"
+            app:argType="ByteArray"
+            app:nullable="true" />
     </fragment>
 </navigation>

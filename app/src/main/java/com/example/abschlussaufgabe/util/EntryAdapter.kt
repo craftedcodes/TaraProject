@@ -6,11 +6,13 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.databinding.EntryRvBinding
+import com.example.abschlussaufgabe.ui.JournalGratitudeFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,6 +73,8 @@ class EntryAdapter(
 		
 		// Set an OnClickListener for the edit button
 		holder.binding.editBtn.setOnClickListener {
+			val navController = holder.itemView.findNavController()
+			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entry_date = entry.date, entry_text = entry.text, entry_image = entry.image))
 		}
 	}
 }
