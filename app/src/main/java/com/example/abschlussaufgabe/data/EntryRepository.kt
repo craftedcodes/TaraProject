@@ -76,35 +76,38 @@ class EntryRepository(private val database: LocalDatabase) {
         }
 	}
 	
-	// Method to retrieve all entries from the database by date.
-	// Logs an error message if an exception is thrown.
-	suspend fun getEntriesByDate(date: String): LiveData<List<Entry>> {
-		return try {
-			database.databaseDao().getEntriesByDate(date)
-		} catch (e: Exception) {
-			Log.e(ENTRY_TAG, "Error getting entries by date")
-			_entries
-		}
-	}
-	
 	// Method to retrieve all entries from the database by date range.
-	// Logs an error message if an exception is thrown.
+// Logs an error message if an exception is thrown.
 	suspend fun getEntriesByDataRange(from: String, to: String): LiveData<List<Entry>> {
 		return try {
-			database.databaseDao().getEntriesByDateRange(from, to)
+			// Split the 'from' and 'to' dates into day, month, and year
+			val fromParts = from.split(".")
+			val toParts = to.split(".")
+			
+			val fromDay = fromParts[0].toInt()
+			val fromMonth = fromParts[1].toInt()
+			val fromYear = fromParts[2].toInt()
+			
+			val toDay = toParts[0].toInt()
+			val toMonth = toParts[1].toInt()
+			val toYear = toParts[2].toInt()
+			
+			database.databaseDao().getEntriesByDateRange(fromDay, fromMonth, fromYear, toDay, toMonth, toYear)
 		} catch (e: Exception) {
 			Log.e(ENTRY_TAG, "Error getting entries by date range")
 			_entries
 		}
 	}
 	
+	
 	// Method to count all entries from the database by date.
 	// Logs an error message if an exception is thrown.
-	suspend fun countEntriesByDate(date: String): Int {
+	suspend fun countEntriesByDate(year: Int, month: Int, day: Int): Int {
 		return try {
-			database.databaseDao().countEntriesByDate(date)
+			database.databaseDao().countEntriesByDate(year, month, day)
 		} catch (e: Exception) {
 			Log.e(ENTRY_TAG, "Error counting entries by date")
+			0
 		}
 	}
 	

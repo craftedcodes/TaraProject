@@ -58,7 +58,7 @@ class EntryAdapter(
 		}
 		
 		// Set the date and text of the entry.
-		holder.binding.dateTv.text = entry.date
+		holder.binding.dateTv.text = String.format("%02d.%02d.%04d", entry.day, entry.month, entry.year)
 		holder.binding.textTv.text = entry.text
 		
 		// Set an OnClickListener for the delete button
@@ -74,7 +74,8 @@ class EntryAdapter(
 		// Set an OnClickListener for the edit button
 		holder.binding.editBtn.setOnClickListener {
 			val navController = holder.itemView.findNavController()
-			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryDate = entry.date, entryText = entry.text, entryImage = entry.image.toString()))
-			}
+			val entryDate = String.format("%02d.%02d.%04d", entry.day, entry.month, entry.year)
+			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryDate = entryDate, entryText = entry.text, entryImage = entry.image.toString()))
+		}
 	}
 }

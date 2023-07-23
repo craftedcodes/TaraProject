@@ -27,10 +27,16 @@ interface LocalDatabaseDao {
 	@Update
 	suspend fun updateEntry(entry: Entry)
 	
-	// Method to retrieve all entries from the database, sorted by date.
-	// The result is observed and can notify the app about changes.
-	@Query("SELECT * FROM entry ORDER BY date")
+	/**
+	 * Retrieves all entries from the database, sorted by date. The date is represented by separate year, month, and day fields.
+	 * The entries are first sorted by year in descending order, then by month in descending order, and finally by day in descending order.
+	 * The result is observed and can notify the app about changes.
+	 *
+	 * @return A LiveData list of entries sorted by date in descending order.
+	 */
+	@Query("SELECT * FROM entry ORDER BY year DESC, month DESC, day DESC")
 	fun getAllEntries(): LiveData<List<Entry>>
+	
 	
 	// Method to retrieve a specific entry by its ID.
 	// The result is observed and can notify the app about changes.
@@ -47,29 +53,32 @@ interface LocalDatabaseDao {
 	@Query("DELETE FROM entry WHERE id = :id")
 	suspend fun deleteEntryById(id: Long): Int
 	
-	// Method to retrieve all entries from the database that match a specific date.
-	// The result is observed and can notify the app about changes.
-	//
-	// @param date The date to match entries against.
-	// @return A LiveData list of entries that match the provided date.
-	@Query("SELECT * FROM entry WHERE date = :date")
-	fun getEntriesByDate(date: String): LiveData<List<Entry>>
-	
 	// Method to count all entries in the database that match a specific date.
 	//
 	// @param date The date to count entries against.
 	// @return The number of entries that match the provided date.
-	@Query("SELECT COUNT(*) FROM entry WHERE date = :date")
-	suspend fun countEntriesByDate(date: String): Int
+	@Query("SELECT COUNT(*) FROM entry WHERE year = :year AND month = :month AND day = :day")
+	suspend fun countEntriesByDate(year: Int, month: Int, day: Int): Int
 	
-	// Method to retrieve all entries from the database that are within a specific date range.
-	// The result is observed and can notify the app about changes.
-	//
-	// @param startDate The start date of the range.
-	// @param endDate The end date of the range.
-	// @return A LiveData list of entries that are within the provided date range.
-	@Query("SELECT * FROM entry WHERE date BETWEEN :startDate AND :endDate")
-	fun getEntriesByDateRange(startDate: String, endDate: String): LiveData<List<Entry>>
+	/*
+	 * Retrieves all entries from the database that fall within a specific date range. The date range is defined by
+	 * separate year, month, and day parameters for the start and end dates. The result is observed and can notify the app
+	 * about changes.
+	 *
+	 * The query checks if the entry's date is later than the start date and earlier than the end date. It takes into account
+	 * the year, month, and day separately to accurately determine if an entry falls within the specified range.
+	 *
+	 * @param startYear The start year of the range.
+	 * @param startMonth The start month of the range.
+	 * @param startDay The start day of the range.
+	 * @param endYear The end year of the range.
+	 * @param endMonth The end month of the range.
+	 * @param endDay The end day of the range.
+	 * @return A LiveData list of entries that fall within the provided date range.
+	 */
+	@Query("SELECT * FROM entry WHERE (year > :startYear OR (year = :startYear AND (month > :startMonth OR (month = :startMonth AND day >= :startDay)))) AND (year < :endYear OR (year = :endYear AND (month < :endMonth OR (month = :endMonth AND day <= :endDay))))")
+	fun getEntriesByDateRange(startYear: Int, startMonth: Int, startDay: Int, endYear: Int, endMonth: Int, endDay: Int): LiveData<List<Entry>>
+	
 	
 	// Dao for emergency contact
 	

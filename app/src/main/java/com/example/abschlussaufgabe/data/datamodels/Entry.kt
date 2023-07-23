@@ -19,8 +19,10 @@ data class Entry(
 	@PrimaryKey(autoGenerate = true)
 	val id: Long = 0,
 	
-	// Define a non-null field date of type String.
-	var date: String,
+	// Define non-null fields for date of type Int.
+	var year: Int,
+	var month: Int,
+	var day: Int,
 	
 	// Define a nullable field text of type String. The question mark denotes it is nullable.
 	var text: String?,

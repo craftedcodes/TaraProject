@@ -155,12 +155,28 @@ class EntryGratitudeFragment : Fragment() {
 			val date = dateField.text.toString()
 			val text = textField.text.toString()
 			
+			// Define the regex pattern for the date format.
+			val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+			
+			// Check if the entered date matches the pattern.
+			if (!datePattern.matches(date)) {
+				// If the date does not match the pattern, show an error message and return.
+				dateField.error = "Please enter the date in the format DD.MM.YYYY"
+				return@setOnClickListener
+			}
+			
+			// Split the date string into day, month, and year.
+			val dateParts = date.split(".")
+			val day = dateParts[0].toInt()
+			val month = dateParts[1].toInt()
+			val year = dateParts[2].toInt()
+			
 			// If an image has been selected, convert it to a ByteArray for storage.
 			// If no image has been selected, this will be null.
 			val image = selectedImage?.let { bitmapToByteArray(it) }
 			
 			// Create a new Entry object with the entered date, text, and image.
-			val entry = Entry(date = date, text = text, image = image)
+			val entry = Entry(day = day, month = month, year = year, text = text, image = image)
 			
 			// Launch a new coroutine on the main thread.
 			CoroutineScope(Dispatchers.Main).launch {
