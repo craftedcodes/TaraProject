@@ -74,8 +74,9 @@ class EntryAdapter(
 		// Set an OnClickListener for the edit button
 		holder.binding.editBtn.setOnClickListener {
 			val navController = holder.itemView.findNavController()
-			val entryDate = String.format("%02d.%02d.%04d", entry.day, entry.month, entry.year)
-			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryDate = entryDate, entryText = entry.text, entryImage = entry.image.toString()))
+			val entryId = entry.id
+			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId)
+			)
 		}
 	}
 }

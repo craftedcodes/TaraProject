@@ -84,7 +84,7 @@
     <string name="trash_icon">Trash Icon</string>
     <string name="edit_button">Edit Button</string>
     <string name="dropdown_menu">Dropdown Menu</string>
-    <string name="please_enter_the_dates_in_format_dd_mm_yyyy">Please enter the dates in format DD-MM-YYYY</string>
+    <string name="please_enter_the_dates_in_format_dd_mm_yyyy">Please enter the dates in format DD.MM.YYYY</string>
     <string name="write_entry">Write Entry</string>
     <string name="back_button">back button</string>
     <string name="gallery">Gallery</string>
@@ -98,7 +98,7 @@
     <string name="i_have_a_panic_attack_right_now_please_call_me">I have a panic attack right now. Please call me.</string>
     <string name="please_note">Please note that every time you tap the \'Get Help\' button, an SMS is sent and you will incur costs accordingly.</string>
     <string name="repeat_the_chosen_password">Repeat the chosen password</string>
-    <string name="dd_mm_yyyy">DD/MM/YYYY</string>
+    <string name="dd_mm_yyyy">DD.MM.YYYY</string>
     <string name="enter_the_name_of_your_contact">Enter the name of your contact</string>
     <string name="_01234567890">01234567890</string>
     <string name="write_here_your_emergency_message">Write here your emergency message</string>

@@ -36,6 +36,11 @@ class EntryRepository(private val database: LocalDatabase) {
 		}
 	}
 	
+	// Method to retrieve a specific entry from the database.
+	suspend fun getEntry(id: Long): LiveData<Entry> {
+		return database.databaseDao().getEntryById(id)
+	}
+	
 	// Method to delete a specific entry by its ID from the database.
 	// Logs an error message if an exception is thrown.
 	suspend fun deleteEntry(id: Long) {

@@ -81,7 +81,7 @@ class JournalGratitudeFragment() : Fragment() {
 		// Set an onClickListener for the newEntryFab.
 		// When this button is clicked, navigate to the entryGratitudeFragment.
 		binding.newEntryFab.setOnClickListener {
-			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryDate = null, entryImage = null, entryText = null)
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment()
 			)
 		}
 	}
