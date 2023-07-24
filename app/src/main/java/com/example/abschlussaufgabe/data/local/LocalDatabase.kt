@@ -32,7 +32,7 @@ abstract class LocalDatabase : RoomDatabase() {
 		private lateinit var INSTANCE: LocalDatabase
 		
 		// Migration object from version 1 to 2.
-		val MIGRATION_1_2 = object : Migration(1, 2) {
+		private val MIGRATION_1_2 = object : Migration(1, 2) {
 			override fun migrate(database: SupportSQLiteDatabase) {
 				// Create the new table with the new column type
 				database.execSQL(
@@ -53,7 +53,7 @@ abstract class LocalDatabase : RoomDatabase() {
 		}
 		
 		// Migration object from version 2 to 3.
-		val MIGRATION_2_3 = object : Migration(2, 3) {
+		private val MIGRATION_2_3 = object : Migration(2, 3) {
 			override fun migrate(database: SupportSQLiteDatabase) {
 				// Create the new table with the new structure
 				database.execSQL(
