@@ -1,9 +1,13 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -101,7 +105,42 @@ class EntryGratitudeFragment : Fragment() {
 		// Initialize the dateField with the TextInputEditText from the binding object.
 		// The '!!' operator is used to assert that the value is not null.
 		dateField = binding.dateTf!!
-
+		
+		// Define the regex pattern for the date format.
+		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		
+		// Add a TextWatcher to the dateField to monitor changes in the text input.
+		dateField.addTextChangedListener(object : TextWatcher {
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` are about to be replaced by new text with length `after`.
+			// Not needed in this case.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` have just replaced old text that had length `before`.
+			// Not needed in this case.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that somewhere within `s`, the text has been changed.
+			// It is up to you to determine what to do with the text.
+			override fun afterTextChanged(s: Editable) {
+				// Check if the entered date matches the pattern.
+				if (!datePattern.matches(s.toString())) {
+					// If the date does not match the pattern, change the border color of the text field to red.
+					dateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+				} else {
+					// If the date matches the pattern, reset the border color of the text field to black.
+					dateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+				}
+			}
+		}
+		)
+		
 		// Initialize the textField with the TextInputEditText from the binding object.
 		textField = binding.textTf
 
@@ -155,8 +194,6 @@ class EntryGratitudeFragment : Fragment() {
 			val date = dateField.text.toString()
 			val text = textField.text.toString()
 			
-			// Define the regex pattern for the date format.
-			val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
 			
 			// Check if the entered date matches the pattern.
 			if (!datePattern.matches(date)) {
