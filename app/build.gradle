@@ -89,4 +89,7 @@ dependencies {
     // Rive Dependencies
     implementation "app.rive:rive-android:5.0.0"
     implementation "androidx.startup:startup-runtime:1.1.1"
+
+    // Biometric Authentication Dependency
+    implementation 'androidx.biometric:biometric:1.1.0'
 }
