@@ -81,6 +81,7 @@ class JournalGratitudeFragment() : Fragment() {
 		// Set an onClickListener for the newEntryFab.
 		// When this button is clicked, navigate to the entryGratitudeFragment.
 		binding.newEntryFab.setOnClickListener {
+			// TODO: Hier das neue Entry anlegen und bis auf die ID alles null
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment()
 			)
 		}

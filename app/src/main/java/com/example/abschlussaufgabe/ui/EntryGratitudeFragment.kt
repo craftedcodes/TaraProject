@@ -219,6 +219,7 @@ class EntryGratitudeFragment : Fragment() {
 			CoroutineScope(Dispatchers.Main).launch {
 				// Switch to the IO dispatcher for performing the database operation.
 				withContext(Dispatchers.IO) {
+					// TODO: Umändern zum updaten der Datenbank
 					// Insert the new entry into the database.
 					repository.insertEntry(entry)
 				}
