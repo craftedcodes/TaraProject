@@ -102,14 +102,10 @@ class JournalGratitudeFragment() : Fragment() {
 			lifecycleScope.launch(Dispatchers.IO) {
 				val entryId = repository.insertEntry(entry)
 				withContext(Dispatchers.Main) {
+					// Navigate to the entryGratitudeFragment.
 					findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
 				}
 			}
-			
-			
-			// Navigate to the entryGratitudeFragment.
-			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entry.id)
-			)
 		}
 	}
 }
