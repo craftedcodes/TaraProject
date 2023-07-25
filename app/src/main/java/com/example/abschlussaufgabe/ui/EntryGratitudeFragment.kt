@@ -60,6 +60,8 @@ class EntryGratitudeFragment : Fragment() {
 			// Open an InputStream for the selected image and decode it into a Bitmap.
 			val inputStream = requireActivity().contentResolver.openInputStream(it)
 			selectedImage = BitmapFactory.decodeStream(inputStream)
+			
+			binding.photoDownloadedTv!!.visibility = View.VISIBLE
 		}
 	}
 	
@@ -111,6 +113,9 @@ class EntryGratitudeFragment : Fragment() {
 		existingEntry.observe(viewLifecycleOwner, Observer { entry ->
 			// Once the entry is retrieved, update the dateField
 			dateField.setText(formatDate(entry.day, entry.month, entry.year))
+			
+			// Set the text of the textField to the text of the entry if it exists
+			textField.setText(entry.text ?: "")
 		})
 		
 		// Initialize the backButton with the ImageButton from the binding object.

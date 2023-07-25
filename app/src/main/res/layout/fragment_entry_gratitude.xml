@@ -112,6 +112,17 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/photo_downloaded_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:fontFamily="@font/merriweathersans_variablefont_wght"
+            android:textColor="@color/outline_bg_light"
+            android:text="@string/photo_successfully_downloaded"
+            android:visibility="gone"/>
+
         <!-- Save button container -->
         <LinearLayout
             style="@style/HorizontalLayoutStyle"
