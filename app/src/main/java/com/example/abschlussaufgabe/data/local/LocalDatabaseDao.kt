@@ -21,7 +21,7 @@ interface LocalDatabaseDao {
 	// Method to insert a single entry into the database.
 	// If an entry with the same ID already exists, it will be replaced.
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertEntry(entry: Entry)
+	fun insertEntry(entry: Entry) : Long
 	
 	// Method to update an existing entry in the database.
 	@Update

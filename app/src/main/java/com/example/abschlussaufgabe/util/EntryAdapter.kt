@@ -50,12 +50,14 @@ class EntryAdapter(
 		
 		// If the entry does not have an image, hide the ImageView.
 		// Otherwise, decode the ByteArray into a Bitmap and set it as the ImageView's image.
-		if (entry.image == null) {
+		val imageByteArray = entry.image
+		if (imageByteArray == null) {
 			holder.binding.gratitudeIv.visibility = View.GONE
 		} else {
-			val image = BitmapFactory.decodeByteArray(entry.image,0, entry.image.size)
+			val image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
 			holder.binding.gratitudeIv.setImageBitmap(image)
 		}
+		
 		
 		// Set the date and text of the entry.
 		holder.binding.dateTv.text = String.format("%02d.%02d.%04d", entry.day, entry.month, entry.year)

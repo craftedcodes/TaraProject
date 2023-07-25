@@ -37,7 +37,7 @@ class EntryRepository(private val database: LocalDatabase) {
 	}
 	
 	// Method to retrieve a specific entry from the database.
-	suspend fun getEntry(id: Long): LiveData<Entry> {
+	fun getEntryById(id: Long): LiveData<Entry> {
 		return database.databaseDao().getEntryById(id)
 	}
 	
@@ -63,12 +63,8 @@ class EntryRepository(private val database: LocalDatabase) {
 	
 	// Method to insert a single entry into the database.
 	// Logs an error message if an exception is thrown.
-	suspend fun insertEntry(entry: Entry) {
-		try {
-			database.databaseDao().insertEntry(entry)
-		} catch (e: Exception) {
-			Log.e(ENTRY_TAG, "Error inserting entry")
-		}
+	fun insertEntry(entry: Entry) : Long {
+			return database.databaseDao().insertEntry(entry)
 	}
 	
 	// Method to update a single entry in the database.

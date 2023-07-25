@@ -1,21 +1,28 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.data.EntryRepository
+import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.databinding.FragmentJournalGratitudeBinding
 import com.example.abschlussaufgabe.util.EntryAdapter
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 // This is the JournalGratitudeFragment class which extends the Fragment class.
 class JournalGratitudeFragment() : Fragment() {
@@ -36,9 +43,13 @@ class JournalGratitudeFragment() : Fragment() {
 	}
 	
 	// This is the onViewCreated function where you perform any additional setup for the fragment's view.
+	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
+		// Initialize the EntryRepository by getting the database and passing it to the repository.
+		val database = LocalDatabase.getDatabase(requireContext())
+		val repository = EntryRepository(database)
 		
 		// Create an instance of EntryAdapter and pass the context to it.
 		val adapter = viewModel.entries.value?.let { EntryAdapter(requireContext(), it) }
@@ -81,8 +92,23 @@ class JournalGratitudeFragment() : Fragment() {
 		// Set an onClickListener for the newEntryFab.
 		// When this button is clicked, navigate to the entryGratitudeFragment.
 		binding.newEntryFab.setOnClickListener {
-			// TODO: Hier das neue Entry anlegen und bis auf die ID alles null
-			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment()
+			// Get the current date
+			val calendar = Calendar.getInstance()
+			
+			// Create a new Entry object with the entered date, text, and image.
+			val entry = Entry(day = calendar.get(Calendar.DAY_OF_MONTH), month = calendar.get(Calendar.MONTH) + 1, year = calendar.get(Calendar.YEAR), text = null, image = null)
+			
+			// Insert the new entry into the database.
+			lifecycleScope.launch(Dispatchers.IO) {
+				val entryId = repository.insertEntry(entry)
+				withContext(Dispatchers.Main) {
+					findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
+				}
+			}
+			
+			
+			// Navigate to the entryGratitudeFragment.
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entry.id)
 			)
 		}
 	}

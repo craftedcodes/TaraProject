@@ -30,7 +30,7 @@ data class Entry(
 	// Define a nullable field media of type Blob, which is generally used for storing binary data.
 	// The ColumnInfo annotation is used to specify additional information about the column.
 	@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-	val image: ByteArray?
+	var image: ByteArray?
 ) {
 	// Override the equals method to compare Entry objects based on their content.
 	override fun equals(other: Any?): Boolean {

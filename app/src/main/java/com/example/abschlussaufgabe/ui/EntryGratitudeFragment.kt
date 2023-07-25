@@ -17,7 +17,11 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
@@ -25,10 +29,8 @@ import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.databinding.FragmentEntryGratitudeBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
 // EntryGratitudeFragment class, a subclass of Fragment
@@ -86,9 +88,30 @@ class EntryGratitudeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
+		
+		// Helper function to format the date in the format DD.MM.YYYY
+		fun formatDate(day: Int, month: Int, year: Int): String {
+			return String.format("%02d.%02d.%04d", day, month, year)
+		}
+		
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
 		val repository = EntryRepository(database)
+		
+		// Get the arguments passed to the fragment
+		val args: EntryGratitudeFragmentArgs by navArgs()
+
+		// Get the entryId from the arguments
+		val entryId = args.entryId
+		
+		// Initialize the existingEntry variable
+		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
+
+		// Observe changes to the existingEntry
+		existingEntry.observe(viewLifecycleOwner, Observer { entry ->
+			// Once the entry is retrieved, update the dateField
+			dateField.setText(formatDate(entry.day, entry.month, entry.year))
+		})
 		
 		// Initialize the backButton with the ImageButton from the binding object.
 		backButton = binding.backBtn
@@ -189,41 +212,47 @@ class EntryGratitudeFragment : Fragment() {
 		saveButton.setOnClickListener {
 			// Navigate to the JournalGratitudeFragment using the generated navigation action.
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
-			
+
 			// Retrieve the entered date and text from the respective input fields.
 			val date = dateField.text.toString()
 			val text = textField.text.toString()
-			
-			
+
 			// Check if the entered date matches the pattern.
 			if (!datePattern.matches(date)) {
 				// If the date does not match the pattern, show an error message and return.
 				dateField.error = "Please enter the date in the format DD.MM.YYYY"
 				return@setOnClickListener
 			}
-			
+
 			// Split the date string into day, month, and year.
 			val dateParts = date.split(".")
 			val day = dateParts[0].toInt()
 			val month = dateParts[1].toInt()
 			val year = dateParts[2].toInt()
 			
-			// If an image has been selected, convert it to a ByteArray for storage.
-			// If no image has been selected, this will be null.
-			val image = selectedImage?.let { bitmapToByteArray(it) }
-			
-			// Create a new Entry object with the entered date, text, and image.
-			val entry = Entry(day = day, month = month, year = year, text = text, image = image)
-			
-			// Launch a new coroutine on the main thread.
-			CoroutineScope(Dispatchers.Main).launch {
-				// Switch to the IO dispatcher for performing the database operation.
-				withContext(Dispatchers.IO) {
-					// TODO: Umändern zum updaten der Datenbank
-					// Insert the new entry into the database.
-					repository.insertEntry(entry)
-				}
+			// Retrieve the existing entry
+			val entry = existingEntry.value
+
+			// Check if the date has been changed
+			if (day != entry!!.day || month != entry.month || year != entry.year) {
+				// If the date has been changed, update the date of the entry
+				entry.day = day
+				entry.month = month
+				entry.year = year
 			}
+
+			// Update the text of the entry
+			entry.text = text
+
+		// If an image has been selected, convert it to a ByteArray for storage.
+		// If no image has been selected, this will be null.
+			val image = selectedImage?.let { bitmapToByteArray(it) }
+			entry.image = image
+			
+			lifecycleScope.launch(Dispatchers.IO) {
+				repository.updateEntry(entry)
+			}
+			
 		}
 		
 		// Set an onClickListener for the quit button.
