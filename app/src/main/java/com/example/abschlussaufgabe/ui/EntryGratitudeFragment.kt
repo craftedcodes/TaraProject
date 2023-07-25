@@ -49,6 +49,7 @@ class EntryGratitudeFragment : Fragment() {
 	private lateinit var galleryButton: FloatingActionButton
 	private lateinit var quitButton: Button
 	private lateinit var saveButton: Button
+	private var photoDownloadedTextView: TextView? = null
 	
 	// Declare a variable for the selected image. Initially, it is null.
 	private var selectedImage: Bitmap? = null
@@ -60,8 +61,8 @@ class EntryGratitudeFragment : Fragment() {
 			// Open an InputStream for the selected image and decode it into a Bitmap.
 			val inputStream = requireActivity().contentResolver.openInputStream(it)
 			selectedImage = BitmapFactory.decodeStream(inputStream)
-			
-			binding.photoDownloadedTv!!.visibility = View.VISIBLE
+			photoDownloadedTextView = binding.photoDownloadedTv
+			photoDownloadedTextView?.visibility = View.VISIBLE
 		}
 	}
 	
