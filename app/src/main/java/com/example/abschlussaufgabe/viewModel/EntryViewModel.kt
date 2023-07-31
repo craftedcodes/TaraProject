@@ -75,4 +75,10 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 			_loading.value = ApiStatus.DONE
 		}
 	}
+	
+	// Define function to filter the entries by date range
+	fun getEntriesByDataRange(from: String, to: String): LiveData<List<Entry>> {
+		return repository.getEntriesByDataRange(from, to)
+	}
+	
 }

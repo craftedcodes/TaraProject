@@ -51,6 +51,10 @@ class JournalGratitudeFragment() : Fragment() {
 		val database = LocalDatabase.getDatabase(requireContext())
 		val repository = EntryRepository(database)
 		
+		// Initialize the start date and end date variables.
+		val startDateField = binding.startDateTf
+		val endDateField = binding.endDateTf
+		
 		// Create an instance of EntryAdapter and pass the context to it.
 		val adapter = viewModel.entries.value?.let { EntryAdapter(requireContext(), it) }
 
@@ -63,6 +67,17 @@ class JournalGratitudeFragment() : Fragment() {
 			// Check if the entries data is not null.
 			// If it's not null, update the entries in the adapter.
 			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
+		}
+		
+		// Set the onClickListener for the filter button.
+		binding.filterBtn.setOnClickListener {
+			val from = startDateField.text.toString()
+			val to = endDateField.text.toString()
+			
+			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
+				// Update the entries in the adapter.
+				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
+			}
 		}
 		
 		// Set an onClickListener for the home button logo.
