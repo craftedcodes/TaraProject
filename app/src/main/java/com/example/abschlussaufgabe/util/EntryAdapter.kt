@@ -31,6 +31,12 @@ class EntryAdapter(
 	// A private variable to hold the list of entries.
 	private var entries: List<Entry> = data
 	
+	// Method to update the data in the adapter
+	fun updateData(newEntries: List<Entry>) {
+		this.entries = newEntries
+		notifyDataSetChanged()
+	}
+	
 	// This method creates new ViewHolders for the RecyclerView.
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 		val binding = EntryRvBinding.inflate(LayoutInflater.from(parent.context))

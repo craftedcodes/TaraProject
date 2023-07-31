@@ -75,8 +75,8 @@ class JournalGratitudeFragment() : Fragment() {
 			val to = endDateField.text.toString()
 			
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
-				// Update the entries in the adapter.
-				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
+				// Update the data in the adapter.
+				adapter?.updateData(entries)
 			}
 		}
 		
