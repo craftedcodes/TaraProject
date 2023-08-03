@@ -24,7 +24,7 @@ private val retrofitImage = Retrofit.Builder()
 	.build()
 
 // Get the access key from the BuildConfig
-private val accessKey = BuildConfig.ACCESSKEY
+private val apiKey = BuildConfig.APIKEY
 
 // Define the API service interface
 interface ImageApiService {

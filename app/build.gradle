@@ -12,6 +12,7 @@ android {
     defaultConfig {
         applicationId "com.example.abschlussaufgabe"
         minSdk 24
+        //noinspection OldTargetApi
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -27,12 +28,16 @@ android {
             buildConfigField("String", "ACCESSKEY", accessKey)
             def apiKey = project.properties['Api_Key']
             buildConfigField("String", "APIKEY", apiKey)
+            def apiKeyGoogle = project.properties['Api_Key_Google']
+            buildConfigField("String", "APIKEYGOOGLE", apiKeyGoogle)
         }
         debug {
             def accessKey = project.properties['Access_Key']
             buildConfigField("String", "ACCESSKEY", accessKey)
             def apiKey = project.properties['Api_Key']
             buildConfigField("String", "APIKEY", apiKey)
+            def apiKeyGoogle = project.properties['Api_Key_Google']
+            buildConfigField("String", "APIKEYGOOGLE", apiKeyGoogle)
         }
     }
     compileOptions {
