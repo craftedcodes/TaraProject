@@ -43,11 +43,6 @@ class HomeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		//val accessKey = System.getProperty("accessKey")
-		//Log.e("accessKey", accessKey)
-		Log.e("hallo02", BuildConfig.APIKEY)
-		Log.e("hallo03", "Nervensäge")
-		
 		// Set onClickListener for the "Register Now" text view.
 		// When clicked, it navigates to the registration fragment.
 		binding.registerNowTv.setOnClickListener {

@@ -12,7 +12,7 @@ import retrofit2.http.GET
 private const val apiKeyGoogle = BuildConfig.APIKEYGOOGLE
 
 // Define the base URL for the API
-const val QUOTE_BASE_URL = "https://script.google.com/macros/s/${apiKeyGoogle}/exec"
+const val QUOTE_BASE_URL = "https://script.google.com/macros/s/${apiKeyGoogle}/exec/"
 
 // Create a Moshi object with the KotlinJsonAdapterFactory
 private val moshiImage = Moshi.Builder()

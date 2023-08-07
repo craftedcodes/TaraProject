@@ -96,7 +96,7 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 					_loading.value = ApiStatus.DONE
 				}
 			} catch (e: Exception) {
-				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting quotes")
+				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting quotes in ViewModel")
 				if (quotes.isNullOrEmpty()) {
 					Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Quotes are empty")
 				} else {

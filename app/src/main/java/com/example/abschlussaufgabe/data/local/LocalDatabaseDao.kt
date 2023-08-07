@@ -76,7 +76,11 @@ interface LocalDatabaseDao {
 	 * @param endDay The end day of the range.
 	 * @return A LiveData list of entries that fall within the provided date range.
 	 */
-	@Query("SELECT * FROM entry WHERE (year > :startYear OR (year = :startYear AND (month > :startMonth OR (month = :startMonth AND day >= :startDay)))) AND (year < :endYear OR (year = :endYear AND (month < :endMonth OR (month = :endMonth AND day <= :endDay))))")
+	@Query("SELECT * FROM entry WHERE "
+			+ "year >= :startYear AND year <= :endYear AND "
+			+ "month >= :startMonth AND month <= :endMonth AND "
+			+ "day >= :startDay AND day <= :endDay"
+	)
 	fun getEntriesByDateRange(startYear: Int, startMonth: Int, startDay: Int, endYear: Int, endMonth: Int, endDay: Int): LiveData<List<Entry>>
 	
 	
@@ -171,7 +175,7 @@ interface LocalDatabaseDao {
 	
 	// Function to get all quotes from the database
 	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
-	fun getAllQuotes(): List<GoogleSheetResponse>
+	suspend fun getAllQuotes(): List<GoogleSheetResponse>
 	
 	// Function to delete all quotes from the database
 	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
