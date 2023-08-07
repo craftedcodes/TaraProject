@@ -6,7 +6,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAffirmationBinding
 import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
 
