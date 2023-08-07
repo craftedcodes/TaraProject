@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.databinding.FragmentAffirmationBinding
 import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // A class that represents the affirmation fragment in the application.
 class AffirmationFragment : Fragment() {
@@ -36,7 +40,10 @@ class AffirmationFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 		
 		viewModel.currentQuoteIndex.observe(viewLifecycleOwner) {
-			val quote = viewModel.getCurrentQuote()
+			lifecycleScope.launch {
+				val quote =
+					withContext(Dispatchers.Default) { viewModel.getCurrentQuote() }
+			}
 		}
 		
 		// Set onClickListener for the profile button logo.
@@ -64,7 +71,9 @@ class AffirmationFragment : Fragment() {
 		}
 		
 		binding.refreshQuoteBtn.setOnClickListener {
-			viewModel.refreshQuote()
+			lifecycleScope.launch {
+				viewModel.refreshQuote()
+			}
 		}
 	}
 }

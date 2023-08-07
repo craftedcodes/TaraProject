@@ -27,7 +27,9 @@ class ImageRepository(private val api: ImageApi, private val database: LocalData
 			// Fetch images from the API
 			val imageData = api.retrofitService.searchPhotos("lotus", "portrait")
 			// Store the fetched images in the local database
-			database.databaseDao().getAllImages()
+			imageData.results.forEach { image ->
+				database.databaseDao().insertImage(image)
+			}
 		} catch (e: Exception) {
 			// Log any errors that occur during the image fetching process
 			Log.e(IMAGE_TAG, "Error fetching images from API")
