@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAffirmationBinding
 import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
-import com.example.abschlussaufgabe.viewModel.EntryViewModel
 
 // A class that represents the affirmation fragment in the application.
 class AffirmationFragment : Fragment() {
