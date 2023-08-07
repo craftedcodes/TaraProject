@@ -1,6 +1,7 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -55,9 +56,14 @@ class JournalGratitudeFragment() : Fragment() {
 		val startDateField = binding.startDateTf
 		val endDateField = binding.endDateTf
 		
+		// Create an instance of SharedPreferences.
+		val entryPref = activity?.getSharedPreferences("EntriesPreferences", Context.MODE_PRIVATE)
+		val countPref = activity?.getSharedPreferences("CountPreferences", Context.MODE_PRIVATE)
+		
 		// Create an instance of EntryAdapter and pass the context to it.
-		val adapter = viewModel.entries.value?.let { EntryAdapter(requireContext(), it) }
-
+		val adapter = EntryAdapter(requireContext(), emptyList(), entryPref!!, countPref!!)
+		binding.outerRvGratitudeJournal.adapter = adapter
+		
 		// Set the created adapter as the adapter for the RecyclerView in the binding.
 		binding.outerRvGratitudeJournal.adapter = adapter
 
@@ -66,7 +72,7 @@ class JournalGratitudeFragment() : Fragment() {
 		viewModel.entries.observe(viewLifecycleOwner) { entries ->
 			// Check if the entries data is not null.
 			// If it's not null, update the entries in the adapter.
-			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
+			adapter.updateData(entries)
 		}
 		
 		// Set the onClickListener for the filter button.
@@ -76,7 +82,7 @@ class JournalGratitudeFragment() : Fragment() {
 			
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
 				// Update the data in the adapter.
-				adapter?.updateData(entries)
+				adapter.updateData(entries)
 			}
 		}
 		
@@ -109,6 +115,7 @@ class JournalGratitudeFragment() : Fragment() {
 		binding.newEntryFab.setOnClickListener {
 			// Get the current date
 			val calendar = Calendar.getInstance()
+			val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"
 			
 			// Create a new Entry object with the entered date, text, and image.
 			val entry = Entry(day = calendar.get(Calendar.DAY_OF_MONTH), month = calendar.get(Calendar.MONTH) + 1, year = calendar.get(Calendar.YEAR), text = null, image = null)
@@ -116,6 +123,9 @@ class JournalGratitudeFragment() : Fragment() {
 			// Insert the new entry into the database.
 			lifecycleScope.launch(Dispatchers.IO) {
 				val entryId = repository.insertEntry(entry)
+				entryPref?.edit()?.putLong("entryId", entryId)?.apply()
+				val currentCount = countPref?.getInt(dayKey, 0) ?: 0
+				countPref?.edit()?.putInt(dayKey, currentCount + 1)?.apply()
 				withContext(Dispatchers.Main) {
 					// Navigate to the entryGratitudeFragment.
 					findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))

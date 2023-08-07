@@ -120,7 +120,7 @@
 
                 <!-- Refresh button at the bottom right -->
                 <ImageButton
-                    android:id="@+id/imagebutton_bottom_right"
+                    android:id="@+id/refresh_quote_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"

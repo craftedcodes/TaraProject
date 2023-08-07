@@ -20,17 +20,26 @@ class QuoteRepository(private val api: QuoteApi, private val database: LocalData
 	
 	// Function to get quotes from the API and store them in the local database
 	suspend fun getQuotes() {
-		// Log the start of the quote fetching process
 		Log.e(QUOTE_TAG, "get quotes")
 		try {
 			// Fetch quotes from the API
 			val quoteData = api.retrofitService.getQuote()
-			// Store the fetched quotes in the local database
-			database.databaseDao().getAllQuotes()
+			// Shuffle the fetched quotes
+			val shuffledQuotes = quoteData.data.shuffled()
+			// Store the shuffled quotes in the local database
+			shuffledQuotes.forEach { quote ->
+				database.databaseDao().insertQuote(quote)
+			}
 		} catch (e: Exception) {
 			// Log any errors that occur during the quote fetching process
-			Log.e(QUOTE_TAG, "Error getting quotes")
+			Log.e(QUOTE_TAG, "Error getting quotes", e) // Include the exception object to see the detailed error message
 		}
+	}
+	
+	// Function to delete all quotes from the local database and get new quotes from the API
+	suspend fun resetQuotes() {
+		database.databaseDao().deleteAllQuotes()
+		getQuotes()
 	}
 }
 

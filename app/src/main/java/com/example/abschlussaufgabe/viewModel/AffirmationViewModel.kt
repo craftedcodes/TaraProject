@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.abschlussaufgabe.data.ImageRepository
 import com.example.abschlussaufgabe.data.QuoteRepository
 import com.example.abschlussaufgabe.data.datamodels.ImageResult
+import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.ImageApi
 import com.example.abschlussaufgabe.data.remote.QuoteApi
@@ -25,8 +26,8 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	private val quoteRepository = QuoteRepository(QuoteApi, LocalDatabase.getDatabase(application))
 	
 	// Define LiveData objects for the data from the repositories
-	val images = imageRepository.images
-	val quotes = quoteRepository.quotes
+	private val images = imageRepository.images
+	private val quotes = quoteRepository.quotes
 	
 	// Define MutableLiveData objects for the loading, error, and done states
 	private val _loading = MutableLiveData<ApiStatus>()
@@ -62,11 +63,23 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 		}
 	}
 	
+	// Define a MutableLiveData object for the current quote index
+	private val _currentQuoteIndex = MutableLiveData(0)
+	val currentQuoteIndex: LiveData<Int>
+		get() = _currentQuoteIndex
+	
+	// Define function to get the current quote
+	fun getCurrentQuote(): Quote {
+		val index = _currentQuoteIndex.value
+		return quotes[index!!]
+	}
+	
 	// Define function to load the quotes from the repository
 	fun loadQuote() {
 		viewModelScope.launch {
 			_loading.value = ApiStatus.LOADING
 			try {
+				_currentQuoteIndex.value = 0 // Reset the index
 				quoteRepository.getQuotes()
 				_loading.value = ApiStatus.DONE
 			} catch (e: Exception) {
@@ -77,6 +90,15 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 					_loading.value = ApiStatus.DONE
 				}
 			}
+		}
+	}
+	
+	fun refreshQuote() {
+		val newIndex = (currentQuoteIndex.value ?: 0) + 1
+		if (newIndex >= quotes.size) {
+			loadQuote() // Reload quotes if we reached the end
+		} else {
+			_currentQuoteIndex.value = newIndex
 		}
 	}
 	

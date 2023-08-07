@@ -172,4 +172,9 @@ interface LocalDatabaseDao {
 	// Function to get all quotes from the database
 	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
 	fun getAllQuotes(): List<GoogleSheetResponse>
+	
+	// Function to delete all quotes from the database
+	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
+	@Query("DELETE FROM google_sheet_response")
+	suspend fun deleteAllQuotes()
 }

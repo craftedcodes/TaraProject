@@ -4,23 +4,27 @@ package com.example.abschlussaufgabe.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAffirmationBinding
+import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
+import com.example.abschlussaufgabe.viewModel.EntryViewModel
 
 // A class that represents the affirmation fragment in the application.
 class AffirmationFragment : Fragment() {
 	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentAffirmationBinding
+	private val viewModel: AffirmationViewModel by viewModels()
 	
 	// The onCreateView function is used to create and return the view hierarchy
 	// associated with the fragment.
 	override fun onCreateView(
 		inflater: android.view.LayoutInflater,
 		container: android.view.ViewGroup?,
-		savedInstanceState: android.os.Bundle?
-	): android.view.View {
+		savedInstanceState: Bundle?
+	): View {
 		
 		// Inflate the layout for this fragment using the inflate method of the FragmentAffirmationBinding class.
 		binding = FragmentAffirmationBinding.inflate(inflater, container, false)
@@ -32,6 +36,10 @@ class AffirmationFragment : Fragment() {
 	// onViewCreated is called after onCreateView, and it is where additional setup for the fragment's view takes place.
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		
+		viewModel.currentQuoteIndex.observe(viewLifecycleOwner) {
+			val quote = viewModel.getCurrentQuote()
+		}
 		
 		// Set onClickListener for the profile button logo.
 		// When clicked, it navigates to the profile fragment.
@@ -55,6 +63,10 @@ class AffirmationFragment : Fragment() {
 		// When clicked, it navigates to the gratitude journal fragment.
 		binding.gratitudeNavBtn.setOnClickListener {
 			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToJournalGratitudeFragment())
+		}
+		
+		binding.refreshQuoteBtn.setOnClickListener {
+			viewModel.refreshQuote()
 		}
 	}
 }

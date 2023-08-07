@@ -2,6 +2,7 @@
 package com.example.abschlussaufgabe.util
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,9 @@ import kotlinx.coroutines.withContext
 class EntryAdapter(
 	// The context is passed in the constructor for later use.
 	private val context: Context,
-	data: List<Entry>
+	data: List<Entry>,
+	private val entriesPref: SharedPreferences,
+	private val countPref: SharedPreferences
 ) : RecyclerView.Adapter<EntryAdapter.ItemViewHolder>() {
 	
 	// A ViewHolder class that holds references to the views for each data item.
@@ -69,11 +72,22 @@ class EntryAdapter(
 		holder.binding.dateTv.text = String.format("%02d.%02d.%04d", entry.day, entry.month, entry.year)
 		holder.binding.textTv.text = entry.text
 		
+		val entryKey = entry.id.toString()
+		entriesPref.edit().remove(entryKey).apply()
+		
 		// Set an OnClickListener for the delete button
 		holder.binding.deleteBtn.setOnClickListener {
 			CoroutineScope(Dispatchers.Main).launch {
 				withContext(Dispatchers.IO) {
 					repository.deleteEntry(entry.id)
+					// Update EntriesPreferences
+					val entryKey = entry.id.toString() // Der Schlüssel, der für diesen Eintrag verwendet wurde
+					entriesPref.edit().remove(entryKey).apply()
+					
+					// Update CountPreferences
+					val dayKey = "${entry.day}-${entry.month}-${entry.year}"
+					val currentCount = countPref.getInt(dayKey, 0)
+					countPref.edit().putInt(dayKey, currentCount - 1).apply()
 				}
 				notifyItemRemoved(position)
 			}
