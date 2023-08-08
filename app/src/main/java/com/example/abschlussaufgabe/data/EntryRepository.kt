@@ -22,12 +22,12 @@ class EntryRepository(private val database: LocalDatabase) {
 		get() = _entries
 	
 	init {
-		getEntries()
+		getAllEntries()
 	}
 	
 	// Method to retrieve all entries from the database.
 	// Logs an error message if an exception is thrown.
-	fun getEntries() {
+	fun getAllEntries() {
 		Log.e(ENTRY_TAG, "getEntries")
 		try {
 			database.databaseDao().getAllEntries()
@@ -92,8 +92,10 @@ class EntryRepository(private val database: LocalDatabase) {
 		val toMonth = toParts[1].toInt()
 		val toYear = toParts[2].toInt()
 		
+		Log.e(ENTRY_TAG, "fromDay: $fromDay, fromMonth: $fromMonth, fromYear: $fromYear, toDay: $toDay, toMonth: $toMonth, toYear: $toYear")
+		
 		return try {
-			database.databaseDao().getEntriesByDateRange(fromDay, fromMonth, fromYear, toDay, toMonth, toYear)
+		database.databaseDao().getEntriesByDateRange(fromDay, fromMonth, fromYear, toDay, toMonth, toYear)
 		} catch (e: Exception) {
 			Log.e(ENTRY_TAG, "Error getting entries by date range")
 			_entries

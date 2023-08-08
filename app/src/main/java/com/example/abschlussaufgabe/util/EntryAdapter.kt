@@ -24,8 +24,8 @@ class EntryAdapter(
 	// The context is passed in the constructor for later use.
 	private val context: Context,
 	data: List<Entry>,
-	private val entriesPref: SharedPreferences,
-	private val countPref: SharedPreferences
+	private val entriesPref: SharedPreferences?,
+	private val countPref: SharedPreferences?
 ) : RecyclerView.Adapter<EntryAdapter.ItemViewHolder>() {
 	
 	// A ViewHolder class that holds references to the views for each data item.
@@ -33,12 +33,6 @@ class EntryAdapter(
 	
 	// A private variable to hold the list of entries.
 	private var entries: List<Entry> = data
-	
-	// Method to update the data in the adapter
-	fun updateData(newEntries: List<Entry>) {
-		this.entries = newEntries
-		notifyDataSetChanged()
-	}
 	
 	// This method creates new ViewHolders for the RecyclerView.
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -73,7 +67,7 @@ class EntryAdapter(
 		holder.binding.textTv.text = entry.text
 		
 		val entryKey = entry.id.toString()
-		entriesPref.edit().remove(entryKey).apply()
+		entriesPref?.edit()?.remove(entryKey)?.apply()
 		
 		// Set an OnClickListener for the delete button
 		holder.binding.deleteBtn.setOnClickListener {
@@ -81,13 +75,17 @@ class EntryAdapter(
 				withContext(Dispatchers.IO) {
 					repository.deleteEntry(entry.id)
 					// Update EntriesPreferences
-					val entryKey = entry.id.toString() // Der Schlüssel, der für diesen Eintrag verwendet wurde
-					entriesPref.edit().remove(entryKey).apply()
+					val entryKey = entry.id.toString()
+					entriesPref?.edit()?.remove(entryKey)?.apply()
 					
 					// Update CountPreferences
 					val dayKey = "${entry.day}-${entry.month}-${entry.year}"
-					val currentCount = countPref.getInt(dayKey, 0)
-					countPref.edit().putInt(dayKey, currentCount - 1).apply()
+					
+					if (countPref != null) {
+						val currentCount = countPref.getInt(dayKey, 0)
+						countPref.edit().putInt(dayKey, currentCount - 1).apply()
+					}
+					
 				}
 				notifyItemRemoved(position)
 			}

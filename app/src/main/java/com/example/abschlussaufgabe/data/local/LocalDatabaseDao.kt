@@ -21,7 +21,7 @@ interface LocalDatabaseDao {
 	// Method to insert a single entry into the database.
 	// If an entry with the same ID already exists, it will be replaced.
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun insertEntry(entry: Entry) : Long
+	fun insertEntry(entry: Entry): Long
 	
 	// Method to update an existing entry in the database.
 	@Update
@@ -76,12 +76,9 @@ interface LocalDatabaseDao {
 	 * @param endDay The end day of the range.
 	 * @return A LiveData list of entries that fall within the provided date range.
 	 */
-	@Query("SELECT * FROM entry WHERE "
-			+ "year >= :startYear AND year <= :endYear AND "
-			+ "month >= :startMonth AND month <= :endMonth AND "
-			+ "day >= :startDay AND day <= :endDay"
+	@Query("SELECT * FROM entry WHERE (year > :startYear OR (year = :startYear AND (month > :startMonth OR (month = :startMonth AND day >= :startDay)))) AND (year < :endYear OR (year = :endYear AND (month < :endMonth OR (month = :endMonth AND day <= :endDay)))) ORDER BY year DESC, month DESC, day DESC"
 	)
-	fun getEntriesByDateRange(startYear: Int, startMonth: Int, startDay: Int, endYear: Int, endMonth: Int, endDay: Int): LiveData<List<Entry>>
+	fun getEntriesByDateRange(startDay: Int, startMonth: Int, startYear: Int, endDay: Int, endMonth: Int, endYear: Int): LiveData<List<Entry>>
 	
 	
 	// Dao for emergency contact

@@ -2,8 +2,13 @@ package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +53,12 @@ class JournalGratitudeFragment() : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
+		
+		// Helper function to format the date in the format DD.MM.YYYY
+		fun formatDate(day: Int, month: Int, year: Int): String {
+			return String.format("%02d.%02d.%04d", day, month, year)
+		}
+		
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
 		val repository = EntryRepository(database)
@@ -55,64 +66,142 @@ class JournalGratitudeFragment() : Fragment() {
 		// Initialize the start date and end date variables.
 		val startDateField = binding.startDateTf
 		val endDateField = binding.endDateTf
+		val filterBtn = binding.filterBtn
+		val resetBtn = binding.resetBtn
+		val homeBtnLogo = binding.homeBtnLogo
+		val homeBtnText = binding.homeBtnText
+		val profileBtnLogo = binding.profileBtnLogo
+		val animationFabBtn = binding.animationFabNavBtn
+		val newEntryFabBtn = binding.newEntryFab
+		
+		
+		// Define the regex pattern for the date format.
+		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		
+		// Add a TextWatcher to the startDateField to monitor changes in the text input.
+		startDateField.addTextChangedListener(object : TextWatcher {
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` are about to be replaced by new text with length `after`.
+			// Not needed in this case.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` have just replaced old text that had length `before`.
+			// Not needed in this case.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that somewhere within `s`, the text has been changed.
+			// It is up to you to determine what to do with the text.
+			override fun afterTextChanged(s: Editable) {
+				// Check if the entered date matches the pattern.
+				if (!datePattern.matches(s.toString())) {
+					// If the date does not match the pattern, change the border color of the text field to red.
+					startDateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+				} else {
+					// If the date matches the pattern, reset the border color of the text field to black.
+					startDateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+				}
+			}
+		}
+		)
+		
+		// Add a TextWatcher to the endDateField to monitor changes in the text input.
+		endDateField.addTextChangedListener(object : TextWatcher {
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` are about to be replaced by new text with length `after`.
+			// Not needed in this case.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` have just replaced old text that had length `before`.
+			// Not needed in this case.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that somewhere within `s`, the text has been changed.
+			// It is up to you to determine what to do with the text.
+			override fun afterTextChanged(s: Editable) {
+				// Check if the entered date matches the pattern.
+				if (!datePattern.matches(s.toString())) {
+					// If the date does not match the pattern, change the border color of the text field to red.
+					endDateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+				} else {
+					// If the date matches the pattern, reset the border color of the text field to black.
+					endDateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+				}
+			}
+		}
+		)
 		
 		// Create an instance of SharedPreferences.
 		val entryPref = activity?.getSharedPreferences("EntriesPreferences", Context.MODE_PRIVATE)
 		val countPref = activity?.getSharedPreferences("CountPreferences", Context.MODE_PRIVATE)
 		
-		// Create an instance of EntryAdapter and pass the context to it.
-		val adapter = EntryAdapter(requireContext(), emptyList(), entryPref!!, countPref!!)
-		binding.outerRvGratitudeJournal.adapter = adapter
-		
 		// Set the created adapter as the adapter for the RecyclerView in the binding.
-		binding.outerRvGratitudeJournal.adapter = adapter
+		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList(), entryPref, countPref)
 
 		// Observe the LiveData of entries in the ViewModel.
 		// This sets up an observer that gets triggered every time the entries data changes.
 		viewModel.entries.observe(viewLifecycleOwner) { entries ->
 			// Check if the entries data is not null.
 			// If it's not null, update the entries in the adapter.
-			adapter.updateData(entries)
+			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
 		}
 		
 		// Set the onClickListener for the filter button.
-		binding.filterBtn.setOnClickListener {
+		filterBtn.setOnClickListener {
 			val from = startDateField.text.toString()
 			val to = endDateField.text.toString()
 			
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
 				// Update the data in the adapter.
-				adapter.updateData(entries)
+				Log.e("Irgendwas.", entries.size.toString())
+				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
 			}
+		}
+		
+		// Set the onClickListener for the reset button.
+		resetBtn.setOnClickListener {
+			viewModel.getAllEntries().observe(viewLifecycleOwner) { entries ->
+				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)}
 		}
 		
 		// Set an onClickListener for the home button logo.
 		// When this button is clicked, navigate to the animation fragment.
-		binding.homeBtnLogo.setOnClickListener {
+		homeBtnLogo.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the home button text.
 		// When this text is clicked, also navigate to the animation fragment.
-		binding.homeBtnText.setOnClickListener {
+		homeBtnText.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the profile button logo.
 		// When this button is clicked, navigate to the profile fragment.
-		binding.profileBtnLogo.setOnClickListener {
+		profileBtnLogo.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
 		}
 		
 		// Set an onClickListener for the animationFabNavBtn.
 		// When this button is clicked, navigate to the animation fragment.
-		binding.animationFabNavBtn.setOnClickListener {
+		animationFabBtn.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the newEntryFab.
 		// When this button is clicked, navigate to the entryGratitudeFragment.
-		binding.newEntryFab.setOnClickListener {
+		newEntryFabBtn.setOnClickListener {
 			// Get the current date
 			val calendar = Calendar.getInstance()
 			val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"

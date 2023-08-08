@@ -85,7 +85,8 @@
 
                 <!-- LinearLayout for the start and end date TextInputFields -->
                 <LinearLayout
-                    style="@style/HorizontalLayoutStyle">
+                    style="@style/HorizontalLayoutStyle"
+                    android:baselineAligned="false">
 
                     <!-- TextInputField for the start date -->
                     <com.google.android.material.textfield.TextInputLayout
@@ -123,6 +124,10 @@
 
                 </LinearLayout>
 
+            <LinearLayout
+                style="@style/HorizontalLayoutStyle"
+                android:baselineAligned="false">
+
                 <!-- Filter button -->
                 <Button
                     android:id="@+id/filter_btn"
@@ -137,12 +142,23 @@
                     app:strokeColor="@color/surface_c_tx_light"
                     app:strokeWidth="1dp"
                     android:textSize="20sp"
-                    android:shadowColor="#61000000"
-                    android:shadowRadius="8"
-                    android:shadowDx="8"
-                    android:shadowDy="4"
                     tools:ignore="ButtonStyle"
                     />
+
+                <Button
+                    android:id="@+id/reset_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16sp"
+
+                    android:backgroundTint="@color/white"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:text="@string/reset"
+                    android:textAlignment="center"
+                    android:textColor="@color/outline_bg_light"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
                 <!-- RecyclerView for the gratitude journal entries -->
                 <androidx.recyclerview.widget.RecyclerView

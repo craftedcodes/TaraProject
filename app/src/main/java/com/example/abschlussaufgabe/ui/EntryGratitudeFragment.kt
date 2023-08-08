@@ -91,7 +91,6 @@ class EntryGratitudeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		
 		// Helper function to format the date in the format DD.MM.YYYY
 		fun formatDate(day: Int, month: Int, year: Int): String {
 			return String.format("%02d.%02d.%04d", day, month, year)

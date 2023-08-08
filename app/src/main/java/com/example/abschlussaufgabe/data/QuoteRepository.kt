@@ -51,5 +51,8 @@ class QuoteRepository(private val api: QuoteApi, private val database: LocalData
 		database.databaseDao().deleteAllQuotes()
 		getQuotes()
 	}
+	
+	// TODO: API proxy/gateway
+	// SharedPreferences: wurde die App heute schon geöffnet? Neuer API Call, wenn nicht, dann neuer API Call.
 }
 

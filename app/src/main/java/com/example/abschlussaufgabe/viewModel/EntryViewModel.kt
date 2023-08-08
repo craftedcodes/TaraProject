@@ -34,11 +34,11 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		get() = _done
 	
 	// Define function to load the entries from the repository
-	fun loadEntry() {
+	fun getAllEntries() {
 		viewModelScope.launch {
 			_loading.value = ApiStatus.LOADING
 			try {
-				repository.getEntries()
+				repository.getAllEntries()
 				_loading.value = ApiStatus.DONE
 			} catch (e: Exception) {
 				Log.e(ENTRY_VIEW_MODEL_TAG, "Error getting entries")
