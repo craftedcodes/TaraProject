@@ -171,8 +171,7 @@ class JournalGratitudeFragment() : Fragment() {
 		
 		// Set the onClickListener for the reset button.
 		resetBtn.setOnClickListener {
-			viewModel.getAllEntries().observe(viewLifecycleOwner) { entries ->
-				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)}
+			viewModel.getAllEntriesAsync()
 		}
 		
 		// Set an onClickListener for the home button logo.

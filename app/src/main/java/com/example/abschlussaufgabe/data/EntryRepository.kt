@@ -36,6 +36,10 @@ class EntryRepository(private val database: LocalDatabase) {
 		}
 	}
 	
+	suspend fun getAllEntriesAsync(): List<Entry> {
+		return database.databaseDao().getAllEntriesAsync()
+	}
+	
 	// Method to retrieve a specific entry from the database.
 	fun getEntryById(id: Long): LiveData<Entry> {
 		return database.databaseDao().getEntryById(id)

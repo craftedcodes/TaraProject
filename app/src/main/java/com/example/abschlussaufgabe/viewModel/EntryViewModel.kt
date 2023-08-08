@@ -20,7 +20,9 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	private val repository = EntryRepository(LocalDatabase.getDatabase(application))
 	
 	// Define LiveData objects for the entries from the repository
-	val entries: LiveData<List<Entry>> = repository.entries
+	private val _entries = MutableLiveData<List<Entry>>()
+	val entries: LiveData<List<Entry>>
+		get() = _entries
 	
 	// Define MutableLiveData objects for the loading, error, and done states
 	private val _loading = MutableLiveData<ApiStatus>()
@@ -43,6 +45,25 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 			} catch (e: Exception) {
 				Log.e(ENTRY_VIEW_MODEL_TAG, "Error getting entries")
 				if (entries.value.isNullOrEmpty()) {
+					Log.e(ENTRY_VIEW_MODEL_TAG, "Entries are empty")
+					_loading.value = ApiStatus.ERROR
+				} else {
+					_loading.value = ApiStatus.DONE
+				}
+			}
+		}
+	}
+	
+	//
+	fun getAllEntriesAsync() {
+		viewModelScope.launch {
+			_loading.value = ApiStatus.LOADING
+			try {
+				_entries.value = repository.getAllEntriesAsync()
+				_loading.value = ApiStatus.DONE
+			} catch (e: Exception) {
+				Log.e(ENTRY_VIEW_MODEL_TAG, "Error getting entries")
+				if (_entries.value.isNullOrEmpty()) {
 					Log.e(ENTRY_VIEW_MODEL_TAG, "Entries are empty")
 					_loading.value = ApiStatus.ERROR
 				} else {
