@@ -88,7 +88,7 @@ interface LocalDatabaseDao {
 	
 	// Method to update an existing emergency contact in the database.
 	@Update
-	suspend fun updateEmergencyContact(emergencyContact: EmergencyContact)
+	suspend fun updateEmergencyContact(emergencyContact: EmergencyContact )
 	
 	// Method to insert an emergency contact into the database.
 	// If an emergency contact with the same ID already exists, it will be replaced.
