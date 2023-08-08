@@ -12,7 +12,7 @@ import com.example.abschlussaufgabe.data.local.LocalDatabase
 import kotlinx.coroutines.launch
 
 // Define a constant for logging
-val ENTRY_VIEW_MODEL_TAG = "EntryViewModel"
+const val ENTRY_VIEW_MODEL_TAG = "EntryViewModel"
 
 class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	

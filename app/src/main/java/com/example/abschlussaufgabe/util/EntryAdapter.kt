@@ -75,8 +75,8 @@ class EntryAdapter(
 				withContext(Dispatchers.IO) {
 					repository.deleteEntry(entry.id)
 					// Update EntriesPreferences
-					val entryKey = entry.id.toString()
-					entriesPref?.edit()?.remove(entryKey)?.apply()
+					val delteEntryKey = entry.id.toString()
+					entriesPref?.edit()?.remove(delteEntryKey)?.apply()
 					
 					// Update CountPreferences
 					val dayKey = "${entry.day}-${entry.month}-${entry.year}"
