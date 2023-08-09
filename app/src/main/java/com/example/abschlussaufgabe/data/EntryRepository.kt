@@ -28,7 +28,7 @@ class EntryRepository(private val database: LocalDatabase) {
 	// Method to retrieve all entries from the database.
 	// Logs an error message if an exception is thrown.
 	fun getAllEntries() {
-		Log.e(ENTRY_TAG, "getEntries")
+		Log.e(ENTRY_TAG, "getAllEntries")
 		try {
 			database.databaseDao().getAllEntries()
 		} catch (e: Exception) {
@@ -36,6 +36,7 @@ class EntryRepository(private val database: LocalDatabase) {
 		}
 	}
 	
+	// Method to retrieve all entries from the database asynchronously.
 	suspend fun getAllEntriesAsync(): List<Entry> {
 		return database.databaseDao().getAllEntriesAsync()
 	}
