@@ -7,12 +7,10 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-
-// Get the API key from the BuildConfig
-private const val apiKeyGoogle = BuildConfig.APIKEYGOOGLE
+import retrofit2.http.Query
 
 // Define the base URL for the API
-const val QUOTE_BASE_URL = "https://script.google.com/macros/s/${apiKeyGoogle}/exec/"
+const val QUOTE_BASE_URL = "https://script.googleusercontent.com/macros/"
 
 // Create a Moshi object with the KotlinJsonAdapterFactory
 private val moshiImage = Moshi.Builder()
@@ -29,8 +27,8 @@ private val retrofit = Retrofit.Builder()
 // Define the API service interface
 interface QuoteApiService{
 	// Define a GET request to the "data" endpoint that returns a GoogleSheetResponse
-	@GET("data")
-	suspend fun getQuote() : GoogleSheetResponse
+	@GET("echo")
+	suspend fun getQuote(@Query("user_content_key") apiKey: String, @Query("lib") lib: String = "MRLyDHtOFXpmkugISRq9rA1aDqu7jAxOh") : GoogleSheetResponse
 }
 
 // Create a singleton object for the API service

@@ -34,11 +34,11 @@ interface LocalDatabaseDao {
 	 *
 	 * @return A LiveData list of entries sorted by date in descending order.
 	 */
-	@Query("SELECT * FROM entry ORDER BY year DESC, month DESC, day DESC")
+	@Query("SELECT * FROM entry ORDER BY year DESC, month DESC, day DESC, id DESC")
 	fun getAllEntries(): LiveData<List<Entry>>
 	
 	// Method to get all entries from the database asynchronously.
-	@Query("SELECT * FROM entry ORDER BY year DESC, month DESC, day DESC")
+	@Query("SELECT * FROM entry ORDER BY year DESC, month DESC, day DESC, id DESC")
 	suspend fun getAllEntriesAsync(): List<Entry>
 	
 	

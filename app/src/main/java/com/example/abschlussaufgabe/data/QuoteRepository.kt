@@ -1,6 +1,9 @@
 package com.example.abschlussaufgabe.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.QuoteApi
@@ -14,8 +17,13 @@ const val QUOTE_TAG = "QuoteRepository"
 // QuoteRepository class that takes a QuoteApi and LocalDatabase as parameters
 class QuoteRepository(private val api: QuoteApi, private val database: LocalDatabase) {
 	
-	// Private list that holds Quote objects
-	private var _quotes : List<Quote> = listOf(Quote(0, "ldksnjvfnöleijw"))
+	// Get the API key from the BuildConfig
+	private val apiKeyGoogle = BuildConfig.APIKEYGOOGLE
+	
+	// Private MutableLiveData that holds Quote objects
+	private var _quotes = MutableLiveData<List<Quote>>()
+	val quotes: LiveData<List<Quote>>
+		get() = _quotes
 	
 	init {
 		CoroutineScope(Dispatchers.IO).launch {
@@ -23,19 +31,15 @@ class QuoteRepository(private val api: QuoteApi, private val database: LocalData
 		}
 	}
 	
-	// Public list that exposes the private _quotes list
-	val quotes: List<Quote>
-		get() = _quotes
-	
 	// Function to get quotes from the API and store them in the local database
 	suspend fun getQuotes() {
 		Log.e(QUOTE_TAG, "get quotes")
 		try {
 			// Fetch quotes from the API
-			val quoteData = api.retrofitService.getQuote()
+			val quoteData = api.retrofitService.getQuote(apiKeyGoogle).data
 			// Shuffle the fetched quotes
-			val shuffledQuotes = quoteData.data.shuffled()
-			_quotes = shuffledQuotes
+			val shuffledQuotes = quoteData.shuffled()
+			_quotes.postValue(quoteData)
 			// Store the shuffled quotes in the local database
 			shuffledQuotes.forEach { quote ->
 				database.databaseDao().insertQuote(quote)

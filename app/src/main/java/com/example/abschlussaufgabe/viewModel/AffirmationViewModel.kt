@@ -77,11 +77,11 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	// Define function to get the current quote
 	suspend fun getCurrentQuote(): Quote {
 		return try {
-			val index = _currentQuoteIndex.value
-			quotes[index?: 0]
+			val index = _currentQuoteIndex.value ?: 0
+			quotes.value?.get(index) ?: quotes.value?.get(0) ?: Quote(99999999, "It's okay to not be okay")
 		} catch (e: Exception) {
 			Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting current quote")
-			quotes[0]
+			quotes.value?.get(0)?: Quote(99999999, "It's okay to not be okay")
 		}
 	}
 	
@@ -97,7 +97,7 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 				}
 			} catch (e: Exception) {
 				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting quotes in ViewModel")
-				if (quotes.isNullOrEmpty()) {
+				if (quotes.value.isNullOrEmpty()) {
 					Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Quotes are empty")
 				} else {
 					_loading.value = ApiStatus.DONE
@@ -108,7 +108,7 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	
 	suspend fun refreshQuote() {
 		val newIndex = (currentQuoteIndex.value ?: 0) + 1
-		if (newIndex >= quotes.size) {
+		if (newIndex >= quotes.value!!.size) {
 			try {
 				loadQuote() // Reload quotes if we reached the end
 			} catch (e: Exception) {
