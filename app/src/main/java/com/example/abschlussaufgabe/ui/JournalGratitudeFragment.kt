@@ -68,6 +68,7 @@ class JournalGratitudeFragment() : Fragment() {
 		val animationFabBtn = binding.animationFabNavBtn
 		val newEntryFabBtn = binding.newEntryFab
 		
+		viewModel.getAllEntriesAsync()
 		
 		// Define the regex pattern for the date format.
 		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
