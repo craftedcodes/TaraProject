@@ -41,8 +41,8 @@ class AffirmationFragment : Fragment() {
 		
 		viewModel.currentQuoteIndex.observe(viewLifecycleOwner) {
 			lifecycleScope.launch {
-				val quote =
-					withContext(Dispatchers.Default) { viewModel.getCurrentQuote() }
+				val quote = viewModel.getCurrentQuote()
+				binding.affirmationTv.text = quote.quote
 			}
 		}
 		

@@ -2,6 +2,7 @@ package com.example.abschlussaufgabe.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.data.datamodels.ImageResult
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.ImageApi
@@ -15,6 +16,9 @@ class ImageRepository(private val api: ImageApi, private val database: LocalData
 	// Private LiveData object that holds a list of ImageResult objects
 	private val _images = database.databaseDao().getAllImages()
 	
+	// Get the access key from the BuildConfig
+	private val accessKey = BuildConfig.ACCESSKEY
+	
 	// Public LiveData object that exposes the private _images object
 	val images: LiveData<List<ImageResult>>
 		get() = _images
@@ -25,11 +29,8 @@ class ImageRepository(private val api: ImageApi, private val database: LocalData
 		Log.e(IMAGE_TAG, "get images")
 		try {
 			// Fetch images from the API
-			val imageData = api.retrofitService.searchPhotos("lotus", "portrait")
-			// Store the fetched images in the local database
-			imageData.results.forEach { image ->
-				database.databaseDao().insertImage(image)
-			}
+			val imageData = api.retrofitService.searchPhotos("lotus","portrait", accessKey)
+			// TODO: Bilder nicht mehr in DB speichern, sondern einfach 1 Bild pro API Call random holen
 		} catch (e: Exception) {
 			// Log any errors that occur during the image fetching process
 			Log.e(IMAGE_TAG, "Error fetching images from API")

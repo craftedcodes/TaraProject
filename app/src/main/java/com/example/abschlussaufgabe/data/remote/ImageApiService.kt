@@ -1,6 +1,5 @@
 package com.example.abschlussaufgabe.data.remote
 
-import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -23,22 +22,21 @@ private val retrofitImage = Retrofit.Builder()
 	.baseUrl(IMAGE_BASE_URL)
 	.build()
 
-// Get the access key from the BuildConfig
-private val apiKey = BuildConfig.APIKEY
-
 // Define the API service interface
 interface ImageApiService {
-	
 	// Define a GET request to the "search/photos" endpoint that returns an UnsplashResponse
-	@GET("search/photos")
+	@GET("photos/random")
 	suspend fun searchPhotos(
-		@Query("query") query: String,
-		@Query("orientation") orientation: String,
+		@Query("query") query: String = "lotus",
+		@Query("orientation") orientation: String = "portrait",
+		@Query("client_id") accessKey: String
 	): UnsplashResponse
 }
 
 // Create a singleton object for the API service
 object ImageApi {
 	// Lazily initialize the API service
-	val retrofitService: ImageApiService by lazy { retrofitImage.create(ImageApiService::class.java)}
+	val retrofitService: ImageApiService by lazy {
+		retrofitImage.create(ImageApiService::class.java)
+	}
 }

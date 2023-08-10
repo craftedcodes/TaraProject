@@ -26,7 +26,7 @@ class ProfileFragment : Fragment() {
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		
 		// Inflate the layout for this fragment using the inflate method of the FragmentProfileBinding class.
 		binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -40,12 +40,12 @@ class ProfileFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 		
 		// Define data for the bar chart and line chart.
-		val barData = arrayOf<Any>(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6)
-		val lineData = arrayOf<Any>(3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8)
+		val barData = arrayOf<Any>(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
+		val lineData = arrayOf<Any>(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
 		
 		// Set the bar series and line series with their respective parameters.
-		val barSeriesElement = AASeriesElement().name("Column").color("#FFDAD6").type(AAChartType.Column).data(barData)
-		val lineSeriesElement = AASeriesElement().name("Line").color("#FFE088").type(AAChartType.Line).data(lineData)
+		val barSeriesElement = AASeriesElement().name("Last 30 days").color("#FFDAD6").type(AAChartType.Column).data(barData)
+		val lineSeriesElement = AASeriesElement().name("Previous 30 days").color("#FFE088").type(AAChartType.Line).data(lineData)
 		
 		// Create an AAChartModel with the desired settings.
 		val aaChartModel = AAChartModel()

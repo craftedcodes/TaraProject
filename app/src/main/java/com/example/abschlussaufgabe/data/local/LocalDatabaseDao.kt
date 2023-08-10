@@ -9,7 +9,6 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.abschlussaufgabe.data.datamodels.EmergencyContact
 import com.example.abschlussaufgabe.data.datamodels.Entry
-import com.example.abschlussaufgabe.data.datamodels.GoogleSheetResponse
 import com.example.abschlussaufgabe.data.datamodels.ImageResult
 import com.example.abschlussaufgabe.data.datamodels.Quote
 
@@ -165,21 +164,18 @@ interface LocalDatabaseDao {
 	// Annotation to indicate that this is an insert method
 	// The onConflict strategy is set to REPLACE, which means that if a quote with the same primary key already exists, it will be replaced
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	
-	// Function to insert a quote into the database
-	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
-	suspend fun insertQuote(quote: Quote)
+	suspend fun insertQuotes(quotes: List<Quote>)
 	
 	// Annotation to indicate that this is a query method
 	// The SQL query is to select all quotes from the 'google_sheet_response' table
-	@Query("SELECT * FROM google_sheet_response")
+	@Query("SELECT * FROM quotes")
 	
 	// Function to get all quotes from the database
 	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
-	suspend fun getAllQuotes(): List<GoogleSheetResponse>
+	suspend fun getAllQuotes(): List<Quote>
 	
 	// Function to delete all quotes from the database
 	// The function is marked with 'suspend' keyword to indicate that it is a suspending function and should be called from a coroutine or another suspending function
-	@Query("DELETE FROM google_sheet_response")
+	@Query("DELETE FROM quotes")
 	suspend fun deleteAllQuotes()
 }

@@ -45,14 +45,22 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	// Define a MutableLiveData object for the delete status
 	val _deleteStatus = MutableLiveData<Boolean>()
 	
+	init {
+		viewModelScope.launch {
+			quoteRepository.fetchQuotesFromApi()
+			quoteRepository.loadQuotesFromDatabase()
+		}
+	}
+	
 	// Define function to load the images from the repository
-	fun loadImage() {
+	fun getImage() {
 		_loading.value = ApiStatus.LOADING
 		images.observeForever { imageList ->
 			if (imageList.isNullOrEmpty()) {
 				_loading.value = ApiStatus.ERROR
 				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Images are empty")
 			} else {
+				imageList.shuffled()
 				_loading.value = ApiStatus.DONE
 			}
 		}
@@ -78,23 +86,21 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	suspend fun getCurrentQuote(): Quote {
 		return try {
 			val index = _currentQuoteIndex.value ?: 0
-			quotes.value?.get(index) ?: quotes.value?.get(0) ?: Quote(99999999, "It's okay to not be okay")
+			return quotes.value?.get(index) ?: Quote(99999999,"It's okay to not be okay")
 		} catch (e: Exception) {
 			Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting current quote")
-			quotes.value?.get(0)?: Quote(99999999, "It's okay to not be okay")
+			quotes.value?.get(0)?: Quote(99999999,"It's okay to not be okay")
 		}
 	}
 	
 	// Define function to load the quotes from the repository
-	private suspend fun loadQuote() {
+	private suspend fun getQuote() {
 		viewModelScope.launch {
 			_loading.value = ApiStatus.LOADING
 			try {
-				withContext(Dispatchers.IO) {
 					_currentQuoteIndex.value = 0 // Reset the index
-					quoteRepository.getQuotes()
+					quoteRepository.fetchQuotesFromApi()
 					_loading.value = ApiStatus.DONE
-				}
 			} catch (e: Exception) {
 				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting quotes in ViewModel")
 				if (quotes.value.isNullOrEmpty()) {
@@ -108,9 +114,9 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	
 	suspend fun refreshQuote() {
 		val newIndex = (currentQuoteIndex.value ?: 0) + 1
-		if (newIndex >= quotes.value!!.size) {
+		if (newIndex >= (quotes.value?.size ?: 0)) {
 			try {
-				loadQuote() // Reload quotes if we reached the end
+				getQuote() // Reload quotes if we reached the end
 			} catch (e: Exception) {
 				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error refreshing quotes")
 			}

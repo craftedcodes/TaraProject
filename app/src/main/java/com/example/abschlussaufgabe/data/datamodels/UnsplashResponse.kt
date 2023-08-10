@@ -11,5 +11,5 @@ import androidx.room.Entity
 data class UnsplashResponse(
 	val total: Int, // Total number of images
 	val total_pages: Int, // Total number of pages
-	val results: List<ImageResult> // List of image results
+	val result: ImageResult // image result
 )

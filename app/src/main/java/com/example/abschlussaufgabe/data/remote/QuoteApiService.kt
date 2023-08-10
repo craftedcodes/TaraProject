@@ -27,12 +27,17 @@ private val retrofit = Retrofit.Builder()
 // Define the API service interface
 interface QuoteApiService{
 	// Define a GET request to the "data" endpoint that returns a GoogleSheetResponse
-	@GET("echo")
-	suspend fun getQuote(@Query("user_content_key") apiKey: String, @Query("lib") lib: String = "MRLyDHtOFXpmkugISRq9rA1aDqu7jAxOh") : GoogleSheetResponse
+	@GET("echo?")
+	suspend fun getQuote(
+		@Query("user_content_key") apiKeyGoogle: String,
+		@Query("lib") libraryId: String
+	) : GoogleSheetResponse
 }
 
 // Create a singleton object for the API service
 object QuoteApi {
 	// Lazily initialize the API service
-	val retrofitService: QuoteApiService by lazy { retrofit.create(QuoteApiService::class.java)}
+	val retrofitService: QuoteApiService by lazy {
+		retrofit.create(QuoteApiService::class.java)
+	}
 }
