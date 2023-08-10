@@ -8,14 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.abschlussaufgabe.data.ImageRepository
 import com.example.abschlussaufgabe.data.QuoteRepository
-import com.example.abschlussaufgabe.data.datamodels.ImageResult
 import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.ImageApi
 import com.example.abschlussaufgabe.data.remote.QuoteApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 // Define a constant for logging
 const val AFFIRMATION_VIEW_MODEL_TAG = "AffirmationViewModel"
@@ -24,11 +21,10 @@ const val AFFIRMATION_VIEW_MODEL_TAG = "AffirmationViewModel"
 class AffirmationViewModel(application: Application) : AndroidViewModel(application) {
 	
 	// Initialize the repositories
-	private val imageRepository = ImageRepository(ImageApi, LocalDatabase.getDatabase(application))
 	private val quoteRepository = QuoteRepository(QuoteApi, LocalDatabase.getDatabase(application))
+	private val imageRepository = ImageRepository(ImageApi)
 	
-	// Define LiveData objects for the data from the repositories
-	private val images = imageRepository.images
+	// Define LiveData objects for the data from the repository
 	private val quotes = quoteRepository.quotes
 	
 	// Define MutableLiveData objects for the loading, error, and done states
@@ -49,30 +45,18 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 		viewModelScope.launch {
 			quoteRepository.fetchQuotesFromApi()
 			quoteRepository.loadQuotesFromDatabase()
+			imageRepository.getImage()
 		}
 	}
 	
 	// Define function to load the images from the repository
-	fun getImage() {
+	suspend fun getImage() {
 		_loading.value = ApiStatus.LOADING
-		images.observeForever { imageList ->
-			if (imageList.isNullOrEmpty()) {
-				_loading.value = ApiStatus.ERROR
-				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Images are empty")
-			} else {
-				imageList.shuffled()
-				_loading.value = ApiStatus.DONE
-			}
-		}
-		viewModelScope.launch {
-			try {
-				withContext(Dispatchers.IO) {
-					imageRepository.deleteAllImages()
-					imageRepository.getImages()
-				}
-			} catch (e: Exception) {
-				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error getting images")
-			}
+		try {
+			imageRepository.getImage()
+		} catch (e: Exception) {
+			Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error loading images: ${e.message}")
+			
 		}
 	}
 	
@@ -122,38 +106,6 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 			}
 		} else {
 			_currentQuoteIndex.value = newIndex
-		}
-	}
-	
-	// Define function to delete an image from the repository
-	fun deleteImage(id: Long) {
-		viewModelScope.launch {
-			_loading.value = ApiStatus.LOADING
-			try {
-				withContext(Dispatchers.IO) {
-					imageRepository.deleteImageById(id)
-				}
-				_loading.value = ApiStatus.DONE
-			} catch (e: Exception) {
-				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error deleting image")
-				_loading.value = ApiStatus.ERROR
-			}
-		}
-	}
-	
-	// Define function to update an image in the repository
-	fun updateImage(image: ImageResult) {
-		viewModelScope.launch {
-			_loading.value = ApiStatus.LOADING
-			try {
-				withContext(Dispatchers.IO) {
-					imageRepository.updateImage(image)
-				}
-				_loading.value = ApiStatus.DONE
-			} catch (e: Exception) {
-				Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error updating image")
-				_loading.value = ApiStatus.ERROR
-			}
 		}
 	}
 }

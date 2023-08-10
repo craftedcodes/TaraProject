@@ -7,17 +7,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.abschlussaufgabe.data.datamodels.EmergencyContact
 import com.example.abschlussaufgabe.data.datamodels.Entry
-import com.example.abschlussaufgabe.data.datamodels.GoogleSheetResponse
-import com.example.abschlussaufgabe.data.datamodels.ImageResult
 import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.helper.TConverter
 
 // Annotation to define a Room database with the entities it contains and its version.
-@Database(entities = [EmergencyContact::class, Entry::class, ImageResult::class, Quote::class], version = 1)
+@Database(entities = [EmergencyContact::class, Entry::class, Quote::class], version = 1)
 @TypeConverters(TConverter::class)
 // Abstract class for the Room database.
 // It extends RoomDatabase and contains all the DAOs for the database.

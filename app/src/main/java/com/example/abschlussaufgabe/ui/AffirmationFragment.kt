@@ -46,6 +46,8 @@ class AffirmationFragment : Fragment() {
 			}
 		}
 		
+		binding.affirmationIv // TODO: set image from viewModel.getImage() and as alternative to binding.affirmationIv.setImageResource(R.drawable.lotusImage)
+		
 		// Set onClickListener for the profile button logo.
 		// When clicked, it navigates to the profile fragment.
 		binding.profileBtnLogo.setOnClickListener {

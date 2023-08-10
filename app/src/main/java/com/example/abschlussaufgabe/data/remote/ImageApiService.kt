@@ -1,6 +1,5 @@
 package com.example.abschlussaufgabe.data.remote
 
-import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -28,9 +27,8 @@ interface ImageApiService {
 	@GET("photos/random")
 	suspend fun searchPhotos(
 		@Query("query") query: String = "lotus",
-		@Query("orientation") orientation: String = "portrait",
 		@Query("client_id") accessKey: String
-	): UnsplashResponse
+	)
 }
 
 // Create a singleton object for the API service

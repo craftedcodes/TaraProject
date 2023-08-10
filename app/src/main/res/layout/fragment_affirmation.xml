@@ -53,6 +53,7 @@
 
             <!-- Background image -->
             <ImageView
+                android:id="@+id/affirmation_iv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/placeholder_image"
