@@ -2,12 +2,10 @@ package com.example.abschlussaufgabe.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.abschlussaufgabe.data.datamodels.EmergencyContact
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.datamodels.Quote
 
@@ -81,26 +79,6 @@ interface LocalDatabaseDao {
 	@Query("SELECT * FROM entry WHERE (year > :startYear OR (year = :startYear AND (month > :startMonth OR (month = :startMonth AND day >= :startDay)))) AND (year < :endYear OR (year = :endYear AND (month < :endMonth OR (month = :endMonth AND day <= :endDay)))) ORDER BY year DESC, month DESC, day DESC"
 	)
 	fun getEntriesByDateRange(startDay: Int, startMonth: Int, startYear: Int, endDay: Int, endMonth: Int, endYear: Int): LiveData<List<Entry>>
-	
-	
-	// Dao for emergency contact
-	
-	// Method to update an existing emergency contact in the database.
-	@Update
-	suspend fun updateEmergencyContact(emergencyContact: EmergencyContact )
-	
-	// Method to insert an emergency contact into the database.
-	// If an emergency contact with the same ID already exists, it will be replaced.
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertEmergencyContact(emergencyContact: EmergencyContact)
-	
-	// Method to retrieve the emergency contact from the database.
-	@Query("SELECT * FROM emergency_contact")
-	fun getEmergencyContact(): EmergencyContact
-	
-	// Method to delete the emergency contact from the database.
-	@Query("DELETE FROM emergency_contact")
-	suspend fun deleteEmergencyContact()
 	
 	// Dao for quote
 	

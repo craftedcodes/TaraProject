@@ -3,7 +3,6 @@ package com.example.abschlussaufgabe.data
 
 // Importing necessary libraries and classes.
 import android.util.Log
-import com.example.abschlussaufgabe.data.datamodels.EmergencyContact
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 
 // Constant for logging.
