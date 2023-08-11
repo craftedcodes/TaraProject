@@ -29,7 +29,7 @@ class AffirmationFragment : Fragment() {
 	
 	// Private function to set the photographer information.
 	private fun setPhotographerInfo(name: String, profileLink: String, unsplashLink: String) {
-		val fullText = "Photo by $name at Unsplash"
+		val fullText = "Photo by $name on Unsplash"
 		val spannableString = SpannableString(fullText)
 		
 		val nameStart = fullText.indexOf(name)

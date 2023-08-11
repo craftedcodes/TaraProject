@@ -27,7 +27,7 @@ interface ImageApiService {
 	// Define a GET request to the "search/photos" endpoint that returns an UnsplashResponse
 	@GET("photos/random")
 	suspend fun searchPhotos(
-		@Query("query") query: String = "lotus flower",
+		@Query("query") query: String = "lotus-flower",
 		@Query("orientation") orientation: String = "portrait",
 		@Query("client_id") accessKey: String
 	): UnsplashResponse

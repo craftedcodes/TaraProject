@@ -19,7 +19,7 @@ class ImageRepository(private val api: ImageApi) {
 		Log.e(IMAGE_TAG, "get images")
 		return try {
 			// Fetch images from the API
-			api.retrofitService.searchPhotos("lotus flower", accessKey)
+			api.retrofitService.searchPhotos("lotus-flower", "portrait", accessKey)
 		} catch (e: Exception) {
 			// Log any errors that occur during the image fetching process
 			Log.e(IMAGE_TAG, "Error fetching images from API")
