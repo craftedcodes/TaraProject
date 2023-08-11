@@ -47,18 +47,18 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 		viewModelScope.launch {
 			quoteRepository.fetchQuotesFromApi()
 			quoteRepository.loadQuotesFromDatabase()
-			imageRepository.getImage()
+			getImage()
 		}
 	}
 	
 	// Define function to load the images from the repository
-	suspend fun getImage() {
+	private suspend fun getImage() {
 		_loading.value = ApiStatus.LOADING
 		try {
 			val response = imageRepository.getImage()
 			photographerName.value = response.user.name
 			photographerProfileLink.value = response.user.links.html
-			unsplashLink.value = response.links.html
+			unsplashLink.value = response.urls.small
 		} catch (e: Exception) {
 			Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error loading images: ${e.message}")
 		}

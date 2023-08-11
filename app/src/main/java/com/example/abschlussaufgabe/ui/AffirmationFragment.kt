@@ -9,11 +9,12 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import coil.load
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAffirmationBinding
 import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
@@ -53,7 +54,6 @@ class AffirmationFragment : Fragment() {
 		}
 		spannableString.setSpan(unsplashClickableSpan, unsplashStart, unsplashEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 		
-		
 		binding.photographerTv.text = spannableString
 		binding.photographerTv.movementMethod = LinkMovementMethod.getInstance()
 	}
@@ -84,12 +84,15 @@ class AffirmationFragment : Fragment() {
 			}
 		}
 		
-		// Show image from viewModel.getImage() at bindin.affirmationIv and as an alternative if there is no internet connection or if the image is not available set R.drawable.lotusImage.
-		viewModel.unsplashLink.observe(viewLifecycleOwner) { imageUrl ->
-			Glide.with(this)
-				.load(imageUrl)
-				.placeholder(R.drawable.placeholder_image)
-				.into(binding.affirmationIv)
+		// Show image from viewModel.getImage() at binding.affirmationIv and as an alternative if there is no internet connection or if the image is not available set R.drawable.lotusImage.
+		viewModel.unsplashLink.observe(viewLifecycleOwner) { imageLink ->
+			lifecycleScope.launch {
+				val imageUri = imageLink.toUri().buildUpon().scheme("https").build()
+				binding.affirmationIv.load(imageUri){
+					error(R.drawable.placeholder_image)
+				}
+				setPhotographerInfo(viewModel.photographerName.value.toString(), viewModel.photographerProfileLink.value.toString(), viewModel.unsplashLink.value.toString())
+			}
 		}
 		
 		
