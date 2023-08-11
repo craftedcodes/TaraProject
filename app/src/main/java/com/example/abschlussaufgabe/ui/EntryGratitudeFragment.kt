@@ -203,7 +203,7 @@ class EntryGratitudeFragment : Fragment() {
 		// Set an onClickListener for the profile button logo.
 		// When this button is clicked, it navigates to the profile fragment.
 		profileButton.setOnClickListener {
-			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToProfileFragment(ecName = null, ecNumber = null, ecMessage = null, ecAvatar = 0))
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToProfileFragment())
 		}
 		
 		// Set an onClickListener for the gallery button.

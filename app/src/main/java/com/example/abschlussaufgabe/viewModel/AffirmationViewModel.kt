@@ -47,6 +47,7 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 		viewModelScope.launch {
 			quoteRepository.fetchQuotesFromApi()
 			quoteRepository.loadQuotesFromDatabase()
+			getCurrentQuote()
 			getImage()
 		}
 	}

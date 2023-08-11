@@ -78,7 +78,7 @@ class AvatarEmergencyContactFragment : Fragment() {
 				// and passes the avatar image as an argument.
 				setOnClickListener {
 					val action = AvatarEmergencyContactFragmentDirections
-						.actionAvatarEmergencyContactFragmentToEmergencyContactFragment(resId)
+						.actionAvatarEmergencyContactFragmentToEmergencyContactFragment()
 					findNavController().navigate(action)
 				}
 			}
@@ -96,7 +96,7 @@ class AvatarEmergencyContactFragment : Fragment() {
 		
         // Set the OnClickListener for the back button.
 		binding.backBtn.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToEmergencyContactFragment())
         }
 		
 		// Set the OnClickListener for the home logo button.
