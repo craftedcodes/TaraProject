@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.abschlussaufgabe.data.ImageRepository
 import com.example.abschlussaufgabe.data.QuoteRepository
 import com.example.abschlussaufgabe.data.datamodels.Quote
+import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.ImageApi
 import com.example.abschlussaufgabe.data.remote.QuoteApi
@@ -38,8 +39,9 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	val done: LiveData<Boolean>
 		get() = _done
 	
-	// Define a MutableLiveData object for the delete status
-	val _deleteStatus = MutableLiveData<Boolean>()
+	val photographerName = MutableLiveData<String>()
+	val photographerProfileLink = MutableLiveData<String>()
+	val unsplashLink = MutableLiveData<String>()
 	
 	init {
 		viewModelScope.launch {
@@ -53,10 +55,12 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 	suspend fun getImage() {
 		_loading.value = ApiStatus.LOADING
 		try {
-			imageRepository.getImage()
+			val response = imageRepository.getImage()
+			photographerName.value = response.user.name
+			photographerProfileLink.value = response.user.links.html
+			unsplashLink.value = response.links.html
 		} catch (e: Exception) {
 			Log.e(AFFIRMATION_VIEW_MODEL_TAG, "Error loading images: ${e.message}")
-			
 		}
 	}
 	
@@ -67,7 +71,7 @@ class AffirmationViewModel(application: Application) : AndroidViewModel(applicat
 		get() = _currentQuoteIndex
 	
 	// Define function to get the current quote
-	suspend fun getCurrentQuote(): Quote {
+	fun getCurrentQuote(): Quote {
 		return try {
 			val index = _currentQuoteIndex.value ?: 0
 			return quotes.value?.get(index) ?: Quote(99999999,"It's okay to not be okay")

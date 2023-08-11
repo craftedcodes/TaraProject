@@ -70,7 +70,7 @@
 
                 <!-- Top text view -->
                 <TextView
-                    android:id="@+id/top_tv"
+                    android:id="@+id/photographer_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"

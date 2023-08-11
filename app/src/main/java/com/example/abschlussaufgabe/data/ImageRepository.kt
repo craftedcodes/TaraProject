@@ -2,6 +2,7 @@ package com.example.abschlussaufgabe.data
 
 import android.util.Log
 import com.example.abschlussaufgabe.BuildConfig
+import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.example.abschlussaufgabe.data.remote.ImageApi
 
 // Define a constant for logging
@@ -13,15 +14,16 @@ class ImageRepository(private val api: ImageApi) {
 	private val accessKey = BuildConfig.ACCESSKEY
 	
 	// Function to get images from the API
-	suspend fun getImage() {
+	suspend fun getImage(): UnsplashResponse {
 		// Log the start of the image fetching process
 		Log.e(IMAGE_TAG, "get images")
-		try {
+		return try {
 			// Fetch images from the API
 			api.retrofitService.searchPhotos("lotus flower", accessKey)
 		} catch (e: Exception) {
 			// Log any errors that occur during the image fetching process
 			Log.e(IMAGE_TAG, "Error fetching images from API")
+			throw e
 		}
 	}
 }

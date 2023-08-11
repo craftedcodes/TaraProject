@@ -1,5 +1,6 @@
 package com.example.abschlussaufgabe.data.remote
 
+import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -26,9 +27,9 @@ interface ImageApiService {
 	// Define a GET request to the "search/photos" endpoint that returns an UnsplashResponse
 	@GET("photos/random")
 	suspend fun searchPhotos(
-		@Query("query") query: String = "lotus",
+		@Query("query") query: String = "lotus flower",
 		@Query("client_id") accessKey: String
-	)
+	): UnsplashResponse
 }
 
 // Create a singleton object for the API service
