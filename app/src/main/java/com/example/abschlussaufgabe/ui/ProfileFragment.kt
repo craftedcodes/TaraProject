@@ -16,8 +16,8 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 
 // Constants for SharedPreferences keys.
-private val AVATAR_PREFS = "avatar_prefs"
-private val CONTACT_PREFS = "contact_prefs"
+private const val AVATAR_PREFS = "avatar_prefs"
+private const val CONTACT_PREFS = "contact_prefs"
 
 /**
  * A Fragment representing the user's profile screen.
