@@ -57,6 +57,7 @@ class ProfileFragment : Fragment() {
 	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
 		
 		// Define and set up chart data.

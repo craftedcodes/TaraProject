@@ -91,9 +91,8 @@ class EntryGratitudeFragment : Fragment() {
 	
 	// The onViewCreated method is called after onCreateView(). It is used to perform additional view setup
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
-		
-		
 		
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
@@ -125,7 +124,6 @@ class EntryGratitudeFragment : Fragment() {
 
 		// Attach listeners to UI components to handle user interactions.
 		setupListeners()
-		
 		
 		// Define the regex pattern for the date format.
 		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
@@ -175,10 +173,8 @@ class EntryGratitudeFragment : Fragment() {
 			lifecycleScope.launch(Dispatchers.IO) {
 				repository.updateEntry(entry)
 			}
-			
 		}
 	}
-	
 	
 	/**
 	 * Initialize UI elements with data binding.

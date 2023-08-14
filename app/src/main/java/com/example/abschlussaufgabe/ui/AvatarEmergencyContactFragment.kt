@@ -45,6 +45,7 @@ class AvatarEmergencyContactFragment : Fragment() {
 	 * Sets up the UI elements and their respective listeners after the view is created.
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
 		
 		// Set up listeners for the UI elements.

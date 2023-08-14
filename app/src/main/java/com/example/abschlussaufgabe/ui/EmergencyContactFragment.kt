@@ -37,6 +37,7 @@ class EmergencyContactFragment : Fragment() {
 	 * Called immediately after onCreateView() to perform additional view initialization.
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
 		
 		// Load and display the user's selected avatar.

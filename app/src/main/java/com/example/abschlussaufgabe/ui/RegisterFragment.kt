@@ -11,39 +11,59 @@ import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentRegisterBinding
 
-// A class that represents the registration fragment in the application.
+/**
+ * A Fragment representing the registration screen of the application.
+ */
 class RegisterFragment : Fragment() {
 	
-	// Property to hold the binding object for this fragment.
+	// Holds the binding instance for this fragment's view.
 	private lateinit var binding: FragmentRegisterBinding
 	
-	// The onCreateView function is used to create and return the view hierarchy
-	// associated with the fragment.
+	/**
+	 * Called to have the fragment instantiate its user interface view.
+	 *
+	 * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+	 * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+	 * @return The root view for the fragment's layout.
+	 */
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
 		
-		// Inflate the layout for this fragment using data binding.
+		// Inflate the layout for this fragment and bind it to the FragmentRegisterBinding instance.
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
 		
 		// Return the root view of the inflated layout.
 		return binding.root
 	}
 	
-	// onViewCreated is called after onCreateView, and it is where additional setup for the fragment's view takes place.
+	/**
+	 * Called immediately after onCreateView() has returned, but before any saved state has been restored in the view.
+	 *
+	 * @param view The View returned by onCreateView().
+	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Ensure proper initialization of the view by calling the super method.
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Set onClickListener for the quit button.
-		// When clicked, it navigates back in the navigation stack.
+		// Set up click listeners for the UI components.
+		setupListeners()
+	}
+	
+	/**
+	 * Sets up click listeners for the UI components in the fragment.
+	 */
+	private fun setupListeners() {
+		// Navigate back in the navigation stack when the quit button is clicked.
 		binding.quitBtn.setOnClickListener {
 			findNavController().popBackStack()
 		}
 		
-		// Set onClickListener for the register button.
-		// When clicked, it navigates to the login fragment.
+		// Navigate to the login fragment when the register button is clicked.
 		binding.registerBtn.setOnClickListener {
 			findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
 		}
