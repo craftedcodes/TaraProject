@@ -13,6 +13,7 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
+import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentProfileBinding
 import java.util.Calendar
@@ -29,6 +30,9 @@ class ProfileFragment : Fragment() {
 	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentProfileBinding
+	
+	// Holds the FirebaseAuth instance.
+	private lateinit var auth: FirebaseAuth
 	
 	// Create an instance of SharedPreferences.
 	private val countPref by lazy { activity?.getSharedPreferences("count_preferences", Context.MODE_PRIVATE) }
@@ -53,6 +57,9 @@ class ProfileFragment : Fragment() {
 	): View {
 		// Inflate the layout for this fragment using the inflate method of the FragmentProfileBinding class.
 		binding = FragmentProfileBinding.inflate(inflater, container, false)
+		
+		// Get the FirebaseAuth instance.
+		auth = FirebaseAuth.getInstance()
 		
 		// Load the emergency contact details from SharedPreferences.
 		loadContactDataFromSharedPreferences()
@@ -191,6 +198,10 @@ class ProfileFragment : Fragment() {
 		// The onClickListener for the logout button.
 		// When clicked, the user is navigated to the home fragment, effectively logging them out.
 		binding.logoutBtn.setOnClickListener {
+			// Log the user out from Firebase
+			auth.signOut()
+			
+			// Navigate the user to the desired fragment/screen after logout
 			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
 		}
 	}

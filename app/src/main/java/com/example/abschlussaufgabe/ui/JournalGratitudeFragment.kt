@@ -1,13 +1,13 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +22,7 @@ import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.util.EntryAdapter
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentJournalGratitudeBinding
 import kotlinx.coroutines.Dispatchers
@@ -39,9 +40,8 @@ class JournalGratitudeFragment : Fragment() {
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
 	
-	// Create an instance of SharedPreferences.
-	private val entryPref by lazy { activity?.getSharedPreferences("entries_preferences", Context.MODE_PRIVATE) }
-	private val countPref by lazy { activity?.getSharedPreferences("count_preferences", Context.MODE_PRIVATE) }
+	// Create an instance of FirebaseFirestore to access.
+	private val db = FirebaseFirestore.getInstance()
 	
 	/**
 	 * Inflates the fragment's layout and initializes the data binding.
@@ -68,13 +68,13 @@ class JournalGratitudeFragment : Fragment() {
 		
 		// Fetch all the journal entries asynchronously from the database.
 		viewModel.getAllEntriesAsync()
-
+		
 		// Initialize and set up click listeners for various UI components.
 		setUpListeners()
-
+		
 		// Set up text watchers for input validation, especially for date fields.
 		setUpTextWatchers()
-
+		
 		// Configure and initialize the RecyclerView to display the list of gratitude journal entries.
 		setUpRecyclerView()
 		
@@ -94,40 +94,40 @@ class JournalGratitudeFragment : Fragment() {
 			// Fetch and observe entries from the database within the specified date range.
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
 				// Update the RecyclerView adapter with the filtered entries.
-				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
+				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
 			}
 		}
-
+		
 		// Set up the click listener for the reset button.
 		binding.resetBtn.setOnClickListener {
 			// Fetch all entries asynchronously to reset the view.
 			viewModel.getAllEntriesAsync()
 		}
-
+		
 		// Set up the click listener for the home button logo.
 		// Navigate to the animation fragment when clicked.
 		binding.homeBtnLogo.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
-
+		
 		// Set up the click listener for the home button text.
 		// Navigate to the animation fragment when clicked.
 		binding.homeBtnText.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
-
+		
 		// Set up the click listener for the profile button logo.
 		// Navigate to the profile fragment when clicked.
 		binding.profileBtnLogo.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToProfileFragment())
 		}
-
+		
 		// Set up the click listener for the animationFabNavBtn.
 		// Navigate to the animation fragment when clicked.
 		binding.animationFabNavBtn.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
-
+		
 		// Set up the click listener for the newEntryFab button.
 		binding.newEntryFab.setOnClickListener {
 			createNewEntry()
@@ -140,12 +140,12 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	private fun setUpRecyclerView() {
 		// Initially set the RecyclerView's adapter with an empty list.
-		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList(), entryPref, countPref)
-
+		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList())
+		
 		// Observe changes in the entries LiveData from the ViewModel.
 		// Whenever the entries data changes, update the RecyclerView's adapter with the new entries.
 		viewModel.entries.observe(viewLifecycleOwner) { entries ->
-			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
+			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
 		}
 	}
 	
@@ -224,27 +224,78 @@ class JournalGratitudeFragment : Fragment() {
 	private fun createNewEntry() {
 		// Get the current date
 		val calendar = Calendar.getInstance()
-		val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"
+		val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${
+			calendar.get(Calendar.YEAR)
+		}"
 		
 		// Create a new Entry object with the entered date, text, and image.
-		val entry = Entry(day = calendar.get(Calendar.DAY_OF_MONTH), month = calendar.get(Calendar.MONTH) + 1, year = calendar.get(Calendar.YEAR), text = null, image = null)
+		val entry = Entry(
+			day = calendar.get(Calendar.DAY_OF_MONTH),
+			month = calendar.get(Calendar.MONTH) + 1,
+			year = calendar.get(Calendar.YEAR),
+			text = null,
+			image = null
+		)
 		
 		// Obtain an instance of the local database for the current context.
 		val database = LocalDatabase.getDatabase(requireContext())
-
+		
 		// Create a repository instance using the obtained local database.
 		val repository = EntryRepository(database)
 		
-		// Insert the new entry into the database.
+		// Launch a coroutine in the IO dispatcher for database operations.
 		lifecycleScope.launch(Dispatchers.IO) {
+			
+			// Insert the new entry into the local database and retrieve its ID.
 			val entryId = repository.insertEntry(entry)
-			entryPref?.edit()?.putLong("entryId", entryId)?.apply()
-			val currentCount = countPref?.getInt(dayKey, 0) ?: 0
-			countPref?.edit()?.putInt(dayKey, currentCount + 1)?.apply()
+			
+			// Increment the count for the specific day in Firestore.
+			saveCountEntryToFirestore(dayKey)
+			
+			// Switch to the Main dispatcher to perform UI operations.
 			withContext(Dispatchers.Main) {
-				// Navigate to the entryGratitudeFragment.
-				findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
+				// Navigate to the entry gratitude fragment with the ID of the newly created entry.
+				findNavController().navigate(
+					JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(
+						entryId = entryId
+					)
+				)
 			}
 		}
+		
+	}
+	
+	
+	/**
+	 * Save the count of entries for a specific day to Firestore.
+	 *
+	 * @param dayKey The key representing the day.
+	 * @param count The count of entries for the day.
+	 */
+	private fun saveCountEntryToFirestore(dayKey: String) {
+		// Reference to the specific document in the 'entries' collection using the dayKey
+		val docRef = db.collection("entries").document(dayKey)
+
+// Start a transaction to safely increment the 'count' field
+		db.runTransaction { transaction ->
+			// Get the current document snapshot within the transaction
+			val snapshot = transaction.get(docRef)
+			
+			// Retrieve the current value of 'count' from the snapshot, default to 0 if it doesn't exist
+			val currentCount = snapshot.getLong("count") ?: 0
+			
+			// Calculate the new count by incrementing the current count
+			val newCount = currentCount + 1
+			
+			// Update the 'count' field in the document with the new count value
+			transaction.update(docRef, "count", newCount)
+		}.addOnSuccessListener {
+			// Log success message when the transaction completes successfully
+			Log.d("Firestore", "Successfully incremented count in Firestore.")
+		}.addOnFailureListener { e ->
+			// Log error message if there's any issue during the transaction
+			Log.e("Firestore", "Error when incrementing count in Firestore.", e)
+		}
+		
 	}
 }
