@@ -1,5 +1,6 @@
 package com.example.abschlussaufgabe.ui
 
+// Required imports for the class.
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,13 +15,17 @@ import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAvatarEmergencyContactBinding
 
-// This class represents a fragment for selecting an avatar in the emergency contact screen.
+/**
+ * Fragment for selecting an avatar for the emergency contact screen.
+ */
 class AvatarEmergencyContactFragment : Fragment() {
 	
 	// Binding for this fragment's view.
 	private lateinit var binding: FragmentAvatarEmergencyContactBinding
 	
-	// Creates the view for this fragment.
+	/**
+	 * Inflates the fragment's layout and initializes the data binding.
+	 */
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -36,17 +41,44 @@ class AvatarEmergencyContactFragment : Fragment() {
 		return binding.root
 	}
 	
-	private fun saveSelectedAvatar(resId: Int) {
-		val sharedPreferences = activity?.getSharedPreferences("avatar_prefs", Context.MODE_PRIVATE)
-		val editor = sharedPreferences?.edit()
-		editor?.putInt("selected_avatar", resId)
-		editor?.apply()
-	}
-	
+	/**
+	 * Sets up the UI elements and their respective listeners after the view is created.
+	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		// List of image resources.
+		// Set up listeners for the UI elements.
+		setUpListeners()
+		
+        // Set up the avatars.
+		setUpAvatars()
+	}
+	
+	/**
+	 * Sets up click listeners for the UI elements.
+	 */
+	private fun setUpListeners() {
+		// Set up the back button to navigate to the previous fragment.
+		binding.backBtn.setOnClickListener {
+			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToEmergencyContactFragment())
+		}
+		
+		// Set up the home logo button to navigate to the animation fragment.
+		binding.homeBtnLogo.setOnClickListener {
+			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToAnimationFragment())
+		}
+		
+		// Set up the home text button to also navigate to the animation fragment.
+		binding.homeBtnText.setOnClickListener {
+			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToAnimationFragment())
+		}
+	}
+	
+	/**
+	 * Sets up the avatars in the grid layout.
+	 */
+	private fun setUpAvatars() {
+		// List of avatar image resources.
 		val imageResources = listOf(
 			R.drawable.avatar00,
 			R.drawable.avatar01,
@@ -72,26 +104,11 @@ class AvatarEmergencyContactFragment : Fragment() {
 			R.drawable.avatar24
 		)
 		
-		// Set the OnClickListener for the back button.
-		binding.backBtn.setOnClickListener {
-			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToEmergencyContactFragment())
-		}
-		
-		// Set the OnClickListener for the home logo button.
-		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToAnimationFragment())
-		}
-		
-		// Set the OnClickListener for the home text button.
-		binding.homeBtnText.setOnClickListener {
-			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToAnimationFragment())
-		}
-		
-		// Set the number of columns.
+		// Configure the grid layout to display avatars.
 		binding.gridLayout.columnCount = 4
 		
 		for (resId in imageResources) {
-			// Create an ImageView for each image.
+			// Create and configure an ImageView for each avatar.
 			val imageView = ImageView(context).apply {
 				val dpValue = 80 // Size in dp.
 				val d = context.resources.displayMetrics.density
@@ -113,14 +130,26 @@ class AvatarEmergencyContactFragment : Fragment() {
 					// Save the selected avatar in SharedPreferences.
 					saveSelectedAvatar(resId)
 					
+					// Navigate back to the EmergencyContactFragment.
 					val action = AvatarEmergencyContactFragmentDirections
 						.actionAvatarEmergencyContactFragmentToEmergencyContactFragment()
 					findNavController().navigate(action)
 				}
 			}
 			
-			// Add the ImageView to the GridLayout.
+			// Add the configured ImageView to the grid layout.
 			binding.gridLayout.addView(imageView)
 		}
+	}
+	
+	/**
+	 * Saves the selected avatar to shared preferences.
+	 * @param resId The resource ID of the selected avatar.
+	 */
+	private fun saveSelectedAvatar(resId: Int) {
+		val sharedPreferences = activity?.getSharedPreferences("avatar_prefs", Context.MODE_PRIVATE)
+		val editor = sharedPreferences?.edit()
+		editor?.putInt("selected_avatar", resId)
+		editor?.apply()
 	}
 }

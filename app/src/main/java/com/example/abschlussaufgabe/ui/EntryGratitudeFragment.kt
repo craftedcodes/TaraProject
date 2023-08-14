@@ -33,7 +33,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
-// EntryGratitudeFragment class, a subclass of Fragment
+/**
+ * Fragment to display and edit gratitude entries.
+ */
 class EntryGratitudeFragment : Fragment() {
 	
 	// Lateinit variable for the data binding object
@@ -91,10 +93,7 @@ class EntryGratitudeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Helper function to format the date in the format DD.MM.YYYY
-		fun formatDate(day: Int, month: Int, year: Int): String {
-			return String.format("%02d.%02d.%04d", day, month, year)
-		}
+		
 		
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
@@ -118,99 +117,18 @@ class EntryGratitudeFragment : Fragment() {
 			textField.setText(entry.text ?: "")
 		})
 		
-		// Initialize the backButton with the ImageButton from the binding object.
-		backButton = binding.backBtn
+		// Initialize UI components using data binding.
+		initializeUIElements()
 
-		// Initialize the homeLogoButton with the ImageButton from the binding object.
-		homeLogoButton = binding.homeBtnLogo
+		// Set up a TextWatcher for the date input field to validate its format.
+		setUpTextWatcher()
 
-		// Initialize the homeTextButton with the TextView from the binding object.
-		homeTextButton = binding.homeBtnText
-
-		// Initialize the profileButton with the ImageButton from the binding object.
-		profileButton = binding.profileBtnLogo
-
-		// Initialize the dateField with the TextInputEditText from the binding object.
-		// The '!!' operator is used to assert that the value is not null.
-		dateField = binding.dateTf!!
+		// Attach listeners to UI components to handle user interactions.
+		setupListeners()
+		
 		
 		// Define the regex pattern for the date format.
 		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
-		
-		// Add a TextWatcher to the dateField to monitor changes in the text input.
-		dateField.addTextChangedListener(object : TextWatcher {
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` are about to be replaced by new text with length `after`.
-			// Not needed in this case.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` have just replaced old text that had length `before`.
-			// Not needed in this case.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that somewhere within `s`, the text has been changed.
-			// It is up to you to determine what to do with the text.
-			override fun afterTextChanged(s: Editable) {
-				// Check if the entered date matches the pattern.
-				if (!datePattern.matches(s.toString())) {
-					// If the date does not match the pattern, change the border color of the text field to red.
-					dateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-				} else {
-					// If the date matches the pattern, reset the border color of the text field to black.
-					dateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-				}
-			}
-		}
-		)
-		
-		// Initialize the textField with the TextInputEditText from the binding object.
-		textField = binding.textTf
-
-		// Initialize the galleryButton with the FloatingActionButton from the binding object.
-		galleryButton = binding.galleryBtn
-
-		// Initialize the quitButton with the Button from the binding object.
-		quitButton = binding.quitBtn
-
-		// Initialize the saveButton with the Button from the binding object.
-		saveButton = binding.saveBtn
-		
-		
-		// Set an onClickListener for the back button.
-		// When this button is clicked, it navigates back in the back stack.
-		backButton.setOnClickListener {
-			findNavController().popBackStack()
-		}
-		
-		// Set an onClickListener for the home button logo.
-		// When this button is clicked, it navigates to the animation fragment.
-		homeLogoButton.setOnClickListener {
-			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
-		}
-		
-		// Set an onClickListener for the home button text.
-		// When this text is clicked, it also navigates to the animation fragment.
-		homeTextButton.setOnClickListener {
-			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
-		}
-		
-		// Set an onClickListener for the profile button logo.
-		// When this button is clicked, it navigates to the profile fragment.
-		profileButton.setOnClickListener {
-			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToProfileFragment())
-		}
-		
-		// Set an onClickListener for the gallery button.
-		// When this button is clicked, it navigates to the gallery fragment.
-		galleryButton.setOnClickListener {
-			getContent.launch("image/*")
-		}
 		
 		// Set an onClickListener for the save button.
 		// When this button is clicked, it navigates to the journalGratitudeFragment.
@@ -259,11 +177,103 @@ class EntryGratitudeFragment : Fragment() {
 			}
 			
 		}
+	}
+	
+	
+	/**
+	 * Initialize UI elements with data binding.
+	 */
+	private fun initializeUIElements() {
+		backButton = binding.backBtn
+		homeLogoButton = binding.homeBtnLogo
+		homeTextButton = binding.homeBtnText
+		profileButton = binding.profileBtnLogo
+		dateField = binding.dateTf!!
+		textField = binding.textTf
+		galleryButton = binding.galleryBtn
+		quitButton = binding.quitBtn
+		saveButton = binding.saveBtn
+	}
+	
+	/**
+	 * Set up listeners for UI interactions.
+	 */
+	private fun setupListeners() {
+		// Set an onClickListener for the back button.
+		// When this button is clicked, it navigates back in the back stack.
+		backButton.setOnClickListener {
+			findNavController().popBackStack()
+		}
+		
+		// Set an onClickListener for the home button logo.
+		// When this button is clicked, it navigates to the animation fragment.
+		homeLogoButton.setOnClickListener {
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
+		}
+		
+		// Set an onClickListener for the home button text.
+		// When this text is clicked, it also navigates to the animation fragment.
+		homeTextButton.setOnClickListener {
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
+		}
+		
+		// Set an onClickListener for the profile button logo.
+		// When this button is clicked, it navigates to the profile fragment.
+		profileButton.setOnClickListener {
+			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToProfileFragment())
+		}
+		
+		// Set an onClickListener for the gallery button.
+		// When this button is clicked, it navigates to the gallery fragment.
+		galleryButton.setOnClickListener {
+			getContent.launch("image/*")
+		}
 		
 		// Set an onClickListener for the quit button.
 		// When this button is clicked, it navigates to the gratitude journal fragment.
 		quitButton.setOnClickListener {
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
 		}
+	}
+	
+	/**
+	 * Set up a TextWatcher for the date input field to validate date format.
+	 */
+	private fun setUpTextWatcher() {
+		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		
+		dateField.addTextChangedListener(object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			override fun afterTextChanged(s: Editable) {
+				// Check if the entered text matches the predefined date pattern.
+				if (!datePattern.matches(s.toString())) {
+					// If the date format is incorrect, set the background tint of the dateField to red.
+					dateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+				} else {
+					// If the date format is correct, set the background tint of the dateField to black.
+					dateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+				}
+			}
+		}
+		)
+	}
+	
+	/**
+	 * Format the date in the format DD.MM.YYYY.
+	 *
+	 * @param day The day of the month.
+	 * @param month The month of the year.
+	 * @param year The year.
+	 * @return Formatted date string.
+	 */
+	private fun formatDate(day: Int, month: Int, year: Int): String {
+		return String.format("%02d.%02d.%04d", day, month, year)
 	}
 }

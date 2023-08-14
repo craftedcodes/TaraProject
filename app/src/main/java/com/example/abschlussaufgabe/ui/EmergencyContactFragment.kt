@@ -30,50 +30,21 @@ class EmergencyContactFragment : Fragment() {
 	// The onViewCreated method is called after onCreateView(). It is used to perform additional view setup.
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		
+		/**
+		 * Loads the user's selected avatar from storage or a database
+		 * and displays it in the appropriate UI component.
+		 */
 		loadSelectedAvatar()
+		
+		/**
+		 * Retrieves and displays the user's contact details
+		 * (e.g., phone number, email, address) from storage or a database
+		 * to the relevant UI components.
+		 */
 		loadContactDetails()
 		
-		if (binding.messageTv.text.toString().isEmpty()) {
-			binding.messageTv.setText(getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
-		}
-		
-		// Set an onClickListener for the back button.
-		// When clicked, it will navigate back in the back stack.
-		binding.backBtn.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
-		}
-		
-		// Set an onClickListener for the home button logo.
-		// When clicked, it will navigate to the animation fragment.
-		binding.homeBtnLogo.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAnimationFragment())
-		}
-		
-		// Set an onClickListener for the home button text.
-		// When clicked, it will also navigate to the animation fragment.
-		binding.homeBtnText.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAnimationFragment())
-		}
-		
-		// Set an onClickListener for the avatar ImageView.
-		// When clicked, it will navigate to the avatarEmergencyContactFragment.
-		binding.avatarIv.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAvatarEmergencyContactFragment())
-		}
-		
-		// Set an onClickListener for the quit button.
-		// When clicked, it will navigate to the profile fragment.
-		binding.quitBtn.setOnClickListener {
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
-		}
-		
-		// Set an onClickListener for the save button.
-		// When clicked, it will also navigate to the profile fragment.
-		binding.saveBtn.setOnClickListener {
-			saveContactDetails()
-			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
-		}
+		setupDefaultMessage()
+		setupListeners()
 	}
 	
 	private fun loadSelectedAvatar() {
@@ -101,5 +72,38 @@ class EmergencyContactFragment : Fragment() {
 		editor?.putString("contact_number", binding.numberTv.text.toString())
 		editor?.putString("contact_message", binding.messageTv.text.toString())
 		editor?.apply()
+	}
+	
+	private fun setupDefaultMessage() {
+		if (binding.messageTv.text.toString().isEmpty()) {
+			binding.messageTv.setText(getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
+		}
+	}
+	
+	private fun setupListeners() {
+		binding.backBtn.setOnClickListener {
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
+		}
+		
+		binding.homeBtnLogo.setOnClickListener {
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAnimationFragment())
+		}
+		
+		binding.homeBtnText.setOnClickListener {
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAnimationFragment())
+		}
+		
+		binding.avatarIv.setOnClickListener {
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAvatarEmergencyContactFragment())
+		}
+		
+		binding.quitBtn.setOnClickListener {
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
+		}
+		
+		binding.saveBtn.setOnClickListener {
+			saveContactDetails()
+			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
+		}
 	}
 }

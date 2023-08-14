@@ -29,13 +29,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 
-// This is the JournalGratitudeFragment class which extends the Fragment class.
+/**
+ * Represents the JournalGratitudeFragment which allows users to view and filter gratitude journal entries.
+ */
 class JournalGratitudeFragment() : Fragment() {
 	// Declare a late-initialized variable for the FragmentJournalGratitudeBinding instance.
 	private lateinit var binding: FragmentJournalGratitudeBinding
+	
+	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
 	
-	// This is the onCreateView function which inflates the layout for this fragment.
+	
+	// Create an instance of SharedPreferences.
+	private val entryPref by lazy { activity?.getSharedPreferences("entries_preferences", Context.MODE_PRIVATE) }
+	private val countPref by lazy { activity?.getSharedPreferences("count_preferences", Context.MODE_PRIVATE) }
+	
+	/**
+	 * Inflates the fragment's layout and initializes the data binding.
+	 */
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -47,171 +58,213 @@ class JournalGratitudeFragment() : Fragment() {
 		return binding.root
 	}
 	
-	// This is the onViewCreated function where you perform any additional setup for the fragment's view.
+	/**
+	 * Called immediately after onCreateView() has returned, but before any saved state has been restored in the view.
+	 * This gives subclasses a chance to initialize themselves once they know their view hierarchy has been completely created.
+	 */
 	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Initialize the EntryRepository by getting the database and passing it to the repository.
-		val database = LocalDatabase.getDatabase(requireContext())
-		val repository = EntryRepository(database)
-		
-		// Initialize the start date and end date variables.
-		val startDateField = binding.startDateTf
-		val endDateField = binding.endDateTf
-		val filterBtn = binding.filterBtn
-		val resetBtn = binding.resetBtn
-		val homeBtnLogo = binding.homeBtnLogo
-		val homeBtnText = binding.homeBtnText
-		val profileBtnLogo = binding.profileBtnLogo
-		val animationFabBtn = binding.animationFabNavBtn
-		val newEntryFabBtn = binding.newEntryFab
-		
+		// Fetch all the journal entries asynchronously from the database.
 		viewModel.getAllEntriesAsync()
-		
-		// Define the regex pattern for the date format.
-		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
-		
-		// Add a TextWatcher to the startDateField to monitor changes in the text input.
-		startDateField.addTextChangedListener(object : TextWatcher {
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` are about to be replaced by new text with length `after`.
-			// Not needed in this case.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` have just replaced old text that had length `before`.
-			// Not needed in this case.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that somewhere within `s`, the text has been changed.
-			// It is up to you to determine what to do with the text.
-			override fun afterTextChanged(s: Editable) {
-				// Check if the entered date matches the pattern.
-				if (!datePattern.matches(s.toString())) {
-					// If the date does not match the pattern, change the border color of the text field to red.
-					startDateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-				} else {
-					// If the date matches the pattern, reset the border color of the text field to black.
-					startDateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-				}
-			}
-		}
-		)
-		
-		// Add a TextWatcher to the endDateField to monitor changes in the text input.
-		endDateField.addTextChangedListener(object : TextWatcher {
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` are about to be replaced by new text with length `after`.
-			// Not needed in this case.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` have just replaced old text that had length `before`.
-			// Not needed in this case.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that somewhere within `s`, the text has been changed.
-			// It is up to you to determine what to do with the text.
-			override fun afterTextChanged(s: Editable) {
-				// Check if the entered date matches the pattern.
-				if (!datePattern.matches(s.toString())) {
-					// If the date does not match the pattern, change the border color of the text field to red.
-					endDateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-				} else {
-					// If the date matches the pattern, reset the border color of the text field to black.
-					endDateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-				}
-			}
-		}
-		)
-		
-		// Create an instance of SharedPreferences.
-		val entryPref = activity?.getSharedPreferences("EntriesPreferences", Context.MODE_PRIVATE)
-		val countPref = activity?.getSharedPreferences("CountPreferences", Context.MODE_PRIVATE)
-		
-		// Set the created adapter as the adapter for the RecyclerView in the binding.
-		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList(), entryPref, countPref)
 
-		// Observe the LiveData of entries in the ViewModel.
-		// This sets up an observer that gets triggered every time the entries data changes.
-		viewModel.entries.observe(viewLifecycleOwner) { entries ->
-			// Check if the entries data is not null.
-			// If it's not null, update the entries in the adapter.
-			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
-		}
+		// Initialize and set up click listeners for various UI components.
+		setUpListeners()
+
+		// Set up text watchers for input validation, especially for date fields.
+		setUpTextWatchers()
+
+		// Configure and initialize the RecyclerView to display the list of gratitude journal entries.
+		setUpRecyclerView()
 		
-		// Set the onClickListener for the filter button.
-		filterBtn.setOnClickListener {
-			val from = startDateField.text.toString()
-			val to = endDateField.text.toString()
+	}
+	
+	/**
+	 * Sets up click listeners for various UI components.
+	 */
+	private fun setUpListeners() {
+		// Set up the click listener for the filter button.
+		binding.filterBtn.setOnClickListener {
+			// Extract the start and end date from the respective text fields.
+			val from = binding.startDateTf.text.toString()
+			val to = binding.endDateTf.text.toString()
 			
+			// Fetch and observe entries from the database within the specified date range.
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
-				// Update the data in the adapter.
+				// Update the RecyclerView adapter with the filtered entries.
 				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
 			}
 		}
-		
-		// Set the onClickListener for the reset button.
-		resetBtn.setOnClickListener {
+
+		// Set up the click listener for the reset button.
+		binding.resetBtn.setOnClickListener {
+			// Fetch all entries asynchronously to reset the view.
 			viewModel.getAllEntriesAsync()
 		}
-		
-		// Set an onClickListener for the home button logo.
-		// When this button is clicked, navigate to the animation fragment.
-		homeBtnLogo.setOnClickListener {
+
+		// Set up the click listener for the home button logo.
+		// Navigate to the animation fragment when clicked.
+		binding.homeBtnLogo.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
-		
-		// Set an onClickListener for the home button text.
-		// When this text is clicked, also navigate to the animation fragment.
-		homeBtnText.setOnClickListener {
+
+		// Set up the click listener for the home button text.
+		// Navigate to the animation fragment when clicked.
+		binding.homeBtnText.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
-		
-		// Set an onClickListener for the profile button logo.
-		// When this button is clicked, navigate to the profile fragment.
-		profileBtnLogo.setOnClickListener {
+
+		// Set up the click listener for the profile button logo.
+		// Navigate to the profile fragment when clicked.
+		binding.profileBtnLogo.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToProfileFragment())
 		}
-		
-		// Set an onClickListener for the animationFabNavBtn.
-		// When this button is clicked, navigate to the animation fragment.
-		animationFabBtn.setOnClickListener {
+
+		// Set up the click listener for the animationFabNavBtn.
+		// Navigate to the animation fragment when clicked.
+		binding.animationFabNavBtn.setOnClickListener {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToAnimationFragment())
 		}
-		
-		// Set an onClickListener for the newEntryFab.
-		// When this button is clicked, navigate to the entryGratitudeFragment.
-		newEntryFabBtn.setOnClickListener {
-			// Get the current date
+
+		// Set up the click listener for the newEntryFab button.
+		binding.newEntryFab.setOnClickListener {
+			// Get the current date.
 			val calendar = Calendar.getInstance()
 			val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"
 			
-			// Create a new Entry object with the entered date, text, and image.
+			// Create a new Entry object with the current date.
 			val entry = Entry(day = calendar.get(Calendar.DAY_OF_MONTH), month = calendar.get(Calendar.MONTH) + 1, year = calendar.get(Calendar.YEAR), text = null, image = null)
 			
-			// Insert the new entry into the database.
+			// Get the database instance and the repository.
+			val database = LocalDatabase.getDatabase(requireContext())
+			val repository = EntryRepository(database)
+			
+			// Launch a coroutine to insert the new entry into the database.
 			lifecycleScope.launch(Dispatchers.IO) {
 				val entryId = repository.insertEntry(entry)
 				entryPref?.edit()?.putLong("entryId", entryId)?.apply()
 				val currentCount = countPref?.getInt(dayKey, 0) ?: 0
 				countPref?.edit()?.putInt(dayKey, currentCount + 1)?.apply()
 				withContext(Dispatchers.Main) {
-					// Navigate to the entryGratitudeFragment.
+					// Navigate to the entryGratitudeFragment with the new entry's ID.
 					findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
 				}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Sets up the RecyclerView to display the list of gratitude journal entries.
+	 */
+	private fun setUpRecyclerView() {
+		// Initially set the RecyclerView's adapter with an empty list.
+		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList(), entryPref, countPref)
+
+		// Observe changes in the entries LiveData from the ViewModel.
+		// Whenever the entries data changes, update the RecyclerView's adapter with the new entries.
+		viewModel.entries.observe(viewLifecycleOwner) { entries ->
+			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, entryPref, countPref)
+		}
+	}
+	
+	/**
+	 * Sets up text watchers for date input fields to validate the date format.
+	 */
+	private fun setUpTextWatchers() {
+		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		
+		binding.startDateTf.addTextChangedListener(object : TextWatcher {
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` are about to be replaced by new text with length `after`.
+			// Not needed in this case.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` have just replaced old text that had length `before`.
+			// Not needed in this case.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that somewhere within `s`, the text has been changed.
+			// It is up to you to determine what to do with the text.
+			override fun afterTextChanged(s: Editable) {
+				// Check if the entered date matches the pattern.
+				if (!datePattern.matches(s.toString())) {
+					// If the date does not match the pattern, change the border color of the text field to red.
+					binding.startDateTf.backgroundTintList = ColorStateList.valueOf(Color.RED)
+				} else {
+					// If the date matches the pattern, reset the border color of the text field to black.
+					binding.startDateTf.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+				}
+			}
+		})
+		
+		binding.endDateTf.addTextChangedListener(object : TextWatcher {
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` are about to be replaced by new text with length `after`.
+			// Not needed in this case.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that, within `s`, the `count` characters
+			// beginning at `start` have just replaced old text that had length `before`.
+			// Not needed in this case.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			// This method is called to notify you that somewhere within `s`, the text has been changed.
+			// It is up to you to determine what to do with the text.
+			override fun afterTextChanged(s: Editable) {
+				// Check if the entered date matches the pattern.
+				if (!datePattern.matches(s.toString())) {
+					// If the date does not match the pattern, change the border color of the text field to red.
+					binding.endDateTf.backgroundTintList = ColorStateList.valueOf(Color.RED)
+				} else {
+					// If the date matches the pattern, reset the border color of the text field to black.
+					binding.endDateTf.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+				}
+			}
+		}
+		)
+	}
+	
+	/**
+	 * Creates a new gratitude journal entry and saves it to the database.
+	 */
+	@RequiresApi(Build.VERSION_CODES.O)
+	private fun createNewEntry() {
+		// Get the current date
+		val calendar = Calendar.getInstance()
+		val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"
+		
+		// Create a new Entry object with the entered date, text, and image.
+		val entry = Entry(day = calendar.get(Calendar.DAY_OF_MONTH), month = calendar.get(Calendar.MONTH) + 1, year = calendar.get(Calendar.YEAR), text = null, image = null)
+		
+		// Obtain an instance of the local database for the current context.
+		val database = LocalDatabase.getDatabase(requireContext())
+
+		// Create a repository instance using the obtained local database.
+		val repository = EntryRepository(database)
+		
+		// Insert the new entry into the database.
+		lifecycleScope.launch(Dispatchers.IO) {
+			val entryId = repository.insertEntry(entry)
+			entryPref?.edit()?.putLong("entryId", entryId)?.apply()
+			val currentCount = countPref?.getInt(dayKey, 0) ?: 0
+			countPref?.edit()?.putInt(dayKey, currentCount + 1)?.apply()
+			withContext(Dispatchers.Main) {
+				// Navigate to the entryGratitudeFragment.
+				findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
 			}
 		}
 	}
