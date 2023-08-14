@@ -243,7 +243,6 @@ class ProfileFragment : Fragment() {
 		// Update the LiveData objects with the generated data.
 		barDataLiveData.value = barData.toTypedArray()
 		lineDataLiveData.value = lineData.toTypedArray()
-		
 	}
 	
 	/**
@@ -260,7 +259,6 @@ class ProfileFragment : Fragment() {
 		setupChartData(barData, lineData)
 		
 	}
-	
 	
 	/**
 	 * Define and set up chart data.
@@ -287,3 +285,5 @@ class ProfileFragment : Fragment() {
 	}
 }
 
+// TODO: Überdenken einer Lösung mit den Daten der lineChart und barChart. SharedPreferences ist keine Option.
+// TODO: Handling über Firebase und Firestore? Benjamin fragen.
