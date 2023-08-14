@@ -9,10 +9,11 @@
     </data>
 
     <!-- Main layout container -->
-    <RelativeLayout
+    <LinearLayout
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.ProfileFragment">
 
         <!-- Top action bar -->
@@ -58,7 +59,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="640dp"
-            android:layout_centerInParent="true"
             android:fillViewport="true">
 
             <!-- Main layout style -->
@@ -96,6 +96,7 @@
                         android:contentDescription="@string/line_chart"
                         android:scaleType="centerCrop"
                         android:src="@drawable/iconlinechart"
+                        android:visibility="gone"
                         app:tint="@color/neutral_c_tx_light" />
 
                     <!-- Heart graphic button -->
@@ -183,10 +184,11 @@
 
                 <!-- Contact card view -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/contact_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:layout_marginVertical="16dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/white"
                     android:visibility="gone">
@@ -233,7 +235,7 @@
                                     android:fontFamily="@font/psychedelic_lotus"
                                     android:text="@string/mom"
                                     android:textColor="@color/primary_bg_light"
-                                    android:textSize="24sp" />
+                                    android:textSize="20sp" />
 
                                 <!-- Contact number -->
                                 <TextView
@@ -244,18 +246,18 @@
                                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                                     android:text="@string/_0123_234786239"
                                     android:textColor="@color/outline_bg_light"
-                                    android:textSize="16sp" />
+                                    android:textSize="12sp" />
 
                                 <!-- Contact message -->
                                 <TextView
                                     android:id="@+id/message_tv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="24dp"
+                                    android:layout_marginBottom="16dp"
                                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                                     android:text="@string/i_have_a_panic_attack_right_now_please_call_me"
                                     android:textColor="@color/outline_bg_light"
-                                    android:textSize="16sp" />
+                                    android:textSize="12sp" />
 
                                 <!-- Contact action buttons -->
                                 <LinearLayout
@@ -298,10 +300,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="0.001"
                             android:fontFamily="@font/merriweathersans_variablefont_wght"
                             android:text="@string/please_note"
+                            android:textAlignment="center"
                             android:textColor="@color/outline_bg_light"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -313,6 +317,7 @@
                     android:id="@+id/export_btn"
                     style="@style/PrimaryButtonStyle"
                     android:layout_weight="0.04"
+                    android:textSize="16sp"
                     android:text="@string/export_gratitude_journal_entries" />
 
             </LinearLayout>
@@ -354,6 +359,6 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

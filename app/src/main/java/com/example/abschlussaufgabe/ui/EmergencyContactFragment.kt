@@ -1,12 +1,15 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentEmergencyContactBinding
+private val AVATAR_PREFS = "avatar_prefs"
+private val CONTACT_PREFS = "contact_prefs"
 
 // The EmergencyContactFragment class, a subclass of Fragment.
 class EmergencyContactFragment : Fragment() {
@@ -27,6 +30,13 @@ class EmergencyContactFragment : Fragment() {
 	// The onViewCreated method is called after onCreateView(). It is used to perform additional view setup.
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		
+		loadSelectedAvatar()
+		loadContactDetails()
+		
+		if (binding.messageTv.text.toString().isEmpty()) {
+			binding.messageTv.setText(getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
+		}
 		
 		// Set an onClickListener for the back button.
 		// When clicked, it will navigate back in the back stack.
@@ -61,7 +71,35 @@ class EmergencyContactFragment : Fragment() {
 		// Set an onClickListener for the save button.
 		// When clicked, it will also navigate to the profile fragment.
 		binding.saveBtn.setOnClickListener {
+			saveContactDetails()
 			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
 		}
+	}
+	
+	private fun loadSelectedAvatar() {
+		val sharedPreferences = activity?.getSharedPreferences(AVATAR_PREFS, Context.MODE_PRIVATE)
+		val resId = sharedPreferences?.getInt("selected_avatar", R.drawable.avatar01) ?: R.drawable.avatar01
+		binding.avatarIv.setImageResource(resId)
+	}
+	
+	private fun loadContactDetails() {
+		val sharedPreferences = activity?.getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
+		
+		val contactName = sharedPreferences?.getString("contact_name", "")
+		val contactNumber = sharedPreferences?.getString("contact_number", "")
+		val contactMessage = sharedPreferences?.getString("contact_message", getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
+		
+		binding.nameTv.setText(contactName)
+		binding.numberTv.setText(contactNumber)
+		binding.messageTv.setText(contactMessage)
+	}
+	
+	private fun saveContactDetails() {
+		val sharedPreferences = activity?.getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
+		val editor = sharedPreferences?.edit()
+		editor?.putString("contact_name", binding.nameTv.text.toString())
+		editor?.putString("contact_number", binding.numberTv.text.toString())
+		editor?.putString("contact_message", binding.messageTv.text.toString())
+		editor?.apply()
 	}
 }

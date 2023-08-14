@@ -108,4 +108,5 @@
     <string name="please_remember">Please remember that whenever you click the Get Help button, an SMS will be sent and you will incur charges from your mobile operator as a result.</string>
     <string name="photo_successfully_downloaded">Photo successfully downloaded</string>
     <string name="reset">Reset</string>
+    <string name="i_am_in_an_emotional_emergency_please_call_me">I am in an emotional emergency. Please call me.</string>
 </resources>
