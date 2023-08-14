@@ -15,4 +15,4 @@ class MainActivity : AppCompatActivity() {
 // TODO: Logout Funktion
 // TODO: Account löschen Funktion
 // TODO: Bezahlfunktion
-// TODO: Tagesdaten speichern
+// TODO: Tagesdaten speichern in Firestore
