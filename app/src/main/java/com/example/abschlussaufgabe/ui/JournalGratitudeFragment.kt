@@ -32,13 +32,12 @@ import java.util.Calendar
 /**
  * Represents the JournalGratitudeFragment which allows users to view and filter gratitude journal entries.
  */
-class JournalGratitudeFragment() : Fragment() {
+class JournalGratitudeFragment : Fragment() {
 	// Declare a late-initialized variable for the FragmentJournalGratitudeBinding instance.
 	private lateinit var binding: FragmentJournalGratitudeBinding
 	
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
-	
 	
 	// Create an instance of SharedPreferences.
 	private val entryPref by lazy { activity?.getSharedPreferences("entries_preferences", Context.MODE_PRIVATE) }
