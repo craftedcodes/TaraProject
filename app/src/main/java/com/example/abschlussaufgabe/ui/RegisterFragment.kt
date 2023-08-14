@@ -31,7 +31,7 @@ class RegisterFragment : Fragment() {
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		
 		// Inflate the layout for this fragment and bind it to the FragmentRegisterBinding instance.
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
