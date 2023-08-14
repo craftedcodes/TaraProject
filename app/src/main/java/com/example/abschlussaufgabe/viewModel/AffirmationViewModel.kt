@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.abschlussaufgabe.data.ImageRepository
 import com.example.abschlussaufgabe.data.QuoteRepository
 import com.example.abschlussaufgabe.data.datamodels.Quote
-import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.ImageApi
 import com.example.abschlussaufgabe.data.remote.QuoteApi

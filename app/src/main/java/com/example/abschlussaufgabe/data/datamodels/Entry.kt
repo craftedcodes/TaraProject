@@ -5,7 +5,6 @@ package com.example.abschlussaufgabe.data.datamodels
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Blob
 
 // Defining an Entity for Room database. This represents a SQLite table named "entry".
 @Entity(tableName = "entry")
