@@ -167,7 +167,7 @@ class ProfileFragment : Fragment() {
 		// The onClickListener for the back button.
 		// When the button is clicked, the user is taken to the previous screen in the back stack.
 		binding.backBtn.setOnClickListener {
-			findNavController().popBackStack()
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAnimationFragment())
 		}
 		
 		// The onClickListener for the home button logo.
