@@ -17,13 +17,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
-import com.example.abschlussaufgabe.databinding.FragmentJournalGratitudeBinding
 import com.example.abschlussaufgabe.util.EntryAdapter
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentJournalGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

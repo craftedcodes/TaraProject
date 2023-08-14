@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import app.rive.runtime.kotlin.core.Loop
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentAnimationBinding
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentAnimationBinding
 
 /**
  * A Fragment that displays an animation and provides biometric authentication functionality.

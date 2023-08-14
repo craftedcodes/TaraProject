@@ -1,9 +1,9 @@
 package com.example.abschlussaufgabe.data
 
 import android.util.Log
-import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.data.datamodels.UnsplashResponse
 import com.example.abschlussaufgabe.data.remote.ImageApi
+import com.schubau.tara.BuildConfig
 
 // Define a constant for logging
 const val IMAGE_TAG = "IMAGE_TAG"

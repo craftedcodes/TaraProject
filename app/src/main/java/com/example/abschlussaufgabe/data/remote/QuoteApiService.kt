@@ -1,6 +1,5 @@
 package com.example.abschlussaufgabe.data.remote
 
-import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.data.datamodels.GoogleSheetResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

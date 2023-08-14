@@ -3,10 +3,10 @@ package com.example.abschlussaufgabe.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.data.remote.QuoteApi
+import com.schubau.tara.BuildConfig
 
 // Define a constant for logging
 const val QUOTE_TAG = "QuoteRepository"

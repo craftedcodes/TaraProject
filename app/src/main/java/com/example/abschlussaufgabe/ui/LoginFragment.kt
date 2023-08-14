@@ -1,10 +1,11 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentLoginBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.schubau.tara.databinding.FragmentLoginBinding
 
 
 /**
@@ -15,6 +16,8 @@ class LoginFragment : Fragment() {
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentLoginBinding
 	
+	// Property to hold the FirebaseAuth instance.
+	private lateinit var auth: FirebaseAuth
 	
 	/**
 	 * Called to have the fragment instantiate its user interface view.
@@ -24,10 +27,17 @@ class LoginFragment : Fragment() {
 	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
 	 * @return The root view for the fragment's layout.
 	 */
-	override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: android.os.Bundle?): android.view.View? {
+	override fun onCreateView(
+		inflater: android.view.LayoutInflater,
+		container: android.view.ViewGroup?,
+		savedInstanceState: android.os.Bundle?
+	): android.view.View {
 		
 		// Inflate the layout for this fragment using the inflate method of the FragmentLoginBinding class.
 		binding = FragmentLoginBinding.inflate(inflater, container, false)
+		
+		// Create the FirebaseAuth instance.
+		auth = FirebaseAuth.getInstance()
 		
 		// Return the root view of the inflated layout.
 		return binding.root
@@ -58,9 +68,32 @@ class LoginFragment : Fragment() {
 		}
 		
 		// Set onClickListener for the login button.
-		// When clicked, it navigates to the animation fragment.
+		// When clicked, it navigates to the animation fragment if login was successful.
 		binding.loginBtn.setOnClickListener {
-			findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
+			val email = binding.eMailTf.text.toString()
+			val password = binding.passwordTf.text.toString()
+			loginUser(email, password)
 		}
 	}
+	
+	/**
+	 * Attempts to log in a user using Firebase authentication.
+	 *
+	 * @param email The email address of the user.
+	 * @param password The password of the user.
+	 */
+	private fun loginUser(email: String, password: String) {
+		// Try to sign in the user with the provided email and password
+		auth.signInWithEmailAndPassword(email, password)
+			.addOnCompleteListener { task ->
+				if (task.isSuccessful) {
+					// If the login is successful, navigate to the animation fragment
+					findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
+				} else {
+					// If the login fails, show a toast with the error message
+					Toast.makeText(context, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+				}
+			}
+	}
+	
 }

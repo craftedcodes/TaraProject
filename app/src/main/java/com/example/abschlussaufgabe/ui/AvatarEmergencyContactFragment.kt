@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentAvatarEmergencyContactBinding
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentAvatarEmergencyContactBinding
 
 /**
  * Fragment for selecting an avatar for the emergency contact screen.

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1076573267927",
+    "project_id": "tara-6b1b4",
+    "storage_bucket": "tara-6b1b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076573267927:android:7d38da9c367144b1db8d92",
+        "android_client_info": {
+          "package_name": "com.schubau.tara"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076573267927-c0g0diekkj0730nbtv94eve0p952kubo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_cBkZO23WSzSzFxqTJWyARZ1UyxxYB98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076573267927-c0g0diekkj0730nbtv94eve0p952kubo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

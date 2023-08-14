@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentProfileBinding
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentProfileBinding
 import java.util.Calendar
 
 // Constants for SharedPreferences keys.

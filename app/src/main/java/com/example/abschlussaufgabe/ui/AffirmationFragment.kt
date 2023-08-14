@@ -15,9 +15,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentAffirmationBinding
 import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentAffirmationBinding
 import kotlinx.coroutines.launch
 
 /**

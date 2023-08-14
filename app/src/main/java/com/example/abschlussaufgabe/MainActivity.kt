@@ -2,6 +2,7 @@ package com.example.abschlussaufgabe
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.schubau.tara.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

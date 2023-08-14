@@ -10,9 +10,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import app.rive.runtime.kotlin.core.Loop
-import com.example.abschlussaufgabe.BuildConfig
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentHomeBinding
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentHomeBinding
 
 /**
  * A Fragment representing the home screen of the application.

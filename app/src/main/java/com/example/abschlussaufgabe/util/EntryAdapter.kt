@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
-import com.example.abschlussaufgabe.databinding.EntryRvBinding
 import com.example.abschlussaufgabe.ui.JournalGratitudeFragmentDirections
+import com.schubau.tara.databinding.EntryRvBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

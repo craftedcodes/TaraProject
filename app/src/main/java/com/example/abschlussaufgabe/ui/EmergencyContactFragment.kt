@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.abschlussaufgabe.R
-import com.example.abschlussaufgabe.databinding.FragmentEmergencyContactBinding
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentEmergencyContactBinding
 
 // Constants for shared preferences keys.
 private const val AVATAR_PREFS = "avatar_prefs"

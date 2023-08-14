@@ -22,13 +22,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
-import com.example.abschlussaufgabe.databinding.FragmentEntryGratitudeBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentEntryGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
