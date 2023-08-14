@@ -84,6 +84,7 @@ class JournalGratitudeFragment() : Fragment() {
 	/**
 	 * Sets up click listeners for various UI components.
 	 */
+	@RequiresApi(Build.VERSION_CODES.O)
 	private fun setUpListeners() {
 		// Set up the click listener for the filter button.
 		binding.filterBtn.setOnClickListener {
@@ -130,28 +131,7 @@ class JournalGratitudeFragment() : Fragment() {
 
 		// Set up the click listener for the newEntryFab button.
 		binding.newEntryFab.setOnClickListener {
-			// Get the current date.
-			val calendar = Calendar.getInstance()
-			val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"
-			
-			// Create a new Entry object with the current date.
-			val entry = Entry(day = calendar.get(Calendar.DAY_OF_MONTH), month = calendar.get(Calendar.MONTH) + 1, year = calendar.get(Calendar.YEAR), text = null, image = null)
-			
-			// Get the database instance and the repository.
-			val database = LocalDatabase.getDatabase(requireContext())
-			val repository = EntryRepository(database)
-			
-			// Launch a coroutine to insert the new entry into the database.
-			lifecycleScope.launch(Dispatchers.IO) {
-				val entryId = repository.insertEntry(entry)
-				entryPref?.edit()?.putLong("entryId", entryId)?.apply()
-				val currentCount = countPref?.getInt(dayKey, 0) ?: 0
-				countPref?.edit()?.putInt(dayKey, currentCount + 1)?.apply()
-				withContext(Dispatchers.Main) {
-					// Navigate to the entryGratitudeFragment with the new entry's ID.
-					findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
-				}
-			}
+			createNewEntry()
 		}
 		
 	}
