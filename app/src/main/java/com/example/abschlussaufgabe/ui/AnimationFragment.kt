@@ -20,36 +20,69 @@ import app.rive.runtime.kotlin.core.Loop
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentAnimationBinding
 
-// A class that represents the animation fragment in the application.
+/**
+ * A Fragment that displays an animation and provides biometric authentication functionality.
+ */
 class AnimationFragment : Fragment() {
 	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentAnimationBinding
 	
-	// The onCreateView function is used to create and return the view hierarchy
-	// associated with the fragment.
+	/**
+	 * Called to have the fragment instantiate its user interface view.
+	 * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+	 * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+	 * @return Return the View for the fragment's UI, or null.
+	 */
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		
 		// Inflate the layout for this fragment using data binding.
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_animation, container, false)
 		
-		// Initialize the Rive Animation View with the resource and the loop type.
-		val riveView = binding.riveAnimationView
-		riveView.setRiveResource(R.raw.tara_light)
-		riveView.play("Timeline 1", Loop.LOOP)
+		// Initialize the Rive Animation View.
+		initializeRiveAnimation()
 		
 		// Return the root view of the inflated layout.
 		return binding.root
 	}
 	
-	// onViewCreated is called after onCreateView, and it is where additional setup for the fragment's view takes place.
+	/**
+	 * Called immediately after onCreateView() has returned, but before any saved state has been restored in to the view.
+	 * @param view The View returned by onCreateView(LayoutInflater, ViewGroup, Bundle).
+	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+	 */
 	@RequiresApi(Build.VERSION_CODES.P)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
 		
+		// Set up listeners for the UI elements.
+		setupListeners()
+	}
+	
+	/**
+	 * Initializes the Rive Animation View with the resource and the loop type.
+	 */
+	private fun initializeRiveAnimation() {
+		// Obtain a reference to the Rive Animation View from the binding object.
+		val riveView = binding.riveAnimationView
+		
+		// Set the Rive animation resource to be displayed in the Rive Animation View.
+		riveView.setRiveResource(R.raw.tara_light)
+		
+		// Start playing the specified animation ("Timeline 1") in a loop.
+		riveView.play("Timeline 1", Loop.LOOP)
+	}
+	
+	/**
+	 * Sets up click listeners for various UI components.
+	 */
+	@RequiresApi(Build.VERSION_CODES.P)
+	private fun setupListeners() {
 		// Set onClickListener for the profile button.
 		// When clicked, it navigates to the profile fragment.
 		binding.profileBtn.setOnClickListener {
@@ -113,27 +146,28 @@ class AnimationFragment : Fragment() {
 				.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)  // Allow device credential
 				.build()
 			*/
-			// Set onClickListener for the floating action button to the gratitude journal.
-			// When clicked, it navigates to the gratitude journal fragment.
-			binding.gratitudeNavBtn.setOnClickListener {
-				/*val failedAttempts = sharedPreferences.getInt("failedAttempts", 0)
-				val blockTime = sharedPreferences.getLong("blockTime", 0)
-				if (failedAttempts >= 5 && System.currentTimeMillis() - blockTime < 10 * 60 * 1000) {
-					// 10 minutes have not passed since the last failed attempt
-					Toast.makeText(
-						context,
-						"Please wait for 10 minutes before trying again",
-						Toast.LENGTH_SHORT
-					).show()
-				} else {
-					// reset failed attempts if 10 minutes have passed
-					if (System.currentTimeMillis() - blockTime >= 10 * 60 * 1000) {
-						sharedPreferences.edit().putInt("failedAttempts", 0).apply()
-					}
-					biometricPrompt?.authenticate(promptInfo)
+		// Set onClickListener for the floating action button to the gratitude journal.
+		// When clicked, it navigates to the gratitude journal fragment.
+		binding.gratitudeNavBtn.setOnClickListener {
+			/*val failedAttempts = sharedPreferences.getInt("failedAttempts", 0)
+			val blockTime = sharedPreferences.getLong("blockTime", 0)
+			if (failedAttempts >= 5 && System.currentTimeMillis() - blockTime < 10 * 60 * 1000) {
+				// 10 minutes have not passed since the last failed attempt
+				Toast.makeText(
+					context,
+					"Please wait for 10 minutes before trying again",
+					Toast.LENGTH_SHORT
+				).show()
+			} else {
+				// reset failed attempts if 10 minutes have passed
+				if (System.currentTimeMillis() - blockTime >= 10 * 60 * 1000) {
+					sharedPreferences.edit().putInt("failedAttempts", 0).apply()
 				}
-			}*/
-				findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToJournalGratitudeFragment())
+				biometricPrompt?.authenticate(promptInfo)
+			}
+		}*/
+			// Navigate to the gratitude journal fragment when the gratitude navigation button is clicked.
+			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToJournalGratitudeFragment())
 		}
 	}
 }

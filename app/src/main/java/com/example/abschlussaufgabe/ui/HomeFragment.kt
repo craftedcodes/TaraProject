@@ -14,14 +14,21 @@ import com.example.abschlussaufgabe.BuildConfig
 import com.example.abschlussaufgabe.R
 import com.example.abschlussaufgabe.databinding.FragmentHomeBinding
 
-// A class that represents the home fragment in the application.
+/**
+ * A Fragment representing the home screen of the application.
+ */
 class HomeFragment : Fragment() {
 	
-	// Property to hold the binding object for this fragment.
+	// Holds the binding object for this fragment, enabling direct access to views and reducing boilerplate.
 	private lateinit var binding: FragmentHomeBinding
 	
-	// The onCreateView function is used to create and return the view hierarchy
-	// associated with the fragment.
+	/**
+	 * Called to have the fragment instantiate its user interface view.
+	 * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+	 * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+	 * @return Return the View for the fragment's UI.
+	 */
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -30,27 +37,49 @@ class HomeFragment : Fragment() {
 		// Inflate the layout for this fragment using data binding.
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 		
-		// Initialize the Rive Animation View with the resource and the loop type.
-		val riveView = binding.riveAnimationView
-		riveView.setRiveResource(R.raw.tara_light)
-		riveView.play("Timeline 1", Loop.LOOP)
+		// Initialize the Rive Animation View.
+		initializeRiveAnimation()
 		
 		// Return the root view of the inflated layout.
 		return binding.root
 	}
 	
-	// onViewCreated is called after onCreateView, and it is where additional setup for the fragment's view takes place.
+	/**
+	 * Called immediately after onCreateView() has returned, but before any saved state has been restored in the view.
+	 * @param view The View returned by onCreateView(LayoutInflater, ViewGroup, Bundle).
+	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
+	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Set onClickListener for the "Register Now" text view.
-		// When clicked, it navigates to the registration fragment.
+		// Set up the click listeners for the UI elements.
+		setupClickListeners()
+	}
+	
+	/**
+	 * Initializes the Rive Animation View with the specified resource and loop type.
+	 */
+	private fun initializeRiveAnimation() {
+		// Obtain a reference to the Rive Animation View from the binding object.
+		val riveView = binding.riveAnimationView
+
+		// Set the Rive animation resource to be displayed in the Rive Animation View.
+		riveView.setRiveResource(R.raw.tara_light)
+
+		// Start playing the specified animation ("Timeline 1") in a loop.
+		riveView.play("Timeline 1", Loop.LOOP)
+	}
+	
+	/**
+	 * Sets up click listeners for various UI elements in the fragment.
+	 */
+	private fun setupClickListeners() {
+		// Navigate to the registration fragment when "Register Now" text view is clicked.
 		binding.registerNowTv.setOnClickListener {
 			findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
 		}
 		
-		// Set onClickListener for the login navigation button.
-		// When clicked, it navigates to the login fragment.
+		// Navigate to the login fragment when the login navigation button is clicked.
 		binding.loginNavigationBtn.setOnClickListener {
 			findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
 		}
