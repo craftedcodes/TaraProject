@@ -21,6 +21,8 @@ class EmergencyContactFragment : Fragment() {
 	// Lateinit variable for the data binding object.
 	private lateinit var binding: FragmentEmergencyContactBinding
 	
+	// Variable for the selected country code.
+	private var selectedCountryCode: String? = null
 	/**
 	 * Inflates the fragment layout and initializes the data binding.
 	 */
@@ -80,11 +82,17 @@ class EmergencyContactFragment : Fragment() {
 		val contactName = sharedPreferences?.getString("contact_name", "")
 
 		// Fetch the contact number from shared preferences. Default to an empty string if not found.
-		val contactNumber = sharedPreferences?.getString("contact_number", "")
+		var contactNumber = sharedPreferences?.getString("contact_number", "")
+		if (contactNumber?.startsWith("null") == true) {
+			contactNumber = contactNumber.replaceFirst("null", "")
+		}
 
 		// Fetch the emergency message from shared preferences. Default to the predefined message if not found.
 		val contactMessage = sharedPreferences?.getString("contact_message", getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
-
+		
+		// Load the saved country code and set it to the CountryCodePicker
+		val savedCountryCode = sharedPreferences?.getString("selected_country_code", "")
+		
 		// Set the retrieved contact name to the name TextView.
 		binding.nameTv.setText(contactName)
 
@@ -93,6 +101,9 @@ class EmergencyContactFragment : Fragment() {
 
 		// Set the retrieved emergency message to the message TextView.
 		binding.messageTv.setText(contactMessage)
+		
+		// Set the retrieved country code to the CountryCodePicker.
+		binding.ccp.setCountryForPhoneCode(savedCountryCode?.replace("+", "")?.toIntOrNull() ?: 49)
 		
 	}
 	
@@ -108,9 +119,30 @@ class EmergencyContactFragment : Fragment() {
 
 		// Store the contact name from the name TextView into the shared preferences.
 		editor?.putString("contact_name", binding.nameTv.text.toString())
-
+		
 		// Store the contact number from the number TextView into the shared preferences.
-		editor?.putString("contact_number", binding.numberTv.text.toString())
+		var contactNumber = binding.numberTv.text.toString()
+		
+		// Check if the contact number starts with "0" and remove it if it does.
+		if (contactNumber.startsWith("0")) {
+			contactNumber = contactNumber.substring(1)
+		}
+		
+		// Check if the contact number already starts with a country code
+		val currentCountryCode = binding.ccp.selectedCountryCodeWithPlus
+		if (contactNumber.startsWith(currentCountryCode)) {
+			// If it starts with the current selected country code, remove it
+			contactNumber = contactNumber.substring(currentCountryCode.length)
+		} else if (contactNumber.length > 3 && contactNumber[0] == '+' && contactNumber[1].isDigit() && contactNumber[2].isDigit() && contactNumber[3].isDigit()) {
+			// If it starts with another country code, remove that country code
+			contactNumber = contactNumber.substring(4)
+		}
+		
+		// Combine the selected country code with the contact number.
+		val fullContactNumber = "${binding.ccp.selectedCountryCodeWithPlus}$contactNumber"
+		
+		// Store the combined contact number into the shared preferences.
+		editor?.putString("contact_number", fullContactNumber)
 
 		// Store the emergency message from the message TextView into the shared preferences.
 		editor?.putString("contact_message", binding.messageTv.text.toString())
@@ -158,6 +190,19 @@ class EmergencyContactFragment : Fragment() {
 		binding.avatarIv.setOnClickListener {
 			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToAvatarEmergencyContactFragment())
 		}
+		
+		// Set up a click listener for the CountryCodePicker.
+		binding.ccp.setOnClickListener {
+			binding.ccp.launchCountrySelectionDialog()
+		}
+		
+		// Set the listener for the CountryCodePicker.
+		binding.ccp.setOnCountryChangeListener {
+			selectedCountryCode = binding.ccp.selectedCountryCodeWithPlus
+			// Save the selected country code in SharedPreferences
+			val sharedPreferences = activity?.getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
+			sharedPreferences?.edit()?.putString("selected_country_code", selectedCountryCode)?.apply()
+		}
 
 		// Set up a click listener for the quit button.
 		// When clicked, it navigates the user back to the ProfileFragment.
@@ -172,6 +217,5 @@ class EmergencyContactFragment : Fragment() {
 			saveContactDetails()
 			findNavController().navigate(EmergencyContactFragmentDirections.actionEmergencyContactFragmentToProfileFragment())
 		}
-		
 	}
 }

@@ -99,9 +99,18 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- TextInputLayout for entering the phone number -->
+        <LinearLayout
+            style="@style/HorizontalLayoutStyle">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"/>
+
+            <!-- TextInputLayout for entering the phone number -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginHorizontal="32dp"
+            android:layout_marginEnd="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:helperText="@string/phone_number">
@@ -113,6 +122,8 @@
                 android:hint="@string/_01234567890"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <!-- TextInputLayout for entering the emergency message -->
         <com.google.android.material.textfield.TextInputLayout

@@ -143,9 +143,6 @@
                     android:text="@string/should_any_provision_of_these_terms_and_conditions_be_invalid_or_unenforceable_the_validity_of_the_remaining_provisions_shall_remain_unaffected"
                     />
             </LinearLayout>
-
-
         </ScrollView>
-
     </LinearLayout>
 </layout>

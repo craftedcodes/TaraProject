@@ -1,14 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.PrivacyFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        tools:context=".ui.PrivacyFragment">
 
-</FrameLayout>
+        <!-- Top action bar -->
+        <LinearLayout
+            style="@style/ActionBarStyle"
+            android:layout_gravity="center">
+
+            <!-- Back button -->
+            <ImageButton
+                android:id="@+id/back_btn"
+                style="@style/ActionBarButtonStyle"
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/iconarrowback" />
+
+            <!-- Home button text -->
+            <TextView
+                android:id="@+id/home_btn_text"
+                style="@style/LogoTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/tara"
+                tools:ignore="NestedWeights" />
+
+            <!-- Profile button -->
+            <ImageButton
+                android:id="@+id/profile_btn_logo"
+                style="@style/ActionBarButtonStyle"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/iconprofile"
+                android:visibility="invisible"
+                app:tint="@color/neutral_c_tx_light" />
+
+        </LinearLayout>
+
+        <!-- Main content scroll view -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="24dp"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/HeadlineStyle"
+                    android:text="@string/privacy_policy_for_tara"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/general"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/this_privacy_policy_informs_you_about_the_type_scope_and_purpose_of_the_processing_of_personal_data_within_our_app_tara"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/type_of_data_collected"/>
+                <TextView
+                    style="@style/StandardTextStyle2"
+                    android:text="@string/we_collect_and_store_the_following_data"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle2"
+                    android:text="@string/email_address_and_password_for_login"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle2"
+                    android:text="@string/entries_text_date_image_stored_locally_on_the_device"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle2"
+                    android:text="@string/contact_information_name_mobile_number_message_stored_locally_on_the_device"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/number_of_entries_per_day_stored_in_firestore"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/purpose_of_data_collection"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/the_email_address_and_password_are_used_for_login_the_entries_serve_one_of_the_core_functions_of_the_app_the_gratitude_journal_the_contact_data_name_mobile_number_message_is_used_for_the_emergency_message_function_the_number_of_entries_is_stored_to_provide_the_user_with_an_overview_of_their_behavior_in_the_form_of_a_diagram"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/data_transfer"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/data_is_not_passed_on_to_third_parties_unless_the_user_sends_a_message_via_the_app_themselves"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/data_protection"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/all_personal_data_of_the_user_will_be_treated_in_accordance_with_the_data_protection_guidelines_of_allgemeiner_gutachtenservice_schubau_ug"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/data_storage"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/entries_and_contact_data_are_stored_locally_on_the_user_s_device_login_data_is_stored_on_firebase_servers_in_germany_the_number_of_entries_is_stored_on_firestore_servers_in_the_eu"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/cookies_and_tracking"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/we_use_firebase_analytics_and_crashlytics_to_monitor_the_performance_of_the_app"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/exporting_entries"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/the_app_offers_users_the_option_to_export_their_entries_and_send_them_by_email_as_a_pdf_to_a_person_of_their_choice_after_successful_export_all_exported_entries_are_deleted_from_the_user_s_device"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/use_of_external_apis"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/our_app_uses_the_unsplash_api_to_provide_random_images_and_a_self_developed_google_sheets_api_to_provide_quotes_when_using_these_apis_no_personal_data_of_the_user_is_transmitted_to_unsplash_or_google_sheets"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/user_rights"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/users_have_the_right_to_information_about_the_stored_data_as_well_as_the_right_to_deletion_of_this_data"
+                    />
+                <TextView
+                    style="@style/SubheadlineStyle"
+                    android:text="@string/contact"
+                    />
+                <TextView
+                    style="@style/StandardTextStyle"
+                    android:text="@string/for_questions_about_the_privacy_policy_or_your_rights_please_contact_ruth_schumacher_at_schubau_protonmail_com"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

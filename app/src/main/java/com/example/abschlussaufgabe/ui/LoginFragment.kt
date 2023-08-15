@@ -64,7 +64,7 @@ class LoginFragment : Fragment() {
 		// Set onClickListener for the quit button.
 		// When clicked, it navigates back in the navigation stack.
 		binding.quitBtn.setOnClickListener {
-			findNavController().popBackStack()
+			findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
 		}
 		
 		// Set onClickListener for the login button.

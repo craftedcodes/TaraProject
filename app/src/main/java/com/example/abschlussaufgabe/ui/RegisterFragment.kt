@@ -1,6 +1,7 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentRegisterBinding
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.widget.TextView
 
 /**
  * A Fragment representing the registration screen of the application.
@@ -100,16 +105,48 @@ class RegisterFragment : Fragment() {
 	 * @param password The password to be used for the new user registration.
 	 */
 	private fun registerUser(email: String, password: String) {
-		// Try to create a new user with the provided email and password using Firebase authentication.
-		auth.createUserWithEmailAndPassword(email, password)
-			.addOnCompleteListener { task ->
-				if (task.isSuccessful) {
-					// If the registration is successful, navigate to the login fragment.
-					findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
-				} else {
-					// If the registration fails, show a toast with the error message.
-					Toast.makeText(context, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-				}
+		// Create a SpannableString for the message with clickable links.
+		val message = SpannableString("By registering, you accept our Terms and Conditions and Privacy Policy.")
+		val termsStart = message.indexOf("Terms and Conditions")
+		val privacyStart = message.indexOf("Privacy Policy")
+		
+		// Set clickable spans for "Terms and Conditions" and "Privacy Policy".
+		message.setSpan(object : ClickableSpan() {
+			override fun onClick(widget: View) {
+				findNavController().navigate(R.id.termsConditionsFragment)
 			}
+		}, termsStart, termsStart + "Terms and Conditions".length, 0)
+		
+		message.setSpan(object : ClickableSpan() {
+			override fun onClick(widget: View) {
+				findNavController().navigate(R.id.privacyFragment)
+			}
+		}, privacyStart, privacyStart + "Privacy Policy".length, 0)
+		
+		// Create the AlertDialog.
+		val alertDialog = AlertDialog.Builder(requireContext())
+			.setMessage(message)
+			.setPositiveButton("Accept") { _, _ ->
+				// Try to create a new user with the provided email and password using Firebase authentication.
+				auth.createUserWithEmailAndPassword(email, password)
+					.addOnCompleteListener { task ->
+						if (task.isSuccessful) {
+							// If the registration is successful, navigate to the login fragment.
+							findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+						} else {
+							// If the registration fails, show a toast with the error message.
+							Toast.makeText(context, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+						}
+					}
+			}
+			.setNegativeButton("Decline") { _, _ ->
+				findNavController().navigate(R.id.homeFragment)
+			}
+			.create()
+		
+		alertDialog.show()
+		// Make the message text clickable.
+		(alertDialog.findViewById<TextView>(android.R.id.message))?.movementMethod = LinkMovementMethod.getInstance()
+		
 	}
 }
