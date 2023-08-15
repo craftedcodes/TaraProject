@@ -210,4 +210,45 @@
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
+
+    <!--STYLE HEADLINE -->
+    <style name="HeadlineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/psychedelic_lotus</item>
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <!--STYLE SUBHEADLINE -->
+    <style name="SubheadlineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/merriweathersans_variablefont_wght</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--STYLE STANDARDTEXT -->
+    <style name="StandardTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/merriweathersans_variablefont_wght</item>
+    </style>
+
+    <!--STYLE STANDARDTEXT -->
+    <style name="StandardTextStyle2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/merriweathersans_variablefont_wght</item>
+    </style>
 </resources>
