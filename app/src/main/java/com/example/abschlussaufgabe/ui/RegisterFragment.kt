@@ -3,6 +3,7 @@ package com.example.abschlussaufgabe.ui
 // Required imports for the class.
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentRegisterBinding
 import android.text.SpannableString
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.widget.TextView
@@ -28,6 +30,10 @@ class RegisterFragment : Fragment() {
 	
 	// Holds the FirebaseAuth instance.
 	private lateinit var auth: FirebaseAuth
+	
+	// Regular expression pattern to validate the password.
+	private val passwordPattern = "^(?=(?:[^A-Z]*[A-Z]){1})(?=(?:[^a-z]*[a-z]){1})(?=(?:[^\\d]*\\d){2})(?=(?:[^\\W_]*[\\W_]){1}).{12,}$".toRegex()
+	
 	
 	/**
 	 * Called to have the fragment instantiate its user interface view.
@@ -63,8 +69,52 @@ class RegisterFragment : Fragment() {
 		// Ensure proper initialization of the view by calling the super method.
 		super.onViewCreated(view, savedInstanceState)
 		
+		// Initially set the register button to be disabled and semi-transparent.
+		binding.registerBtn.isEnabled = false
+		binding.registerBtn.alpha = 0.4f
+		
 		// Set up click listeners for the UI components.
 		setupListeners()
+	}
+	
+	/**
+	 * Sets up text watchers for input fields to validate the content and determine the state of the register button.
+	 */
+	private fun setupTextWatchers() {
+		// Lambda function to validate the email, password, and repeat password fields.
+		val validateFields = {
+			val email = binding.eMailTf.text.toString()
+			val password = binding.passwordTf.text.toString()
+			val repeatPassword = binding.repeatPasswordTf.text.toString()
+			
+			// Check if all fields are non-empty and the password matches the regex pattern.
+			if (email.isNotEmpty() && password.matches(passwordPattern) && repeatPassword.isNotEmpty()) {
+				// Enable the register button and set its opacity to fully visible.
+				binding.registerBtn.isEnabled = true
+				binding.registerBtn.alpha = 1f
+			} else {
+				// Disable the register button and set its opacity to semi-transparent.
+				binding.registerBtn.isEnabled = false
+				binding.registerBtn.alpha = 0.4f
+			}
+		}
+		
+		// TextWatcher to observe changes in the email, password, and repeat password fields.
+		val textWatcher = object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			
+			override fun afterTextChanged(s: Editable) {
+				// Validate the fields after the text has changed.
+				validateFields()
+			}
+		}
+		
+		// Attach the TextWatcher to the email, password, and repeat password fields.
+		binding.eMailTf.addTextChangedListener(textWatcher)
+		binding.passwordTf.addTextChangedListener(textWatcher)
+		binding.repeatPasswordTf.addTextChangedListener(textWatcher)
 	}
 	
 	/**

@@ -1,6 +1,8 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -53,8 +55,57 @@ class LoginFragment : Fragment() {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
 		
+		// Initially set the login button to be disabled and semi-transparent
+		binding.loginBtn.isEnabled = false
+		binding.loginBtn.alpha = 0.4f
+		
 		// Set up the listeners for the UI components.
 		setupListeners()
+		
+		// Set up text watchers for input validation
+		setupTextWatchers()
+	}
+	
+	/**
+	 * Sets up text watchers for input fields to validate the input.
+	 */
+	private fun setupTextWatchers() {
+		// Lambda function to validate the email and password fields.
+// Enables the login button if both fields are non-empty, otherwise disables it.
+		val validateFields = {
+			val email = binding.eMailTf.text.toString()
+			val password = binding.passwordTf.text.toString()
+			
+			if (email.isNotEmpty() && password.isNotEmpty()) {
+				// Enable the login button and set its opacity to fully visible.
+				binding.loginBtn.isEnabled = true
+				binding.loginBtn.alpha = 1f
+			} else {
+				// Disable the login button and set its opacity to semi-transparent.
+				binding.loginBtn.isEnabled = false
+				binding.loginBtn.alpha = 0.4f
+			}
+		}
+
+// TextWatcher to observe changes in the email and password text fields.
+		val textWatcher = object : TextWatcher {
+			// Called before the text is changed. Not used in this implementation.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			
+			// Called when the text is being changed. Not used in this implementation.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			
+			// Called after the text has been changed.
+			// Validates the fields to determine the state of the login button.
+			override fun afterTextChanged(s: Editable) {
+				validateFields()
+			}
+		}
+
+// Attach the TextWatcher to the email and password text fields.
+// This ensures that any changes in these fields trigger the validation logic.
+		binding.eMailTf.addTextChangedListener(textWatcher)
+		binding.passwordTf.addTextChangedListener(textWatcher)
 	}
 	
 	/**

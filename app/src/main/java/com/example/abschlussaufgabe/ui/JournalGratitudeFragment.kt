@@ -66,6 +66,14 @@ class JournalGratitudeFragment : Fragment() {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
 		
+		// Initially, the reset button should be invisible and disabled
+		binding.resetBtn.alpha = 0f
+		binding.resetBtn.isEnabled = false
+		
+		// Initially, the filter button should be transparent and disabled
+		binding.filterBtn.alpha = 0.4f
+		binding.filterBtn.isEnabled = false
+		
 		// Fetch all the journal entries asynchronously from the database.
 		viewModel.getAllEntriesAsync()
 		
@@ -96,12 +104,28 @@ class JournalGratitudeFragment : Fragment() {
 				// Update the RecyclerView adapter with the filtered entries.
 				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
 			}
+			
+			// After filtering, the reset button should be visible and enabled
+			binding.resetBtn.alpha = 1f
+			binding.resetBtn.isEnabled = true
 		}
 		
 		// Set up the click listener for the reset button.
 		binding.resetBtn.setOnClickListener {
-			// Fetch all entries asynchronously to reset the view.
+			// Clear the text fields
+			binding.startDateTf.text?.clear()
+			binding.endDateTf.text?.clear()
+			
+			// Reset the filter button
+			binding.filterBtn.alpha = 0.4f
+			binding.filterBtn.isEnabled = false
+			
+			// Fetch all entries asynchronously to reset the view without any filters.
 			viewModel.getAllEntriesAsync()
+			
+			// After resetting, the reset button should be invisible and disabled
+			binding.resetBtn.alpha = 0f
+			binding.resetBtn.isEnabled = false
 		}
 		
 		// Set up the click listener for the home button logo.
@@ -153,68 +177,57 @@ class JournalGratitudeFragment : Fragment() {
 	 * Sets up text watchers for date input fields to validate the date format.
 	 */
 	private fun setUpTextWatchers() {
-		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		// Regular expression pattern to match valid dates in the format DD.MM.YYYY.
+		val datePattern = "(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}".toRegex()
 		
-		binding.startDateTf.addTextChangedListener(object : TextWatcher {
+		// Lambda function to validate the start and end date fields.
+		val validateDateFields = {
+			// Retrieve the start date from the input field.
+			val startDate = binding.startDateTf.text.toString()
+			// Retrieve the end date from the input field.
+			val endDate = binding.endDateTf.text.toString()
 			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` are about to be replaced by new text with length `after`.
-			// Not needed in this case.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` have just replaced old text that had length `before`.
-			// Not needed in this case.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that somewhere within `s`, the text has been changed.
-			// It is up to you to determine what to do with the text.
-			override fun afterTextChanged(s: Editable) {
-				// Check if the entered date matches the pattern.
-				if (!datePattern.matches(s.toString())) {
-					// If the date does not match the pattern, change the border color of the text field to red.
-					binding.startDateTf.backgroundTintList = ColorStateList.valueOf(Color.RED)
-				} else {
-					// If the date matches the pattern, reset the border color of the text field to black.
-					binding.startDateTf.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-				}
-			}
-		})
-		
-		binding.endDateTf.addTextChangedListener(object : TextWatcher {
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` are about to be replaced by new text with length `after`.
-			// Not needed in this case.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that, within `s`, the `count` characters
-			// beginning at `start` have just replaced old text that had length `before`.
-			// Not needed in this case.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
-			}
-			
-			// This method is called to notify you that somewhere within `s`, the text has been changed.
-			// It is up to you to determine what to do with the text.
-			override fun afterTextChanged(s: Editable) {
-				// Check if the entered date matches the pattern.
-				if (!datePattern.matches(s.toString())) {
-					// If the date does not match the pattern, change the border color of the text field to red.
-					binding.endDateTf.backgroundTintList = ColorStateList.valueOf(Color.RED)
-				} else {
-					// If the date matches the pattern, reset the border color of the text field to black.
-					binding.endDateTf.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-				}
+			// Check if both the start and end dates match the valid date pattern.
+			if (datePattern.matches(startDate) && datePattern.matches(endDate)) {
+				// If valid, set the filter button to be fully opaque and enable it.
+				binding.filterBtn.alpha = 1f
+				binding.filterBtn.isEnabled = true
+			} else {
+				// If invalid, set the filter button to be semi-transparent and disable it.
+				binding.filterBtn.alpha = 0.4f
+				binding.filterBtn.isEnabled = false
 			}
 		}
-		)
+
+// Add a text changed listener to the start date input field.
+		binding.startDateTf.addTextChangedListener(object : TextWatcher {
+			// This method is called before the text is changed.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			
+			// This method is called when the text is being changed.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			
+			// This method is called after the text has been changed.
+			override fun afterTextChanged(s: Editable) {
+				// Validate the date fields after the text has changed.
+				validateDateFields()
+			}
+		})
+
+// Add a text changed listener to the end date input field.
+		binding.endDateTf.addTextChangedListener(object : TextWatcher {
+			// This method is called before the text is changed.
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			
+			// This method is called when the text is being changed.
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			
+			// This method is called after the text has been changed.
+			override fun afterTextChanged(s: Editable) {
+				// Validate the date fields after the text has changed.
+				validateDateFields()
+			}
+		})
 	}
 	
 	/**
