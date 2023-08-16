@@ -235,6 +235,7 @@ class JournalGratitudeFragment : Fragment() {
 	@RequiresApi(Build.VERSION_CODES.O)
 	private fun createNewEntry() {
 		// Get the current date
+		Log.e("Journal", "createNewEntry() is being called")
 		val calendar = Calendar.getInstance()
 		val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${
 			calendar.get(Calendar.YEAR)

@@ -64,6 +64,8 @@ class EntryGratitudeFragment : Fragment() {
 	// This will be triggered when an image is selected from the gallery.
 	private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 		uri?.let {
+			photoDownloadedTextView?.visibility = View.VISIBLE
+			updateSaveButtonState()
 			// Open an InputStream for the selected image and decode it into a Bitmap.
 			val inputStream = requireActivity().contentResolver.openInputStream(it)
 			selectedImage = BitmapFactory.decodeStream(inputStream)
@@ -110,7 +112,21 @@ class EntryGratitudeFragment : Fragment() {
 		
 		// Initialize the existingEntry variable
 		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
-
+		
+		textField.addTextChangedListener(object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+				// Not needed
+			}
+			
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+				// Not needed
+			}
+			
+			override fun afterTextChanged(s: Editable) {
+				updateSaveButtonState()
+			}
+		})
+		
 		// Observe changes to the existingEntry
 		existingEntry.observe(viewLifecycleOwner, Observer { entry ->
 			// Once the entry is retrieved, update the dateField
@@ -321,5 +337,15 @@ class EntryGratitudeFragment : Fragment() {
 	 */
 	private fun formatDate(day: Int, month: Int, year: Int): String {
 		return String.format("%02d.%02d.%04d", day, month, year)
+	}
+	
+	private fun updateSaveButtonState() {
+		if (textField.text.isNullOrEmpty() && selectedImage == null) {
+			saveButton.isEnabled = false
+			saveButton.alpha = 0.4f
+		} else {
+			saveButton.isEnabled = true
+			saveButton.alpha = 1f
+		}
 	}
 }
