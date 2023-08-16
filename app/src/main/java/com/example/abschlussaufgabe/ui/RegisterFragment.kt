@@ -71,6 +71,9 @@ class RegisterFragment : Fragment() {
 		
 		// Set up click listeners for the UI components.
 		setupListeners()
+		
+		// Set up text watchers for the UI components.
+		setupTextWatchers()
 	}
 	
 	/**
