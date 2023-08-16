@@ -126,7 +126,7 @@ class EntryGratitudeFragment : Fragment() {
 		setupListeners()
 		
 		// Define the regex pattern for the date format.
-		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		val datePattern = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}\$\n".toRegex()
 		
 		// Set an onClickListener for the save button.
 		// When this button is clicked, it navigates to the journalGratitudeFragment.
@@ -236,7 +236,7 @@ class EntryGratitudeFragment : Fragment() {
 	 * Set up a TextWatcher for the date input field to validate date format.
 	 */
 	private fun setUpTextWatcher() {
-		val datePattern = "\\d{2}\\.\\d{2}\\.\\d{4}".toRegex()
+		val datePattern = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}\$\n".toRegex()
 		
 		dateField.addTextChangedListener(object : TextWatcher {
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
