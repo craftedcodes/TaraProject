@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -126,7 +127,7 @@ class EntryGratitudeFragment : Fragment() {
 		setupListeners()
 		
 		// Define the regex pattern for the date format.
-		val datePattern = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}\$\n".toRegex()
+		val datePattern = "(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}".toRegex()
 		
 		// Set an onClickListener for the save button.
 		// When this button is clicked, it navigates to the journalGratitudeFragment.
@@ -236,7 +237,7 @@ class EntryGratitudeFragment : Fragment() {
 	 * Set up a TextWatcher for the date input field to validate date format.
 	 */
 	private fun setUpTextWatcher() {
-		val datePattern = "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}\$\n".toRegex()
+		val datePattern = "(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}".toRegex()
 		
 		dateField.addTextChangedListener(object : TextWatcher {
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -249,12 +250,17 @@ class EntryGratitudeFragment : Fragment() {
 			
 			override fun afterTextChanged(s: Editable) {
 				// Check if the entered text matches the predefined date pattern.
+				Log.e("EntryGratitudeFragment", s.toString())
 				if (!datePattern.matches(s.toString())) {
 					// If the date format is incorrect, set the background tint of the dateField to red.
-					dateField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+					saveButton.isEnabled = false
+					saveButton.alpha = 0.4f
+					Log.e("EntryGratitudeFragment", "Date format is incorrect")
 				} else {
 					// If the date format is correct, set the background tint of the dateField to black.
-					dateField.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+					saveButton.isEnabled = true
+					saveButton.alpha = 1f
+					Log.e("EntryGratitudeFragment", "Date format is correct")
 				}
 			}
 		}
