@@ -69,6 +69,7 @@ class EntryAdapter(
 				withContext(Dispatchers.IO) {
 					repository.deleteEntryById(entry.id)
 				}
+				entries = entries.filter { it.id != entry.id }
 				notifyItemRemoved(position)
 			}
 		}
