@@ -31,10 +31,6 @@ class RegisterFragment : Fragment() {
 	// Holds the FirebaseAuth instance.
 	private lateinit var auth: FirebaseAuth
 	
-	// Regular expression pattern to validate the password.
-	private val passwordPattern = """^(?=(?:[^A-Z]*[A-Z]){1})(?=(?:[^a-z]*[a-z]){1})(?=(?:[^\d]*\d){2})(?=(?:[^\W_]*[\W_]){1}).{12,}$""".toRegex()
-	
-	
 	/**
 	 * Called to have the fragment instantiate its user interface view.
 	 *
@@ -78,7 +74,29 @@ class RegisterFragment : Fragment() {
 	}
 	
 	/**
-	 * Sets up text watchers for input fields to validate the content and determine the state of the register button.
+	 * Checks if the given password meets the required criteria:
+	 * - At least one uppercase letter
+	 * - At least one lowercase letter
+	 * - At least two digits
+	 * - At least one special character (non-alphanumeric and not an underscore)
+	 * - At least 12 characters in length
+	 *
+	 * @param password The password string to validate.
+	 * @return True if the password meets all criteria, false otherwise.
+	 */
+	private fun isValidPassword(password: String): Boolean {
+		val hasUppercase = "[A-Z]".toRegex().containsMatchIn(password)
+		val hasLowercase = "[a-z]".toRegex().containsMatchIn(password)
+		val hasTwoDigits = "\\d.*\\d".toRegex().containsMatchIn(password)
+		val hasSpecialChar = "[\\W_]".toRegex().containsMatchIn(password)
+		val hasMinLength = password.length >= 12
+		
+		return hasUppercase && hasLowercase && hasTwoDigits && hasSpecialChar && hasMinLength
+	}
+	
+	/**
+	 * Sets up text watchers for the input fields to validate their content and determine
+	 * the state (enabled/disabled) of the register button.
 	 */
 	private fun setupTextWatchers() {
 		// Lambda function to validate the email, password, and repeat password fields.
@@ -87,13 +105,12 @@ class RegisterFragment : Fragment() {
 			val password = binding.passwordTf.text.toString()
 			val repeatPassword = binding.repeatPasswordTf.text.toString()
 			
-			// Check if all fields are non-empty and the password matches the regex pattern.
-			if (email.isNotEmpty() && password.matches(passwordPattern) && repeatPassword.isNotEmpty()) {
-				// Enable the register button and set its opacity to fully visible.
+			// Enable the register button if all fields are non-empty and the password is valid.
+			// Otherwise, disable the button.
+			if (email.isNotEmpty() && isValidPassword(password) && repeatPassword.isNotEmpty()) {
 				binding.registerBtn.isEnabled = true
 				binding.registerBtn.alpha = 1f
 			} else {
-				// Disable the register button and set its opacity to semi-transparent.
 				binding.registerBtn.isEnabled = false
 				binding.registerBtn.alpha = 0.4f
 			}
@@ -106,7 +123,7 @@ class RegisterFragment : Fragment() {
 			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 			
 			override fun afterTextChanged(s: Editable) {
-				// Validate the fields after the text has changed.
+				// Validate the fields after their content has changed.
 				validateFields()
 			}
 		}
