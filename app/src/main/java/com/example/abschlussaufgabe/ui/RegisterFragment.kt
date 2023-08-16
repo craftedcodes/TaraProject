@@ -32,8 +32,7 @@ class RegisterFragment : Fragment() {
 	private lateinit var auth: FirebaseAuth
 	
 	// Regular expression pattern to validate the password.
-	private val passwordPattern =
-		"^(?=(?:[^A-Z]*[A-Z]){1})(?=(?:[^a-z]*[a-z]){1})(?=(?:[^\\d]*\\d){2})(?=(?:[^\\W_]*[\\W_]){1}).{12,}$".toRegex()
+	private val passwordPattern = """^(?=(?:[^A-Z]*[A-Z]){1})(?=(?:[^a-z]*[a-z]){1})(?=(?:[^\d]*\d){2})(?=(?:[^\W_]*[\W_]){1}).{12,}$""".toRegex()
 	
 	
 	/**
