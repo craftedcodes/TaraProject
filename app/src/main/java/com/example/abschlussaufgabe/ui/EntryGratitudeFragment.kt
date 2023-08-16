@@ -57,6 +57,9 @@ class EntryGratitudeFragment : Fragment() {
 	// Declare a variable for the selected image. Initially, it is null.
 	private var selectedImage: Bitmap? = null
 	
+	// Declare a variable for the entryId. Initially, it is set to 0.
+	private var entryId: Long = 0L
+	
 	// Register a callback for the result of the "get content" activity.
 	// This will be triggered when an image is selected from the gallery.
 	private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -103,7 +106,7 @@ class EntryGratitudeFragment : Fragment() {
 		val args: EntryGratitudeFragmentArgs by navArgs()
 
 		// Get the entryId from the arguments
-		val entryId = args.entryId
+		entryId = args.entryId
 		
 		// Initialize the existingEntry variable
 		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
@@ -199,24 +202,36 @@ class EntryGratitudeFragment : Fragment() {
 		// Set an onClickListener for the back button.
 		// When this button is clicked, it navigates back in the back stack.
 		backButton.setOnClickListener {
+			if (shouldDeleteEntry()) {
+			deleteEntry(entryId)
+		}
 			findNavController().popBackStack()
 		}
 		
 		// Set an onClickListener for the home button logo.
 		// When this button is clicked, it navigates to the animation fragment.
 		homeLogoButton.setOnClickListener {
+			if (shouldDeleteEntry()) {
+				deleteEntry(entryId)
+			}
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the home button text.
 		// When this text is clicked, it also navigates to the animation fragment.
 		homeTextButton.setOnClickListener {
+			if (shouldDeleteEntry()) {
+				deleteEntry(entryId)
+			}
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
 		}
 		
 		// Set an onClickListener for the profile button logo.
 		// When this button is clicked, it navigates to the profile fragment.
 		profileButton.setOnClickListener {
+			if (shouldDeleteEntry()) {
+				deleteEntry(entryId)
+			}
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToProfileFragment())
 		}
 		
@@ -229,7 +244,36 @@ class EntryGratitudeFragment : Fragment() {
 		// Set an onClickListener for the quit button.
 		// When this button is clicked, it navigates to the gratitude journal fragment.
 		quitButton.setOnClickListener {
+			if (shouldDeleteEntry()) {
+				deleteEntry(entryId)
+			}
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
+		}
+	}
+	
+	/**
+	 * Determines if the current entry should be deleted.
+	 *
+	 * An entry should be deleted if there's no selected image and the text field is empty.
+	 *
+	 * @return true if the entry should be deleted, false otherwise.
+	 */
+	private fun shouldDeleteEntry(): Boolean {
+		return selectedImage == null && textField.text.isNullOrEmpty()
+	}
+	
+	/**
+	 * Deletes the entry with the specified ID from the database.
+	 *
+	 * This function performs the delete operation asynchronously using Kotlin Coroutines.
+	 *
+	 * @param entryId The ID of the entry to be deleted.
+	 */
+	private fun deleteEntry(entryId: Long) {
+		lifecycleScope.launch(Dispatchers.IO) {
+			val database = LocalDatabase.getDatabase(requireContext())
+			val repository = EntryRepository(database)
+			repository.deleteEntryById(entryId)
 		}
 	}
 	

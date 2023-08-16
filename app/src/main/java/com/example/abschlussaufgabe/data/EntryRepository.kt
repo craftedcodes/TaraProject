@@ -48,7 +48,7 @@ class EntryRepository(private val database: LocalDatabase) {
 	
 	// Method to delete a specific entry by its ID from the database.
 	// Logs an error message if an exception is thrown.
-	suspend fun deleteEntry(id: Long) {
+	suspend fun deleteEntryById(id: Long) {
 		try {
 			database.databaseDao().deleteEntryById(id)
 		} catch (e: Exception) {
@@ -106,10 +106,6 @@ class EntryRepository(private val database: LocalDatabase) {
 			_entries
 		}
 	}
-	
-	
-	
-	
 	
 	// Method to count all entries from the database by date.
 	// Logs an error message if an exception is thrown.

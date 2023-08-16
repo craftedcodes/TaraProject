@@ -76,7 +76,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	// Define function to delete an entry from the repository
 	fun deleteEntry(entry: Entry) {
 		viewModelScope.launch {
-			repository.deleteEntry(entry.id)
+			repository.deleteEntryById(entry.id)
 			_loading.value = ApiStatus.DONE
 		}
 	}

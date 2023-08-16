@@ -2,7 +2,6 @@
 package com.example.abschlussaufgabe.util
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +67,7 @@ class EntryAdapter(
 		holder.binding.deleteBtn.setOnClickListener {
 			CoroutineScope(Dispatchers.Main).launch {
 				withContext(Dispatchers.IO) {
-					repository.deleteEntry(entry.id)
+					repository.deleteEntryById(entry.id)
 				}
 				notifyItemRemoved(position)
 			}

@@ -85,7 +85,6 @@ class JournalGratitudeFragment : Fragment() {
 		
 		// Configure and initialize the RecyclerView to display the list of gratitude journal entries.
 		setUpRecyclerView()
-		
 	}
 	
 	/**
@@ -275,7 +274,6 @@ class JournalGratitudeFragment : Fragment() {
 				)
 			}
 		}
-		
 	}
 	
 	
@@ -287,9 +285,11 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	private fun saveCountEntryToFirestore(dayKey: String) {
 		// Reference to the specific document in the 'entries' collection using the dayKey
-		val docRef = db.collection("entries").document(dayKey)
-
-// Start a transaction to safely increment the 'count' field
+		val docRef = db.collection("entries").document(
+			"Z1y82W0y1avm66jdEj6J")
+		Log.d("Journal", "saveCountEntryToFirestore")
+		
+		// Start a transaction to safely increment the 'count' field
 		db.runTransaction { transaction ->
 			// Get the current document snapshot within the transaction
 			val snapshot = transaction.get(docRef)
@@ -309,6 +309,5 @@ class JournalGratitudeFragment : Fragment() {
 			// Log error message if there's any issue during the transaction
 			Log.e("Firestore", "Error when incrementing count in Firestore.", e)
 		}
-		
 	}
 }
