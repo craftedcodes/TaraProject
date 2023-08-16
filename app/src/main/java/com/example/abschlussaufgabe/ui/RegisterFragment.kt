@@ -32,7 +32,8 @@ class RegisterFragment : Fragment() {
 	private lateinit var auth: FirebaseAuth
 	
 	// Regular expression pattern to validate the password.
-	private val passwordPattern = "^(?=(?:[^A-Z]*[A-Z]){1})(?=(?:[^a-z]*[a-z]){1})(?=(?:[^\\d]*\\d){2})(?=(?:[^\\W_]*[\\W_]){1}).{12,}$".toRegex()
+	private val passwordPattern =
+		"^(?=(?:[^A-Z]*[A-Z]){1})(?=(?:[^a-z]*[a-z]){1})(?=(?:[^\\d]*\\d){2})(?=(?:[^\\W_]*[\\W_]){1}).{12,}$".toRegex()
 	
 	
 	/**
@@ -156,22 +157,10 @@ class RegisterFragment : Fragment() {
 	 */
 	private fun registerUser(email: String, password: String) {
 		// Create a SpannableString for the message with clickable links.
-		val message = SpannableString("By registering, you accept our Terms and Conditions and Privacy Policy.")
+		val message =
+			SpannableString("By registering, you accept our Terms and Conditions and Privacy Policy.")
 		val termsStart = message.indexOf("Terms and Conditions")
 		val privacyStart = message.indexOf("Privacy Policy")
-		
-		// Set clickable spans for "Terms and Conditions" and "Privacy Policy".
-		message.setSpan(object : ClickableSpan() {
-			override fun onClick(widget: View) {
-				findNavController().navigate(R.id.termsConditionsFragment)
-			}
-		}, termsStart, termsStart + "Terms and Conditions".length, 0)
-		
-		message.setSpan(object : ClickableSpan() {
-			override fun onClick(widget: View) {
-				findNavController().navigate(R.id.privacyFragment)
-			}
-		}, privacyStart, privacyStart + "Privacy Policy".length, 0)
 		
 		// Create the AlertDialog.
 		val alertDialog = AlertDialog.Builder(requireContext())
@@ -185,7 +174,11 @@ class RegisterFragment : Fragment() {
 							findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
 						} else {
 							// If the registration fails, show a toast with the error message.
-							Toast.makeText(context, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+							Toast.makeText(
+								context,
+								"Registration failed: ${task.exception?.message}",
+								Toast.LENGTH_SHORT
+							).show()
 						}
 					}
 			}
@@ -193,10 +186,25 @@ class RegisterFragment : Fragment() {
 				findNavController().navigate(R.id.homeFragment)
 			}
 			.create()
+
+		// Set clickable spans for "Terms and Conditions" and "Privacy Policy".
+		message.setSpan(object : ClickableSpan() {
+			override fun onClick(widget: View) {
+				findNavController().navigate(R.id.termsConditionsFragment)
+				alertDialog.dismiss()  // Close the AlertDialog
+			}
+		}, termsStart, termsStart + "Terms and Conditions".length, 0)
+		
+		message.setSpan(object : ClickableSpan() {
+			override fun onClick(widget: View) {
+				findNavController().navigate(R.id.privacyFragment)
+				alertDialog.dismiss()  // Close the AlertDialog
+			}
+		}, privacyStart, privacyStart + "Privacy Policy".length, 0)
 		
 		alertDialog.show()
 		// Make the message text clickable.
-		(alertDialog.findViewById<TextView>(android.R.id.message))?.movementMethod = LinkMovementMethod.getInstance()
-		
+		(alertDialog.findViewById<TextView>(android.R.id.message))?.movementMethod =
+			LinkMovementMethod.getInstance()
 	}
 }
