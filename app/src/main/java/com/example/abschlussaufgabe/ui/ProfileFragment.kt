@@ -83,7 +83,6 @@ class ProfileFragment : Fragment() {
 	 * @param view The View returned by onCreateView().
 	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
@@ -288,8 +287,7 @@ class ProfileFragment : Fragment() {
 	 *
 	 * @param count The count of entries for the day.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
-	fun getCountEntryToFirestore() {
+	private fun getCountEntryToFirestore() {
 		val collection = Firebase.auth.currentUser?.let { db.collection(it.uid) }
 		collection?.document("${LocalDate.now()}")?.get()!!.addOnSuccessListener {
 			Log.d(TAG, "DocumentSnapshot data: ${it.data?.get("count")}") }

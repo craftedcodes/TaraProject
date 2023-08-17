@@ -86,7 +86,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	}
 	
 	// Define function to delete an entry from the repository
-	@RequiresApi(Build.VERSION_CODES.O)
 	fun deleteEntry(entry: Entry) {
 		viewModelScope.launch {
 			repository.deleteEntryById(entry.id)
@@ -101,7 +100,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		}
 	}
 	
-	@RequiresApi(Build.VERSION_CODES.O)
 	fun deleteEntryById(id: Long) {
 		viewModelScope.launch {
 			repository.deleteEntryById(id)
@@ -142,7 +140,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	 *
 	 * @param count The count of entries for the day.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	fun saveCountEntryToFirestore(countEntry: Int) {
 		val collection = Firebase.auth.currentUser?.let { db.collection(it.uid) }
 		val data = hashMapOf("count" to countEntry)

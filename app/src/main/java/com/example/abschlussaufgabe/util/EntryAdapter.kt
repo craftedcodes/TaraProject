@@ -74,7 +74,6 @@ class EntryAdapter(
 	/**
 	 * Binds the data to the ViewHolder.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 		val entry = entries[position]
 		val repository = EntryRepository(LocalDatabase.getDatabase(context))

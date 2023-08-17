@@ -128,7 +128,6 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	// The onViewCreated method is called after onCreateView(). It is used to perform additional view setup
-	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
@@ -253,7 +252,6 @@ class EntryGratitudeFragment : Fragment() {
 	/**
 	 * Set up listeners for UI interactions.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	private fun setupListeners() {
 		// Set an onClickListener for the back button.
 		// When this button is clicked, it navigates back in the back stack.
@@ -327,7 +325,6 @@ class EntryGratitudeFragment : Fragment() {
 	 *
 	 * @param entryId The ID of the entry to be deleted.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	private fun deleteEntry(entryId: Long) {
 			viewModel.deleteEntryById(entryId)
 		Log.d("Delete", "deleteEntry()")

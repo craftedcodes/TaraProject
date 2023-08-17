@@ -63,7 +63,6 @@ class JournalGratitudeFragment : Fragment() {
 	 * Called immediately after onCreateView() has returned, but before any saved state has been restored in the view.
 	 * This gives subclasses a chance to initialize themselves once they know their view hierarchy has been completely created.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
@@ -91,7 +90,6 @@ class JournalGratitudeFragment : Fragment() {
 	/**
 	 * Sets up click listeners for various UI components.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	private fun setUpListeners() {
 		// Set up the click listener for the filter button.
 		binding.filterBtn.setOnClickListener {
@@ -238,7 +236,6 @@ class JournalGratitudeFragment : Fragment() {
 	/**
 	 * Creates a new gratitude journal entry and saves it to the database.
 	 */
-	@RequiresApi(Build.VERSION_CODES.O)
 	private fun createNewEntry() {
 		// Get the current date
 		Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "createNewEntry() is being called")
