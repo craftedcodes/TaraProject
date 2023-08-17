@@ -1,8 +1,7 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
-import android.content.res.ColorStateList
-import android.graphics.Color
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -19,15 +18,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
+import com.example.abschlussaufgabe.data.datamodels.count
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.util.EntryAdapter
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentJournalGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.Calendar
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
@@ -41,8 +44,6 @@ class JournalGratitudeFragment : Fragment() {
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
 	
-	// Create an instance of FirebaseFirestore to access.
-	private val db = FirebaseFirestore.getInstance()
 	
 	/**
 	 * Inflates the fragment's layout and initializes the data binding.
@@ -101,7 +102,7 @@ class JournalGratitudeFragment : Fragment() {
 			// Fetch and observe entries from the database within the specified date range.
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
 				// Update the RecyclerView adapter with the filtered entries.
-				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
+				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, viewModel)
 			}
 			
 			// After filtering, the reset button should be visible and enabled.
@@ -168,12 +169,12 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	private fun setUpRecyclerView() {
 		// Initially set the RecyclerView's adapter with an empty list.
-		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList())
+		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList(), viewModel)
 		
 		// Observe changes in the entries LiveData from the ViewModel.
 		// Whenever the entries data changes, update the RecyclerView's adapter with the new entries.
 		viewModel.entries.observe(viewLifecycleOwner) { entries ->
-			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
+			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, viewModel)
 		}
 	}
 	
@@ -242,9 +243,6 @@ class JournalGratitudeFragment : Fragment() {
 		// Get the current date
 		Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "createNewEntry() is being called")
 		val calendar = Calendar.getInstance()
-		val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${
-			calendar.get(Calendar.YEAR)
-		}"
 		
 		// Create a new Entry object with the entered date, text, and image.
 		val entry = Entry(
@@ -267,8 +265,23 @@ class JournalGratitudeFragment : Fragment() {
 			// Insert the new entry into the local database and retrieve its ID.
 			val entryId = repository.insertEntry(entry)
 			
+			val countSharedPreferences = requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
+			
+			var count = countSharedPreferences.getInt("count", 0)
+			
+			val date = countSharedPreferences.getString("date",LocalDate.now().toString())
+			
+            if (date!= LocalDate.now().toString()) {
+                count = 0
+            }
+			
+			count ++
+			
+            countSharedPreferences.edit().putString("date", LocalDate.now().toString()).apply()
+			countSharedPreferences.edit().putInt("count", count).apply()
+			
 			// Increment the count for the specific day in Firestore.
-			saveCountEntryToFirestore(dayKey)
+			viewModel.saveCountEntryToFirestore(count)
 			
 			// Switch to the Main dispatcher to perform UI operations.
 			withContext(Dispatchers.Main) {
@@ -281,39 +294,4 @@ class JournalGratitudeFragment : Fragment() {
 			}
 		}
 	}
-	
-	
-	/**
-	 * Save the count of entries for a specific day to Firestore.
-	 *
-	 * @param dayKey The key representing the day.
-	 * @param count The count of entries for the day.
-	 */
-	private fun saveCountEntryToFirestore(dayKey: String) {
-		// Reference to the specific document in the 'entries' collection using the dayKey
-		val docRef = db.collection("entries").document(
-			"Z1y82W0y1avm66jdEj6J")
-		Log.d("Journal", "saveCountEntryToFirestore")
-		
-		// Start a transaction to safely increment the 'count' field
-		db.runTransaction { transaction ->
-			// Get the current document snapshot within the transaction
-			val snapshot = transaction.get(docRef)
-			
-			// Retrieve the current value of 'count' from the snapshot, default to 0 if it doesn't exist
-			val currentCount = snapshot.getLong("count") ?: 0
-			
-			// Calculate the new count by incrementing the current count
-			val newCount = currentCount + 1
-			
-			// Update the 'count' field in the document with the new count value
-			transaction.update(docRef, "count", newCount)
-		}.addOnSuccessListener {
-			// Log success message when the transaction completes successfully
-			Log.d("Firestore", "Successfully incremented count in Firestore.")
-		}.addOnFailureListener { e ->
-			// Log error message if there's any issue during the transaction
-			Log.e("Firestore", "Error when incrementing count in Firestore.", e)
-		}
 	}
-}

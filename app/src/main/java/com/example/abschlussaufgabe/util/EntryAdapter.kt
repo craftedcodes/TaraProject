@@ -4,10 +4,12 @@ package com.example.abschlussaufgabe.util
 // Required imports for the adapter.
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.ui.JournalGratitudeFragmentDirections
+import com.example.abschlussaufgabe.viewModel.EntryViewModel
 import com.schubau.tara.databinding.EntryRvBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +34,8 @@ const val ENTRY_ADAPTER_TAG = "EntryAdapter"
  */
 class EntryAdapter(
 	private val context: Context,
-	data: List<Entry>
+	data: List<Entry>,
+	private val viewModel: EntryViewModel
 ) : RecyclerView.Adapter<EntryAdapter.ItemViewHolder>() {
 	
 	/**
@@ -70,6 +74,7 @@ class EntryAdapter(
 	/**
 	 * Binds the data to the ViewHolder.
 	 */
+	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 		val entry = entries[position]
 		val repository = EntryRepository(LocalDatabase.getDatabase(context))
@@ -92,7 +97,7 @@ class EntryAdapter(
 			val newEntries = entries.filter { it.id != entry.id }
 			CoroutineScope(Dispatchers.Main).launch {
 				withContext(Dispatchers.IO) {
-					repository.deleteEntryById(entry.id)
+					viewModel.deleteEntryById(entry.id)
 					Log.d(ENTRY_ADAPTER_TAG, "Entry deleted ${entry.id}")
 				}
 				updateEntries(newEntries)

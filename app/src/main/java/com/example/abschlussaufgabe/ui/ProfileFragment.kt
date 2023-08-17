@@ -2,10 +2,13 @@ package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
@@ -14,19 +17,26 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentProfileBinding
+import java.time.LocalDate
 import java.util.Calendar
 
 // Constants for SharedPreferences keys.
 private const val AVATAR_PREFS = "avatar_prefs"
 private const val CONTACT_PREFS = "contact_prefs"
 
+private const val TAG = "ProfileFragment"
 /**
  * A Fragment representing the user's profile screen.
  * Displays user's gratitude note activity and emergency contact details.
  */
 class ProfileFragment : Fragment() {
+	
+	private val db = FirebaseFirestore.getInstance()
 	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentProfileBinding
@@ -73,6 +83,7 @@ class ProfileFragment : Fragment() {
 	 * @param view The View returned by onCreateView().
 	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
 	 */
+	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
@@ -85,6 +96,8 @@ class ProfileFragment : Fragment() {
 		lineDataLiveData.observe(viewLifecycleOwner) { data ->
 			setupChartData(barDataLiveData.value ?: arrayOf(), data)
 		}
+		
+		getCountEntryToFirestore()
 		
 		// Generate chart data based on user's gratitude note activity.
 		generateChartData()
@@ -268,7 +281,18 @@ class ProfileFragment : Fragment() {
 
 		// Set up the chart with the retrieved bar and line data.
 		setupChartData(barData, lineData)
-		
+	}
+	
+	/**
+	 * Save the count of entries for a specific day to Firestore.
+	 *
+	 * @param count The count of entries for the day.
+	 */
+	@RequiresApi(Build.VERSION_CODES.O)
+	fun getCountEntryToFirestore() {
+		val collection = Firebase.auth.currentUser?.let { db.collection(it.uid) }
+		collection?.document("${LocalDate.now()}")?.get()!!.addOnSuccessListener {
+			Log.d(TAG, "DocumentSnapshot data: ${it.data?.get("count")}") }
 	}
 	
 	/**

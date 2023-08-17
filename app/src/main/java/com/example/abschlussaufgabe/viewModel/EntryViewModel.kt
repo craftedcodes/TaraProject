@@ -1,20 +1,32 @@
 package com.example.abschlussaufgabe.viewModel
 
 import android.app.Application
+import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
+import com.example.abschlussaufgabe.data.datamodels.count
 import com.example.abschlussaufgabe.data.local.LocalDatabase
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 // Define a constant for logging
 const val ENTRY_VIEW_MODEL_TAG = "EntryViewModel"
 
 class EntryViewModel(application: Application) : AndroidViewModel(application) {
+	// Create an instance of FirebaseFirestore to access.
+	private val db = FirebaseFirestore.getInstance()
+	private val context = application.applicationContext
 	
 	// Initialize the repository
 	private val repository = EntryRepository(LocalDatabase.getDatabase(application))
@@ -74,9 +86,32 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	}
 	
 	// Define function to delete an entry from the repository
+	@RequiresApi(Build.VERSION_CODES.O)
 	fun deleteEntry(entry: Entry) {
 		viewModelScope.launch {
 			repository.deleteEntryById(entry.id)
+			val countSharedPreferences = context.getSharedPreferences("countPref", Context.MODE_PRIVATE)
+			var count = countSharedPreferences.getInt("count", 0)
+			if (count != 0) {
+				count --
+			}
+			countSharedPreferences.edit().putInt("count", count).apply()
+			saveCountEntryToFirestore(count)
+			_loading.value = ApiStatus.DONE
+		}
+	}
+	
+	@RequiresApi(Build.VERSION_CODES.O)
+	fun deleteEntryById(id: Long) {
+		viewModelScope.launch {
+			repository.deleteEntryById(id)
+			val countSharedPreferences = context.getSharedPreferences("countPref", Context.MODE_PRIVATE)
+			var count = countSharedPreferences.getInt("count", 0)
+			if (count != 0) {
+				count --
+			}
+			countSharedPreferences.edit().putInt("count", count).apply()
+			saveCountEntryToFirestore(count)
 			_loading.value = ApiStatus.DONE
 		}
 	}
@@ -102,4 +137,15 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		return repository.getEntriesByDataRange(from, to)
 	}
 	
+	/**
+	 * Save the count of entries for a specific day to Firestore.
+	 *
+	 * @param count The count of entries for the day.
+	 */
+	@RequiresApi(Build.VERSION_CODES.O)
+	fun saveCountEntryToFirestore(countEntry: Int) {
+		val collection = Firebase.auth.currentUser?.let { db.collection(it.uid) }
+		val data = hashMapOf("count" to countEntry)
+		collection?.document("${LocalDate.now()}")?.set(data)
+	}
 }

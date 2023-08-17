@@ -4,6 +4,7 @@ package com.example.abschlussaufgabe.ui
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,7 +17,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +28,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
+import com.example.abschlussaufgabe.viewModel.EntryViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.schubau.tara.R
@@ -39,9 +43,11 @@ const val ENTRY_GRATITUDE_FRAGMENT_TAG = "EntryGratitudeFragment"
  * Fragment to display and edit gratitude entries.
  */
 class EntryGratitudeFragment : Fragment() {
-	
 	// Lateinit variable for the data binding object
 	private lateinit var binding: FragmentEntryGratitudeBinding
+	
+	// ViewModel instance to manage and store data related to journal entries.
+	private val viewModel: EntryViewModel by viewModels()
 	
 	// Declare variables for the UI elements that will be initialized later.
 	private lateinit var backButton: ImageButton
@@ -67,10 +73,10 @@ class EntryGratitudeFragment : Fragment() {
 		uri?.let {
 			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the")
 			photoDownloadedTextView?.visibility = View.VISIBLE
-			updateSaveButtonState()
 			// Open an InputStream for the selected image and decode it into a Bitmap.
 			val inputStream = requireActivity().contentResolver.openInputStream(it)
 			selectedImage = BitmapFactory.decodeStream(inputStream)
+			updateSaveButtonState()
 			photoDownloadedTextView = binding.photoDownloadedTv
 			photoDownloadedTextView?.visibility = View.VISIBLE
 		}
@@ -82,7 +88,7 @@ class EntryGratitudeFragment : Fragment() {
 		
 		val scaleWidth = maxSize.toFloat() / width
 		val scaleHeight = maxSize.toFloat() / height
-		val scale = Math.min(scaleWidth, scaleHeight)
+		val scale = scaleWidth.coerceAtMost(scaleHeight)
 		
 		val matrix = Matrix()
 		matrix.postScale(scale, scale)
@@ -92,23 +98,24 @@ class EntryGratitudeFragment : Fragment() {
 	
 	// Define a function to convert a Bitmap into a ByteArray.
 	// This is necessary for storing the image in the database.
-	private fun bitmapToByteArray(bitmap: Bitmap, targetSizeKB: Int): ByteArray {
+	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
 		// Create a ByteArrayOutputStream and compress the bitmap into it.
+		val targetSizeKB = 400
 		val outputStream = ByteArrayOutputStream()
 		var bitmapValue = bitmap
-		var quality = 100
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue1: ${bitmapValue.width}")
+		val quality = 100
 		bitmapValue.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue2: ${bitmapValue.width}")
 		// Convert the ByteArrayOutputStream into a ByteArray and return it.
-		
-		while (outputStream.toByteArray().size > targetSizeKB * 1024 && quality > 60) {
+		while (outputStream.toByteArray().size > targetSizeKB * 1024 && bitmapValue.width >= 50) {
 			outputStream.reset()
+			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue3: ${bitmapValue.width}")
 			bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
 			bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
 		}
-		
 		return outputStream.toByteArray()
 	}
-	
 	
 	// Inflate the layout for this fragment using data binding within onCreateView
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -121,6 +128,7 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	// The onViewCreated method is called after onCreateView(). It is used to perform additional view setup
+	@RequiresApi(Build.VERSION_CODES.O)
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
@@ -130,6 +138,9 @@ class EntryGratitudeFragment : Fragment() {
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): database = $database")
 		val repository = EntryRepository(database)
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): repository = $repository")
+		
+		// Initialize UI components using data binding.
+		initializeUIElements()
 		
 		// Get the arguments passed to the fragment
 		val args: EntryGratitudeFragmentArgs by navArgs()
@@ -159,17 +170,14 @@ class EntryGratitudeFragment : Fragment() {
 		// Observe changes to the existingEntry
 		existingEntry.observe(viewLifecycleOwner, Observer { entry ->
 			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "existingEntry observer: entry = $entry")
-            // If the entryId is 0, the entry does not exist yet.
+			// If the entryId is 0, the entry does not exist yet.
 			// Once the entry is retrieved, update the dateField
 			dateField.setText(formatDate(entry.day, entry.month, entry.year))
 			
 			// Set the text of the textField to the text of the entry if it exists
-			textField.setText(entry.text ?: "")
+			binding.textTf.setText(entry.text ?: "")
 		})
 		
-		// Initialize UI components using data binding.
-		initializeUIElements()
-
 		// Set up a TextWatcher for the date input field to validate its format.
 		setUpTextWatcher()
 
@@ -218,7 +226,7 @@ class EntryGratitudeFragment : Fragment() {
 
 		// If an image has been selected, convert it to a ByteArray for storage.
 		// If no image has been selected, this will be null.
-			val image = selectedImage?.let { bitmapToByteArray(it, 400) }
+			val image = selectedImage?.let { bitmapToByteArray(it) }
 			entry.image = image
 			
 			lifecycleScope.launch(Dispatchers.IO) {
@@ -245,6 +253,7 @@ class EntryGratitudeFragment : Fragment() {
 	/**
 	 * Set up listeners for UI interactions.
 	 */
+	@RequiresApi(Build.VERSION_CODES.O)
 	private fun setupListeners() {
 		// Set an onClickListener for the back button.
 		// When this button is clicked, it navigates back in the back stack.
@@ -293,8 +302,10 @@ class EntryGratitudeFragment : Fragment() {
 		quitButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
 				deleteEntry(entryId)
+				Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "quitButton: pressed")
 			}
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
+			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "quitButton: findNavController().navigate()")
 		}
 	}
 	
@@ -316,12 +327,10 @@ class EntryGratitudeFragment : Fragment() {
 	 *
 	 * @param entryId The ID of the entry to be deleted.
 	 */
+	@RequiresApi(Build.VERSION_CODES.O)
 	private fun deleteEntry(entryId: Long) {
-		lifecycleScope.launch(Dispatchers.IO) {
-			val database = LocalDatabase.getDatabase(requireContext())
-			val repository = EntryRepository(database)
-			repository.deleteEntryById(entryId)
-		}
+			viewModel.deleteEntryById(entryId)
+		Log.d("Delete", "deleteEntry()")
 	}
 	
 	/**
@@ -371,12 +380,14 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	private fun updateSaveButtonState() {
-		if (textField.text.isNullOrEmpty() && selectedImage == null) {
-			saveButton.isEnabled = false
-			saveButton.alpha = 0.4f
-		} else {
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "image: $selectedImage")
+		if (textField.text!!.isNotEmpty() || selectedImage != null) {
 			saveButton.isEnabled = true
 			saveButton.alpha = 1f
+			
+		} else {
+			saveButton.isEnabled = false
+			saveButton.alpha = 0.4f
 		}
 	}
 }
