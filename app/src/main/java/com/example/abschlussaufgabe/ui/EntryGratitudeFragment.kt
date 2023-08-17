@@ -74,46 +74,96 @@ class EntryGratitudeFragment : Fragment() {
 			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the")
 			photoDownloadedTextView?.visibility = View.VISIBLE
 			// Open an InputStream for the selected image and decode it into a Bitmap.
+			// Open an InputStream for the selected image URI.
 			val inputStream = requireActivity().contentResolver.openInputStream(it)
+
+			// Decode the InputStream into a Bitmap.
 			selectedImage = BitmapFactory.decodeStream(inputStream)
+
+			// Update the state of the save button based on the selected image and text field content.
 			updateSaveButtonState()
+
+			// Get the TextView reference from the binding to indicate that a photo has been downloaded.
 			photoDownloadedTextView = binding.photoDownloadedTv
+
+			// Set the visibility of the TextView to VISIBLE to show the user that the photo has been downloaded.
 			photoDownloadedTextView?.visibility = View.VISIBLE
 		}
 	}
 	
+	/**
+	 * Scales a given bitmap to ensure that its width or height does not exceed a specified maximum size.
+	 * The aspect ratio of the original bitmap is maintained.
+	 *
+	 * @param bitmap The original bitmap to be scaled.
+	 * @param maxSize The maximum allowable size for the width or height of the scaled bitmap.
+	 * @return A new scaled bitmap.
+	 */
 	private fun scaleBitmap(bitmap: Bitmap, maxSize: Int): Bitmap {
+		// Get the width and height of the original bitmap.
 		val width = bitmap.width
 		val height = bitmap.height
 		
+		// Calculate the scaling factors for width and height.
 		val scaleWidth = maxSize.toFloat() / width
 		val scaleHeight = maxSize.toFloat() / height
+		
+		// Determine the minimum scaling factor to ensure the scaled bitmap does not exceed the maxSize.
 		val scale = scaleWidth.coerceAtMost(scaleHeight)
 		
+		// Create a new matrix for scaling.
 		val matrix = Matrix()
 		matrix.postScale(scale, scale)
 		
+		// Create and return the scaled bitmap using the scaling matrix.
 		return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
 	}
-	
-	// Define a function to convert a Bitmap into a ByteArray.
-	// This is necessary for storing the image in the database.
+	/**
+	 * Converts a given bitmap into a ByteArray. The method ensures that the resulting ByteArray
+	 * does not exceed a specified size in kilobytes (KB) by scaling down the bitmap if necessary.
+	 *
+	 * @param bitmap The original bitmap to be converted.
+	 * @return A ByteArray representation of the bitmap.
+	 */
 	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
-		// Create a ByteArrayOutputStream and compress the bitmap into it.
+		// Target size for the resulting ByteArray in KB.
 		val targetSizeKB = 400
+		
+		// Create a ByteArrayOutputStream to hold the bitmap's bytes.
 		val outputStream = ByteArrayOutputStream()
+		
+		// Start with the original bitmap.
 		var bitmapValue = bitmap
+		
+		// Log the width of the original bitmap for debugging purposes.
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue1: ${bitmapValue.width}")
+		
+		// Initial compression quality.
 		val quality = 100
+		
+		// Compress the bitmap into the ByteArrayOutputStream.
 		bitmapValue.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+		
+		// Log the width of the bitmap after initial compression for debugging purposes.
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue2: ${bitmapValue.width}")
-		// Convert the ByteArrayOutputStream into a ByteArray and return it.
+		
+		// While the size of the ByteArray exceeds the target size and the bitmap's width is greater than or equal to 50,
+		// scale down the bitmap and compress it again.
 		while (outputStream.toByteArray().size > targetSizeKB * 1024 && bitmapValue.width >= 50) {
+			// Reset the ByteArrayOutputStream to remove the previous bytes.
 			outputStream.reset()
+			
+			// Log the width of the bitmap before scaling for debugging purposes.
 			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue3: ${bitmapValue.width}")
+			
+			// Scale down the bitmap by half.
 			bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
+			
+			// Compress the scaled bitmap into the ByteArrayOutputStream.
 			bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
 		}
+		
+		// Convert the ByteArrayOutputStream into a ByteArray and return it.
 		return outputStream.toByteArray()
 	}
 	
@@ -375,16 +425,24 @@ class EntryGratitudeFragment : Fragment() {
 	private fun formatDate(day: Int, month: Int, year: Int): String {
 		return String.format("%02d.%02d.%04d", day, month, year)
 	}
-	
+	/**
+	 * Updates the state of the save button based on the content of the text field and the presence of a selected image.
+	 * If the text field is not empty or an image has been selected, the save button is enabled. Otherwise, it's disabled.
+	 */
 	private fun updateSaveButtonState() {
+		// Log the current state of the selected image for debugging purposes.
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "image: $selectedImage")
+		
+		// Check if the text field is not empty or an image has been selected.
 		if (textField.text!!.isNotEmpty() || selectedImage != null) {
+			// Enable the save button and set its opacity to full.
 			saveButton.isEnabled = true
 			saveButton.alpha = 1f
-			
 		} else {
+			// Disable the save button and reduce its opacity.
 			saveButton.isEnabled = false
 			saveButton.alpha = 0.4f
 		}
 	}
+	
 }

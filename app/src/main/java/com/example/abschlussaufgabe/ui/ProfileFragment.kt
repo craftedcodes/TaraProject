@@ -317,6 +317,3 @@ class ProfileFragment : Fragment() {
 		binding.aaChartView.aa_drawChartWithChartModel(aaChartModel)
 	}
 }
-
-// TODO: Überdenken einer Lösung mit den Daten der lineChart und barChart. SharedPreferences ist keine Option.
-// TODO: Handling über Firebase und Firestore? Benjamin fragen.

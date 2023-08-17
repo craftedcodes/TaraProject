@@ -47,16 +47,25 @@ class EntryAdapter(
 	private var entries: List<Entry> = data
 	
 	/**
-	 * Updates the current list of entries with a new one using DiffUtil for efficient updates.
+	 * Updates the current list of entries with a new list and notifies any registered observers
+	 * about the changes between the two lists.
 	 *
-	 * @param newEntries The new list of entries.
+	 * @param newEntries The new list of entries to replace the current list.
 	 */
-	fun updateEntries(newEntries: List<Entry>) {
+	private fun updateEntries(newEntries: List<Entry>) {
+		// Create a callback for calculating the difference between the current and new list of entries.
 		val diffCallback = EntryDiffCallback(entries, newEntries)
+		
+		// Calculate the result of the difference between the two lists.
 		val diffResult = DiffUtil.calculateDiff(diffCallback)
+		
+		// Update the current list of entries with the new list.
 		entries = newEntries
+		
+		// Notify any registered observers about the changes (insertions, removals, etc.) in the list.
 		diffResult.dispatchUpdatesTo(this)
 	}
+	
 	
 	/**
 	 * Creates new ViewHolders for the RecyclerView.

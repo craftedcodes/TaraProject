@@ -260,21 +260,31 @@ class JournalGratitudeFragment : Fragment() {
 		lifecycleScope.launch(Dispatchers.IO) {
 			
 			// Insert the new entry into the local database and retrieve its ID.
+			// Insert the new entry into the repository and retrieve its ID.
 			val entryId = repository.insertEntry(entry)
-			
+
+			// Access the shared preferences to get and update the count of entries.
 			val countSharedPreferences = requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
-			
+
+			// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
 			var count = countSharedPreferences.getInt("count", 0)
-			
-			val date = countSharedPreferences.getString("date",LocalDate.now().toString())
-			
-            if (date!= LocalDate.now().toString()) {
-                count = 0
-            }
-			
-			count ++
-			
-            countSharedPreferences.edit().putString("date", LocalDate.now().toString()).apply()
+
+			// Retrieve the date of the last entry from shared preferences. Default to the current date if not found.
+			val date = countSharedPreferences.getString("date", LocalDate.now().toString())
+
+			// Check if the date from shared preferences is different from the current date.
+			// If it is, reset the count to 0, indicating a new day.
+			if (date != LocalDate.now().toString()) {
+				count = 0
+			}
+
+			// Increment the count of entries.
+			count++
+
+			// Update the date in shared preferences to the current date.
+			countSharedPreferences.edit().putString("date", LocalDate.now().toString()).apply()
+
+			// Update the count of entries in shared preferences.
 			countSharedPreferences.edit().putInt("count", count).apply()
 			
 			// Increment the count for the specific day in Firestore.

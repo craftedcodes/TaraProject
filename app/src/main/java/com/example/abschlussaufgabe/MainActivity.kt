@@ -9,10 +9,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
-// TODO: REGEX für Passwortsicherheit einrichten (mindestens 12 Zeichen, Großbuchstaben, Kleinbuchstaben, Zahlen, Sonderzeichen)
 // TODO: Email Bestätigung
 // TODO: Passwort vergessen Funktion
-// TODO: Logout Funktion
 // TODO: Account löschen Funktion
 // TODO: Bezahlfunktion
-// TODO: Tagesdaten speichern in Firestore
