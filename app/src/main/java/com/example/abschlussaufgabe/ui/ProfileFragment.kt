@@ -30,12 +30,14 @@ private const val AVATAR_PREFS = "avatar_prefs"
 private const val CONTACT_PREFS = "contact_prefs"
 
 private const val TAG = "ProfileFragment"
+
 /**
  * A Fragment representing the user's profile screen.
  * Displays user's gratitude note activity and emergency contact details.
  */
 class ProfileFragment : Fragment() {
 	
+	// Firebase Firestore instance to access the database.
 	private val db = FirebaseFirestore.getInstance()
 	
 	// Property to hold the binding object for this fragment.
