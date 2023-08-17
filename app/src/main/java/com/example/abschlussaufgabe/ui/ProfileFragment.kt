@@ -29,6 +29,7 @@ import java.util.Calendar
 private const val AVATAR_PREFS = "avatar_prefs"
 private const val CONTACT_PREFS = "contact_prefs"
 
+// TAG for the class.
 private const val TAG = "ProfileFragment"
 
 /**
