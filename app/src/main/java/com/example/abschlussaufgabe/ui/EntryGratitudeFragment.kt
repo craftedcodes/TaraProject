@@ -3,6 +3,7 @@ package com.example.abschlussaufgabe.ui
 // Required imports for the class.
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -75,13 +76,36 @@ class EntryGratitudeFragment : Fragment() {
 		}
 	}
 	
+	private fun scaleBitmap(bitmap: Bitmap, maxSize: Int): Bitmap {
+		val width = bitmap.width
+		val height = bitmap.height
+		
+		val scaleWidth = maxSize.toFloat() / width
+		val scaleHeight = maxSize.toFloat() / height
+		val scale = Math.min(scaleWidth, scaleHeight)
+		
+		val matrix = Matrix()
+		matrix.postScale(scale, scale)
+		
+		return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
+	}
+	
 	// Define a function to convert a Bitmap into a ByteArray.
 	// This is necessary for storing the image in the database.
-	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+	private fun bitmapToByteArray(bitmap: Bitmap, targetSizeKB: Int): ByteArray {
 		// Create a ByteArrayOutputStream and compress the bitmap into it.
 		val outputStream = ByteArrayOutputStream()
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+		var bitmapValue = bitmap
+		var quality = 100
+		bitmapValue.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
 		// Convert the ByteArrayOutputStream into a ByteArray and return it.
+		
+		while (outputStream.toByteArray().size > targetSizeKB * 1024 && quality > 60) {
+			outputStream.reset()
+			bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
+			bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
+		}
+		
 		return outputStream.toByteArray()
 	}
 	
@@ -194,7 +218,7 @@ class EntryGratitudeFragment : Fragment() {
 
 		// If an image has been selected, convert it to a ByteArray for storage.
 		// If no image has been selected, this will be null.
-			val image = selectedImage?.let { bitmapToByteArray(it) }
+			val image = selectedImage?.let { bitmapToByteArray(it, 400) }
 			entry.image = image
 			
 			lifecycleScope.launch(Dispatchers.IO) {
