@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 const val ENTRY_GRATITUDE_FRAGMENT_TAG = "EntryGratitudeFragment"
+
 /**
  * Fragment to display and edit gratitude entries.
  */
