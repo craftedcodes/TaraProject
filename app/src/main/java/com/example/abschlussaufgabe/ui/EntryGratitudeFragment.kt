@@ -1,10 +1,8 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -34,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
+const val ENTRY_GRATITUDE_FRAGMENT_TAG = "EntryGratitudeFragment"
 /**
  * Fragment to display and edit gratitude entries.
  */
@@ -64,6 +63,7 @@ class EntryGratitudeFragment : Fragment() {
 	// This will be triggered when an image is selected from the gallery.
 	private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 		uri?.let {
+			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the")
 			photoDownloadedTextView?.visibility = View.VISIBLE
 			updateSaveButtonState()
 			// Open an InputStream for the selected image and decode it into a Bitmap.
@@ -87,7 +87,7 @@ class EntryGratitudeFragment : Fragment() {
 	
 	// Inflate the layout for this fragment using data binding within onCreateView
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "EntryGratitudeFragment onCreateView()")
 		// Inflate the layout for this fragment
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_entry_gratitude, container, false)
 		
@@ -99,19 +99,23 @@ class EntryGratitudeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
-		
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated()")
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): database = $database")
 		val repository = EntryRepository(database)
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): repository = $repository")
 		
 		// Get the arguments passed to the fragment
 		val args: EntryGratitudeFragmentArgs by navArgs()
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): args = $args")
 
 		// Get the entryId from the arguments
 		entryId = args.entryId
 		
 		// Initialize the existingEntry variable
 		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
+		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): existingEntry = $existingEntry")
 		
 		textField.addTextChangedListener(object : TextWatcher {
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -129,6 +133,8 @@ class EntryGratitudeFragment : Fragment() {
 		
 		// Observe changes to the existingEntry
 		existingEntry.observe(viewLifecycleOwner, Observer { entry ->
+			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "existingEntry observer: entry = $entry")
+            // If the entryId is 0, the entry does not exist yet.
 			// Once the entry is retrieved, update the dateField
 			dateField.setText(formatDate(entry.day, entry.month, entry.year))
 			

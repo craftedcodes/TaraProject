@@ -1,12 +1,15 @@
 // This package contains utility classes for the application.
 package com.example.abschlussaufgabe.util
 
+// Required imports for the adapter.
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
@@ -18,38 +21,60 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// A custom RecyclerView.Adapter class for displaying entries in a RecyclerView.
+const val ENTRY_ADAPTER_TAG = "EntryAdapter"
+
+/**
+ * A custom RecyclerView.Adapter for displaying [Entry] items.
+ *
+ * @param context The context used for various operations.
+ * @param data Initial list of entries to display.
+ */
 class EntryAdapter(
-	// The context is passed in the constructor for later use.
 	private val context: Context,
-	data: List<Entry>,
+	data: List<Entry>
 ) : RecyclerView.Adapter<EntryAdapter.ItemViewHolder>() {
 	
-	// A ViewHolder class that holds references to the views for each data item.
+	/**
+	 * ViewHolder class that holds references to the views for each data item.
+	 */
 	class ItemViewHolder(val binding: EntryRvBinding) : RecyclerView.ViewHolder(binding.root)
 	
-	// A private variable to hold the list of entries.
+	// Holds the list of entries.
 	private var entries: List<Entry> = data
 	
-	// This method creates new ViewHolders for the RecyclerView.
+	/**
+	 * Updates the current list of entries with a new one using DiffUtil for efficient updates.
+	 *
+	 * @param newEntries The new list of entries.
+	 */
+	fun updateEntries(newEntries: List<Entry>) {
+		val diffCallback = EntryDiffCallback(entries, newEntries)
+		val diffResult = DiffUtil.calculateDiff(diffCallback)
+		entries = newEntries
+		diffResult.dispatchUpdatesTo(this)
+	}
+	
+	/**
+	 * Creates new ViewHolders for the RecyclerView.
+	 */
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 		val binding = EntryRvBinding.inflate(LayoutInflater.from(parent.context))
 		return ItemViewHolder(binding)
 	}
 	
-	// This method returns the size of the entries list.
-	override fun getItemCount(): Int {
-		return entries.size
-	}
+	/**
+	 * Returns the size of the entries list.
+	 */
+	override fun getItemCount(): Int = entries.size
 	
-	// This method binds the data to the ViewHolder.
+	/**
+	 * Binds the data to the ViewHolder.
+	 */
 	override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 		val entry = entries[position]
-		
 		val repository = EntryRepository(LocalDatabase.getDatabase(context))
 		
-		// If the entry does not have an image, hide the ImageView.
-		// Otherwise, decode the ByteArray into a Bitmap and set it as the ImageView's image.
+		// Handle image display or hiding based on its presence.
 		val imageByteArray = entry.image
 		if (imageByteArray == null) {
 			holder.binding.gratitudeIv.visibility = View.GONE
@@ -58,28 +83,27 @@ class EntryAdapter(
 			holder.binding.gratitudeIv.setImageBitmap(image)
 		}
 		
-		
 		// Set the date and text of the entry.
 		holder.binding.dateTv.text = String.format("%02d.%02d.%04d", entry.day, entry.month, entry.year)
 		holder.binding.textTv.text = entry.text
 		
-		// Set an OnClickListener for the delete button
+		// Handle entry deletion.
 		holder.binding.deleteBtn.setOnClickListener {
+			val newEntries = entries.filter { it.id != entry.id }
 			CoroutineScope(Dispatchers.Main).launch {
 				withContext(Dispatchers.IO) {
 					repository.deleteEntryById(entry.id)
+					Log.d(ENTRY_ADAPTER_TAG, "Entry deleted ${entry.id}")
 				}
-				entries = entries.filter { it.id != entry.id }
-				notifyItemRemoved(position)
+				updateEntries(newEntries)
 			}
 		}
 		
-		// Set an OnClickListener for the edit button
+		// Handle entry editing.
 		holder.binding.editBtn.setOnClickListener {
 			val navController = holder.itemView.findNavController()
 			val entryId = entry.id
-			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId)
-			)
+			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
 		}
 	}
 }

@@ -136,11 +136,9 @@
                     android:minHeight="54dp"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/filter"
-                    android:textColor="@color/secondary_c_tx_light"
-                    android:backgroundTint="@color/white"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/outline_bg_light"
                     android:layout_margin="16dp"
-                    app:strokeColor="@color/surface_c_tx_light"
-                    app:strokeWidth="1dp"
                     android:textSize="20sp"
                     tools:ignore="ButtonStyle"
                     />
@@ -150,13 +148,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16sp"
-
+                    android:visibility="gone"
                     android:backgroundTint="@color/white"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/reset"
                     android:textAlignment="center"
                     android:textColor="@color/outline_bg_light"
-                    android:textStyle="bold" />
+                    app:strokeColor="@color/outline_bg_light"
+                    app:strokeWidth="1dp"
+                    android:textStyle="bold"
+                    tools:ignore="ButtonStyle" />
+
+                <Button
+                    android:id="@+id/export_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16sp"
+                    android:visibility="visible"
+                    android:backgroundTint="@color/white"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:text="@string/export_gratitude_journal_entries"
+                    android:textAlignment="center"
+                    android:textColor="@color/outline_bg_light"
+                    app:strokeColor="@color/outline_bg_light"
+                    app:strokeWidth="1dp"
+                    android:textStyle="bold"
+                    tools:ignore="ButtonStyle" />
 
             </LinearLayout>
 

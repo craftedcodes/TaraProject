@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 
+const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 /**
  * Represents the JournalGratitudeFragment which allows users to view and filter gratitude journal entries.
  */
@@ -66,9 +67,8 @@ class JournalGratitudeFragment : Fragment() {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Initially, the reset button should be invisible and disabled
-		binding.resetBtn.alpha = 0f
-		binding.resetBtn.isEnabled = false
+		// Initially, the reset button should be gone
+		binding.resetBtn.visibility = View.GONE
 		
 		// Initially, the filter button should be transparent and disabled
 		binding.filterBtn.alpha = 0.4f
@@ -104,9 +104,12 @@ class JournalGratitudeFragment : Fragment() {
 				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries)
 			}
 			
-			// After filtering, the reset button should be visible and enabled
-			binding.resetBtn.alpha = 1f
+			// After filtering, the reset button should be visible and enabled.
+			binding.resetBtn.visibility = View.VISIBLE
 			binding.resetBtn.isEnabled = true
+			
+			// After filtering, the export button should be invisible.
+			binding.exportBtn.visibility = View.GONE
 		}
 		
 		// Set up the click listener for the reset button.
@@ -123,8 +126,10 @@ class JournalGratitudeFragment : Fragment() {
 			viewModel.getAllEntriesAsync()
 			
 			// After resetting, the reset button should be invisible and disabled
-			binding.resetBtn.alpha = 0f
-			binding.resetBtn.isEnabled = false
+			binding.resetBtn.visibility = View.GONE
+			
+			// After resetting, the export button should be visible.
+			binding.exportBtn.visibility = View.VISIBLE
 		}
 		
 		// Set up the click listener for the home button logo.
@@ -235,7 +240,7 @@ class JournalGratitudeFragment : Fragment() {
 	@RequiresApi(Build.VERSION_CODES.O)
 	private fun createNewEntry() {
 		// Get the current date
-		Log.e("Journal", "createNewEntry() is being called")
+		Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "createNewEntry() is being called")
 		val calendar = Calendar.getInstance()
 		val dayKey = "${calendar.get(Calendar.DAY_OF_MONTH)}-${calendar.get(Calendar.MONTH) + 1}-${
 			calendar.get(Calendar.YEAR)

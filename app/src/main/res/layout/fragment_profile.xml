@@ -235,7 +235,7 @@
                                     android:fontFamily="@font/psychedelic_lotus"
                                     android:text="@string/mom"
                                     android:textColor="@color/primary_bg_light"
-                                    android:textSize="20sp" />
+                                    android:textSize="24sp" />
 
                                 <!-- Contact number -->
                                 <TextView
@@ -245,8 +245,8 @@
                                     android:layout_marginVertical="4dp"
                                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                                     android:text="@string/_0123_234786239"
-                                    android:textColor="@color/outline_bg_light"
-                                    android:textSize="12sp" />
+                                    android:textColor="@color/neutral_c_tx_light"
+                                    android:textSize="16sp" />
 
                                 <!-- Contact message -->
                                 <TextView
@@ -256,8 +256,8 @@
                                     android:layout_marginBottom="16dp"
                                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                                     android:text="@string/i_have_a_panic_attack_right_now_please_call_me"
-                                    android:textColor="@color/outline_bg_light"
-                                    android:textSize="12sp" />
+                                    android:textColor="@color/neutral_c_tx_light"
+                                    android:textSize="16sp" />
 
                                 <!-- Contact action buttons -->
                                 <LinearLayout
@@ -306,19 +306,11 @@
                             android:fontFamily="@font/merriweathersans_variablefont_wght"
                             android:text="@string/please_note"
                             android:textAlignment="center"
-                            android:textColor="@color/outline_bg_light"
+                            android:textColor="@color/neutral_c_tx_light"
                             android:textSize="12sp" />
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
-
-                <!-- Export gratitude journal entries button -->
-                <Button
-                    android:id="@+id/export_btn"
-                    style="@style/PrimaryButtonStyle"
-                    android:layout_weight="0.04"
-                    android:textSize="16sp"
-                    android:text="@string/export_gratitude_journal_entries" />
 
             </LinearLayout>
 
@@ -329,7 +321,6 @@
             android:id="@+id/bottom_action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
