@@ -2,17 +2,13 @@ package com.example.abschlussaufgabe.viewModel
 
 import android.app.Application
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
-import com.example.abschlussaufgabe.data.datamodels.count
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -97,6 +93,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	fun deleteEntry(entry: Entry) {
 		viewModelScope.launch {
 			repository.deleteEntryById(entry.id)
+			_entries.value = repository.getAllEntriesAsync()
 			updateEntryCount(-1)
 		}
 	}
@@ -109,6 +106,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	fun deleteEntryById(id: Long) {
 		viewModelScope.launch {
 			repository.deleteEntryById(id)
+			_entries.value = repository.getAllEntriesAsync()
 			updateEntryCount(-1)
 		}
 	}

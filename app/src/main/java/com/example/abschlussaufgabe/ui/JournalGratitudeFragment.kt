@@ -34,6 +34,7 @@ import java.time.LocalDate
 import java.util.Calendar
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
+
 /**
  * Represents the JournalGratitudeFragment which allows users to view and filter gratitude journal entries.
  */
@@ -44,6 +45,17 @@ class JournalGratitudeFragment : Fragment() {
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
 	
+	/**
+	 * Called when the activity is starting.
+	 */
+	override fun onStart() {
+		// Call the superclass's implementation of onStart
+		super.onStart()
+		
+		// Fetch all the journal entries asynchronously from the database.
+		// This ensures that the UI remains responsive while the data is being fetched.
+		viewModel.getAllEntriesAsync()
+	}
 	
 	/**
 	 * Inflates the fragment's layout and initializes the data binding.
@@ -67,24 +79,24 @@ class JournalGratitudeFragment : Fragment() {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Initially, the reset button should be gone
+		// Initially, hide the reset button from the user's view.
 		binding.resetBtn.visibility = View.GONE
 		
-		// Initially, the filter button should be transparent and disabled
+		// Initially, set the filter button to be semi-transparent and disable its functionality.
 		binding.filterBtn.alpha = 0.4f
 		binding.filterBtn.isEnabled = false
 		
-		// Fetch all the journal entries asynchronously from the database.
-		viewModel.getAllEntriesAsync()
+		// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
+		viewModel.entries.observe(viewLifecycleOwner) { entries ->
+			binding.outerRvGratitudeJournal.adapter =
+				EntryAdapter(requireContext(), entries, viewModel)
+		}
 		
 		// Initialize and set up click listeners for various UI components.
 		setUpListeners()
 		
-		// Set up text watchers for input validation, especially for date fields.
+		// Set up text watchers to monitor changes in text fields, especially for date input validation.
 		setUpTextWatchers()
-		
-		// Configure and initialize the RecyclerView to display the list of gratitude journal entries.
-		setUpRecyclerView()
 	}
 	
 	/**
@@ -100,7 +112,8 @@ class JournalGratitudeFragment : Fragment() {
 			// Fetch and observe entries from the database within the specified date range.
 			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
 				// Update the RecyclerView adapter with the filtered entries.
-				binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, viewModel)
+				binding.outerRvGratitudeJournal.adapter =
+					EntryAdapter(requireContext(), entries, viewModel)
 			}
 			
 			// After filtering, the reset button should be visible and enabled.
@@ -113,16 +126,26 @@ class JournalGratitudeFragment : Fragment() {
 		
 		// Set up the click listener for the reset button.
 		binding.resetBtn.setOnClickListener {
-			// Clear the text fields
+			// Clear the content of the start and end date text fields.
 			binding.startDateTf.text?.clear()
 			binding.endDateTf.text?.clear()
 			
-			// Reset the filter button
+			// Set the filter button to be semi-transparent and disable its functionality.
+			// This indicates that no filter is currently applied.
 			binding.filterBtn.alpha = 0.4f
 			binding.filterBtn.isEnabled = false
 			
-			// Fetch all entries asynchronously to reset the view without any filters.
+			// Fetch all journal entries asynchronously from the database.
+			// This action resets the view to display all entries without any applied filters.
 			viewModel.getAllEntriesAsync()
+			
+			// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
+			// This ensures that the displayed entries reflect the most recent data.
+			viewModel.entries.observe(viewLifecycleOwner) { entries ->
+				binding.outerRvGratitudeJournal.adapter =
+					EntryAdapter(requireContext(), entries, viewModel)
+			}
+			
 			
 			// After resetting, the reset button should be invisible and disabled
 			binding.resetBtn.visibility = View.GONE
@@ -160,20 +183,6 @@ class JournalGratitudeFragment : Fragment() {
 			createNewEntry()
 		}
 		
-	}
-	
-	/**
-	 * Sets up the RecyclerView to display the list of gratitude journal entries.
-	 */
-	private fun setUpRecyclerView() {
-		// Initially set the RecyclerView's adapter with an empty list.
-		binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), emptyList(), viewModel)
-		
-		// Observe changes in the entries LiveData from the ViewModel.
-		// Whenever the entries data changes, update the RecyclerView's adapter with the new entries.
-		viewModel.entries.observe(viewLifecycleOwner) { entries ->
-			binding.outerRvGratitudeJournal.adapter = EntryAdapter(requireContext(), entries, viewModel)
-		}
 	}
 	
 	/**
@@ -262,28 +271,29 @@ class JournalGratitudeFragment : Fragment() {
 			// Insert the new entry into the local database and retrieve its ID.
 			// Insert the new entry into the repository and retrieve its ID.
 			val entryId = repository.insertEntry(entry)
-
+			
 			// Access the shared preferences to get and update the count of entries.
-			val countSharedPreferences = requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
-
+			val countSharedPreferences =
+				requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
+			
 			// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
 			var count = countSharedPreferences.getInt("count", 0)
-
+			
 			// Retrieve the date of the last entry from shared preferences. Default to the current date if not found.
 			val date = countSharedPreferences.getString("date", LocalDate.now().toString())
-
+			
 			// Check if the date from shared preferences is different from the current date.
 			// If it is, reset the count to 0, indicating a new day.
 			if (date != LocalDate.now().toString()) {
 				count = 0
 			}
-
+			
 			// Increment the count of entries.
 			count++
-
+			
 			// Update the date in shared preferences to the current date.
 			countSharedPreferences.edit().putString("date", LocalDate.now().toString()).apply()
-
+			
 			// Update the count of entries in shared preferences.
 			countSharedPreferences.edit().putInt("count", count).apply()
 			
@@ -301,4 +311,4 @@ class JournalGratitudeFragment : Fragment() {
 			}
 		}
 	}
-	}
+}
