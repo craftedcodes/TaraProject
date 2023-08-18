@@ -18,8 +18,7 @@
 
         <!-- Top action bar -->
         <LinearLayout
-            style="@style/ActionBarStyle"
-            android:layout_alignParentTop="true">
+            style="@style/ActionBarStyle">
 
             <!-- Back button -->
             <ImageButton
