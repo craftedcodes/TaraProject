@@ -1,8 +1,12 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
-import android.os.Build
+import android.graphics.pdf.PdfDocument
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,27 +15,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
-import com.example.abschlussaufgabe.data.datamodels.count
 import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.util.EntryAdapter
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentJournalGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 import java.time.LocalDate
 import java.util.Calendar
+import android.content.Intent
+import android.widget.TextView
+import androidx.core.content.FileProvider
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 
@@ -44,6 +50,10 @@ class JournalGratitudeFragment : Fragment() {
 	
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
+	
+	// Global variables for the AlertDialog and its content
+	private lateinit var alertDialog: AlertDialog
+	private lateinit var progressText: TextView
 	
 	/**
 	 * Called when the activity is starting.
@@ -183,6 +193,10 @@ class JournalGratitudeFragment : Fragment() {
 			createNewEntry()
 		}
 		
+		// Set up the click listener for the export button.
+		binding.exportBtn.setOnClickListener {
+			showExportConfirmationDialog()
+		}
 	}
 	
 	/**
@@ -255,6 +269,195 @@ class JournalGratitudeFragment : Fragment() {
 				validateDateFields()
 			}
 		})
+	}
+	
+	/**
+	 * Displays a confirmation dialog to the user before exporting journal entries to a PDF.
+	 * If the user confirms, the entries are exported to a PDF and then deleted from the device.
+	 */
+	private fun showExportConfirmationDialog() {
+		// Create a new AlertDialog builder with the current context.
+		AlertDialog.Builder(requireContext())
+			// Set the title of the dialog.
+			.setTitle("Export Entries")
+			// Set the message to inform the user about the consequences of exporting.
+			.setMessage("Do you really want to export the gratitude journal entries? If you confirm, all entries will be deleted from your device.")
+			// Set the positive button to confirm the export action.
+			.setPositiveButton("Confirm") { _, _ ->
+				// Call the function to export entries to a PDF when the user confirms.
+				exportEntriesToPdf()
+			}
+			// Set the negative button to cancel the export action.
+			.setNegativeButton("Cancel", null)
+			// Display the created dialog to the user.
+			.show()
+	}
+	
+	
+	/**
+	 * Exports journal entries to a PDF file.
+	 */
+	private fun exportEntriesToPdf() {
+		// 1. Determine screen density and generate DIN A4 size in pixels.
+		val metrics = resources.displayMetrics
+		val density = metrics.densityDpi / 160f  // Convert DPI to scale factor
+		
+		// DIN A4 dimensions in millimeters.
+		val widthMm = 210
+		val heightMm = 297
+		
+		// Convert mm to pixels.
+		val widthPixels = (widthMm * density * 160) / 25.4f
+		val heightPixels = (heightMm * density * 160) / 25.4f
+		
+		// 2. Calculate how many entries fit on each page.
+		
+		// Fetch the list of entries from the ViewModel or default to an empty list if null.
+		val entries = viewModel.entries.value ?: listOf()
+		
+		// Convert the list of entries to their corresponding view representations.
+		val entryViews = (binding.outerRvGratitudeJournal.adapter as EntryAdapter).convertEntriesToViews(entries)
+		
+		// Initialize a list to hold the entries of the current page.
+		var currentPageEntries = mutableListOf<View>()
+		
+		// Initialize a list to hold the lists of entries for each page.
+		val pages = mutableListOf<List<View>>()
+		
+		// Iterate through each entry view to determine its placement on a page.
+		for (entryView in entryViews) {
+			// Calculate the height of the current entry view.
+			val entryHeight = entryView.measuredHeight
+			
+			// Check if adding the current entry view to the current page would exceed the page height.
+			if (currentPageEntries.sumOf { it.measuredHeight } + entryHeight <= heightPixels) {
+				// If not, add the entry view to the current page.
+				currentPageEntries.add(entryView)
+			} else {
+				// If yes, finalize the current page and start a new one.
+				pages.add(currentPageEntries)
+				currentPageEntries = mutableListOf(entryView)
+			}
+		}
+		
+		// Add any remaining entries to the last page.
+		if (currentPageEntries.isNotEmpty()) {
+			pages.add(currentPageEntries)
+		}
+		
+		// 3. Generate the PDF file based on the calculated pages.
+		val pdfDocument = PdfDocument()
+		
+		// Show alert dialog with the number of pages to be generated.
+		showAlertDialog(pages.size)
+		
+		// Iterate through each page and its entries.
+		for ((pageIndex, pageEntries) in pages.withIndex()) {
+			// Create a new page with the specified width and height.
+			val pageInfo = PdfDocument.PageInfo.Builder(widthPixels.toInt(), heightPixels.toInt(), pageIndex + 1).create()
+			val page = pdfDocument.startPage(pageInfo)
+			
+			// Draw each entry view onto the page's canvas.
+			for (entryView in pageEntries) {
+				entryView.draw(page.canvas)
+			}
+			
+			// Finalize the current page in the PDF document.
+			pdfDocument.finishPage(page)
+			
+			// Update the progress dialog.
+			updateAlertDialog(pageIndex + 1, pages.size)
+		}
+		
+		// Dismiss the progress dialog.
+		dismissAlertDialog()
+		
+		// Save the generated PDF to a file.
+		val file = File(context?.filesDir, "entries.pdf")
+		pdfDocument.writeTo(FileOutputStream(file))
+		pdfDocument.close()
+		
+		// Send the PDF via email.
+		sendPdfViaEmail(file)
+	}
+	
+	/**
+	 * Sends the PDF file via email.
+	 * @param file The PDF file to be sent.
+	 */
+	private fun sendPdfViaEmail(file: File) {
+		val emailIntent = Intent(Intent.ACTION_SEND).apply {
+			type = "text/plain"
+			putExtra(Intent.EXTRA_SUBJECT, "Gratitude Journal Entries")
+			putExtra(Intent.EXTRA_TEXT, "Attached are the exported gratitude journal entries.")
+			val fileUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.fileprovider", file)
+			putExtra(Intent.EXTRA_STREAM, fileUri)
+		}
+		
+		// Check if there's an app that can handle this intent.
+		if (emailIntent.resolveActivity(requireActivity().packageManager) != null) {
+			emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+			emailResultLauncher.launch(emailIntent)
+		} else {
+			// Handle the case where no email client is installed.
+			Toast.makeText(context, "No email client found.", Toast.LENGTH_SHORT).show()
+		}
+	}
+	
+	/**
+	 * A launcher to handle the result of sending an email.
+	 */
+	private val emailResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+		if (result.resultCode == Activity.RESULT_OK) {
+			// Delete all entries if the email was sent successfully.
+			viewModel.deleteAllEntries()
+			
+			// Notify the user that the entries were exported to a PDF.
+			Toast.makeText(context, "Entries exported to PDF.", Toast.LENGTH_SHORT).show()
+		} else {
+			// Notify the user if there was an error sending the email.
+			Toast.makeText(context, "Failed to send email.", Toast.LENGTH_SHORT).show()
+		}
+	}
+	
+	/**
+	 * Initializes and displays the AlertDialog to show the progress of PDF generation.
+	 *
+	 * @param totalPages The total number of pages to be converted.
+	 */
+	@SuppressLint("SetTextI18n")
+	private fun showAlertDialog(totalPages: Int) {
+		val builder = AlertDialog.Builder(requireContext())
+		val inflater = layoutInflater
+		val view = inflater.inflate(R.layout.progress_dialog_layout, null)
+		
+		progressText = view.findViewById(R.id.progressText)
+		progressText.text = "Page 1 of $totalPages converted..."
+		
+		builder.setView(view)
+		// Prevents the user from closing the dialog
+		builder.setCancelable(false)
+		
+		alertDialog = builder.create()
+		alertDialog.show()
+	}
+	
+	/**
+	 * Updates the displayed text in the AlertDialog to reflect the current progress.
+	 *
+	 * @param pageNumber The current page number being converted.
+	 * @param totalPages The total number of pages to be converted.
+	 */
+	@SuppressLint("SetTextI18n")
+	private fun updateAlertDialog(pageNumber: Int, totalPages: Int) {
+		progressText.text = "Page $pageNumber of $totalPages converted..."
+	}
+	
+	/**
+	 * Closes and dismisses the AlertDialog.
+	 */
+	private fun dismissAlertDialog() {
+		alertDialog.dismiss()
 	}
 	
 	/**

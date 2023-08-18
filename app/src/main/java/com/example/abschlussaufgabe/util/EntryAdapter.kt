@@ -77,4 +77,21 @@ class EntryAdapter(
 			navController.navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(entryId = entryId))
 		}
 	}
+	/**
+	 * Converts a list of Entry objects into a list of View objects.
+	 *
+	 * @param entries The list of Entry objects to convert.
+	 * @return A list of View objects representing the entries.
+	 */
+	fun convertEntriesToViews(entries: List<Entry>): List<View> {
+		val views = mutableListOf<View>()
+		for (entry in entries) {
+			val binding = EntryRvBinding.inflate(LayoutInflater.from(context))
+			val holder = ItemViewHolder(binding)
+			onBindViewHolder(holder, entries.indexOf(entry))
+			views.add(binding.root)
+		}
+		return views
+	}
+	
 }

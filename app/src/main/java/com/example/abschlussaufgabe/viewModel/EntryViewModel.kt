@@ -119,6 +119,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	fun deleteAllEntries() {
 		viewModelScope.launch {
 			repository.deleteAllEntries()
+			_entries.value = repository.getAllEntriesAsync()
 			_loading.value = ApiStatus.DONE
 		}
 	}
