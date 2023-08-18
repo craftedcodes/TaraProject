@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -36,6 +37,7 @@ import com.schubau.tara.databinding.FragmentEntryGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.util.Calendar
 
 const val ENTRY_GRATITUDE_FRAGMENT_TAG = "EntryGratitudeFragment"
 
@@ -225,6 +227,15 @@ class EntryGratitudeFragment : Fragment() {
 			
 			// Set the text of the textField to the text of the entry if it exists
 			binding.textTf.setText(entry.text ?: "")
+			
+			if (entry.image != null) {
+				val bitmap = BitmapFactory.decodeByteArray(entry.image, 0, entry.image!!.size)
+				selectedImage = bitmap
+				photoDownloadedTextView = binding.photoDownloadedTv
+				photoDownloadedTextView?.text =
+					getString(R.string.an_image_already_exists_in_this_entry)
+				photoDownloadedTextView?.visibility = View.VISIBLE
+			}
 		})
 		
 		// Set up a TextWatcher for the date input field to validate its format.
@@ -381,6 +392,22 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	/**
+	 * Checks if the given date is in the future.
+	 *
+	 * @param day The day of the month.
+	 * @param month The month of the year.
+	 * @param year The year.
+	 * @return `true` if the date is in the future, otherwise `false`.
+	 */
+	private fun isFutureDate(day: Int, month: Int, year: Int): Boolean {
+		val currentDate = Calendar.getInstance()
+		val inputDate = Calendar.getInstance().apply {
+			set(year, month - 1, day) // Month is 0-based
+		}
+		return inputDate.after(currentDate)
+	}
+	
+	/**
 	 * Set up a TextWatcher for the date input field to validate date format.
 	 */
 	private fun setUpTextWatcher() {
@@ -409,6 +436,23 @@ class EntryGratitudeFragment : Fragment() {
 					saveButton.alpha = 1f
 					Log.e("EntryGratitudeFragment", "Date format is correct")
 				}
+				
+				if (datePattern.matches(s.toString())) {
+					val dateParts = s.toString().split(".")
+					val day = dateParts[0].toInt()
+					val month = dateParts[1].toInt()
+					val year = dateParts[2].toInt()
+					if (isFutureDate(day, month, year)) {
+						// Display a cheerful message and disable the save button.
+						Toast.makeText(context, "Awesome that you look forward to the future, but only entries from the present or past can be added to the gratitude journal! 😃", Toast.LENGTH_LONG).show()
+						saveButton.isEnabled = false
+						saveButton.alpha = 0.4f
+					} else {
+						// Enable the save button if the text is correct.
+						saveButton.isEnabled = true
+						saveButton.alpha = 1f
+					}
+				}
 			}
 		}
 		)
@@ -425,24 +469,34 @@ class EntryGratitudeFragment : Fragment() {
 	private fun formatDate(day: Int, month: Int, year: Int): String {
 		return String.format("%02d.%02d.%04d", day, month, year)
 	}
+	
 	/**
-	 * Updates the state of the save button based on the content of the text field and the presence of a selected image.
-	 * If the text field is not empty or an image has been selected, the save button is enabled. Otherwise, it's disabled.
+	 * Updates the state of the save button based on the content of the text field,
+	 * the presence of a selected image, and whether the date is in the past or present.
 	 */
 	private fun updateSaveButtonState() {
-		// Log the current state of the selected image for debugging purposes.
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "image: $selectedImage")
+		// Extract the date from the dateField
+		val dateParts = dateField.text.toString().split(".")
+		var isDateValid = false
 		
-		// Check if the text field is not empty or an image has been selected.
-		if (textField.text!!.isNotEmpty() || selectedImage != null) {
-			// Enable the save button and set its opacity to full.
+		// Check if the date format is correct and if it's in the past or present
+		if (dateParts.size == 3) {
+			val day = dateParts[0].toInt()
+			val month = dateParts[1].toInt()
+			val year = dateParts[2].toInt()
+			isDateValid = !isFutureDate(day, month, year)
+		}
+		
+		// Check conditions for enabling the save button
+		val isTextPresent = textField.text!!.isNotEmpty()
+		val isImagePresent = selectedImage != null
+		
+		if (isDateValid && (isImagePresent || isTextPresent)) {
 			saveButton.isEnabled = true
 			saveButton.alpha = 1f
 		} else {
-			// Disable the save button and reduce its opacity.
 			saveButton.isEnabled = false
 			saveButton.alpha = 0.4f
 		}
 	}
-	
 }

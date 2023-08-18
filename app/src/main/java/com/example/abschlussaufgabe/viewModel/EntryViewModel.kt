@@ -1,5 +1,6 @@
 package com.example.abschlussaufgabe.viewModel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -28,6 +29,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	
 	// Firebase Firestore instance to access the database.
 	private val db = FirebaseFirestore.getInstance()
+	@SuppressLint("StaticFieldLeak")
 	private val context = application.applicationContext
 	
 	// Repository instance for accessing local database operations.

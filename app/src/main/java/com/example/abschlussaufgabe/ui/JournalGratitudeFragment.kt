@@ -199,11 +199,26 @@ class JournalGratitudeFragment : Fragment() {
 			// Retrieve the end date from the input field.
 			val endDate = binding.endDateTf.text.toString()
 			
-			// Check if both the start and end dates match the valid date pattern.
+			/// Check if both the start and end dates match the valid date pattern.
 			if (datePattern.matches(startDate) && datePattern.matches(endDate)) {
-				// If valid, set the filter button to be fully opaque and enable it.
-				binding.filterBtn.alpha = 1f
-				binding.filterBtn.isEnabled = true
+				// Split the dates into components
+				val startParts = startDate.split(".")
+				val endParts = endDate.split(".")
+				
+				// Create LocalDate objects for both dates
+				val startLocalDate = LocalDate.of(startParts[2].toInt(), startParts[1].toInt(), startParts[0].toInt())
+				val endLocalDate = LocalDate.of(endParts[2].toInt(), endParts[1].toInt(), endParts[0].toInt())
+				
+				// Check if the start date is before or equal to the end date
+				if (!startLocalDate.isAfter(endLocalDate)) {
+					// If valid, set the filter button to be fully opaque and enable it.
+					binding.filterBtn.alpha = 1f
+					binding.filterBtn.isEnabled = true
+				} else {
+					// If invalid, set the filter button to be semi-transparent and disable it.
+					binding.filterBtn.alpha = 0.4f
+					binding.filterBtn.isEnabled = false
+				}
 			} else {
 				// If invalid, set the filter button to be semi-transparent and disable it.
 				binding.filterBtn.alpha = 0.4f
@@ -226,7 +241,7 @@ class JournalGratitudeFragment : Fragment() {
 			}
 		})
 
-// Add a text changed listener to the end date input field.
+		// Add a text changed listener to the end date input field.
 		binding.endDateTf.addTextChangedListener(object : TextWatcher {
 			// This method is called before the text is changed.
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}

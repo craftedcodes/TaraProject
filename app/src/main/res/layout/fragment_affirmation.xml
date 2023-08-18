@@ -62,6 +62,12 @@
                 android:alpha="0.4"
                 android:contentDescription="@string/lotus_image" />
 
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
             <!-- Layout for affirmation text and navigation -->
             <LinearLayout
                 android:layout_width="match_parent"

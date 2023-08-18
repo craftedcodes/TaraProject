@@ -159,4 +159,5 @@
     <string name="not_enough_data_keep_writing_entries_to_see_your_progress_unfold">Not enough data. Keep writing entries to see your progress unfold!</string>
     <string name="not_enough_data">Not enough data</string>
     <string name="keep_writing_to_see_your_progress_unfold">Keep writing to see your progress unfold!</string>
+    <string name="an_image_already_exists_in_this_entry">An image already exists in this entry.</string>
 </resources>
