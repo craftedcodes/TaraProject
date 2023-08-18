@@ -383,20 +383,33 @@ class JournalGratitudeFragment : Fragment() {
 	 * @param file The PDF file to be sent.
 	 */
 	private fun sendPdfViaEmail(file: File) {
+		// Create an email intent.
 		val emailIntent = Intent(Intent.ACTION_SEND).apply {
+			// Set the MIME type for the email content.
 			type = "text/plain"
+			
+			// Set the email subject.
 			putExtra(Intent.EXTRA_SUBJECT, "Gratitude Journal Entries")
+			
+			// Set the email body text.
 			putExtra(Intent.EXTRA_TEXT, "Attached are the exported gratitude journal entries.")
+			
+			// Convert the file to a content URI using FileProvider to ensure secure sharing of the file.
 			val fileUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.fileprovider", file)
+			
+			// Attach the file to the email.
 			putExtra(Intent.EXTRA_STREAM, fileUri)
 		}
 		
-		// Check if there's an app that can handle this intent.
+		// Check if there's an app installed that can handle the email intent.
 		if (emailIntent.resolveActivity(requireActivity().packageManager) != null) {
+			// Grant read permission for the content URI to the recipient app.
 			emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+			
+			// Launch the email client using the custom result launcher.
 			emailResultLauncher.launch(emailIntent)
 		} else {
-			// Handle the case where no email client is installed.
+			// If no email client is installed, display a toast message to the user.
 			Toast.makeText(context, "No email client found.", Toast.LENGTH_SHORT).show()
 		}
 	}
@@ -418,24 +431,37 @@ class JournalGratitudeFragment : Fragment() {
 	}
 	
 	/**
-	 * Initializes and displays the AlertDialog to show the progress of PDF generation.
+	 * Displays an AlertDialog to the user indicating the progress of the PDF conversion.
 	 *
-	 * @param totalPages The total number of pages to be converted.
+	 * @param totalPages The total number of pages that will be converted.
 	 */
 	@SuppressLint("SetTextI18n")
 	private fun showAlertDialog(totalPages: Int) {
+		// Create a new AlertDialog builder with the current context.
 		val builder = AlertDialog.Builder(requireContext())
+		
+		// Obtain the layout inflater to inflate the custom dialog layout.
 		val inflater = layoutInflater
+		
+		// Inflate the custom dialog layout.
 		val view = inflater.inflate(R.layout.progress_dialog_layout, null)
 		
+		// Find and initialize the progress text view from the inflated layout.
 		progressText = view.findViewById(R.id.progressText)
+		
+		// Set the initial progress text indicating the first page conversion.
 		progressText.text = "Page 1 of $totalPages converted..."
 		
+		// Set the custom view for the AlertDialog.
 		builder.setView(view)
-		// Prevents the user from closing the dialog
+		
+		// Prevent the user from closing the dialog by pressing outside or back button.
 		builder.setCancelable(false)
 		
+		// Create the AlertDialog.
 		alertDialog = builder.create()
+		
+		// Display the AlertDialog to the user.
 		alertDialog.show()
 	}
 	
