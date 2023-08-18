@@ -235,62 +235,88 @@ class ProfileFragment : Fragment() {
 	 * @param count The count of entries for the day.
 	 */
 	private fun getCountEntryFromFirestore() {
+		// Log the start of the fetch operation.
 		Log.d(PROFILE_TAG, "getCountEntryFromFirestore started")
+		
+		// Check if data should be fetched. If not, exit the function.
 		if (!shouldFetchData()) return
 		
+		// Get the current user. If the user is null, log the information and exit.
 		val currentUser = Firebase.auth.currentUser ?: return
 		if (currentUser == null) {
 			Log.d(PROFILE_TAG, "Current user is null")
 			return
 		}
+		
+		// Get the collection associated with the current user's UID.
 		val collection = db.collection(currentUser.uid)
 		
+		// Define the date range for which data should be fetched.
 		val endDate = LocalDate.now()
 		val startDate = endDate.minusDays(60)
 		val dateRange = getDatesInRange(startDate, endDate)
 		
+		// Initialize lists to store fetched data and a counter for fetched documents.
 		val fetchedData = mutableListOf<Int>()
 		var fetchedCount = 0
 		
+		// Iterate through each date in the specified date range.
 		for (date in dateRange) {
+			// Fetch the document corresponding to the current date.
 			collection.document(date).get().addOnSuccessListener { document ->
+				// Check if the document exists in the collection.
 				if (document.exists()) {
+					// Retrieve the 'count' field from the document.
 					document.get("count")?.let {
+						// Ensure the retrieved data is of type Int.
 						if (it is Int) {
+							// Add the fetched count to the fetchedData list.
 							fetchedData.add(it)
+							// Log the fetched count for the current date.
 							Log.d(PROFILE_TAG, "Date: $date, Count: $it")
-							
 						}
 					}
 				} else {
+					// If the document doesn't exist for the current date, add a count of 0.
 					fetchedData.add(0)
 				}
+				
+				// Increment the fetched count and check if all documents have been fetched.
 				fetchedCount++
 				if (fetchedCount == dateRange.size) {
+					// Update the charts based on the size of the fetched data.
 					when {
+						// If there are 60 or more data points fetched.
 						fetchedData.size >= 60 -> {
+							// Add the last 30 data points to the bar chart.
 							barChart.addAll(fetchedData.takeLast(30))
+							// Add the first 30 data points to the line chart.
 							lineChart.addAll(fetchedData.take(30))
 						}
-						
+						// If the number of data points fetched is between 30 and 59.
 						fetchedData.size in 30..59 -> {
+							// Add the last 30 data points to the bar chart.
 							barChart.addAll(fetchedData.takeLast(30))
 						}
-						
+						// For any other number of data points fetched.
 						else -> {
+							// Clear both the bar and line charts.
 							barChart.clear()
 							lineChart.clear()
 						}
 					}
+					// Setup the chart data.
 					setupChartData(barChart.toTypedArray(), lineChart.toTypedArray())
 				}
 			}.addOnFailureListener { exception ->
+				// Log any errors encountered while fetching a document.
 				Log.e(PROFILE_TAG, "Error getting document for date: $date", exception)
 			}
 		}
+		
+		// Log the completion of the fetch operation.
 		Log.d(PROFILE_TAG, "getCountEntryFromFirestore finished")
 	}
-	
 	
 	/**
 	 * Define and set up chart data.
@@ -311,12 +337,16 @@ class ProfileFragment : Fragment() {
 		binding.emptyDataTextView2.visibility = View.GONE
 		
 		val seriesList = mutableListOf<AASeriesElement>()
+		
+		// Add the current month's data as a column chart series.
 		seriesList.add(
 			AASeriesElement().name("Current month").color("#FFDAD6").type(AAChartType.Column)
 				.data(barData)
 		)
-		
+
+// Check if there's data for the previous month.
 		if (lineData.isNotEmpty()) {
+			// Add the previous month's data as a line chart series.
 			seriesList.add(
 				AASeriesElement().name("Previous month").color("#FFE088").type(AAChartType.Line)
 					.data(lineData)

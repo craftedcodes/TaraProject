@@ -71,27 +71,28 @@ class EntryGratitudeFragment : Fragment() {
 	
 	// Register a callback for the result of the "get content" activity.
 	// This will be triggered when an image is selected from the gallery.
-	private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-		uri?.let {
-			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the")
-			photoDownloadedTextView?.visibility = View.VISIBLE
-			// Open an InputStream for the selected image and decode it into a Bitmap.
-			// Open an InputStream for the selected image URI.
-			val inputStream = requireActivity().contentResolver.openInputStream(it)
-
-			// Decode the InputStream into a Bitmap.
-			selectedImage = BitmapFactory.decodeStream(inputStream)
-
-			// Update the state of the save button based on the selected image and text field content.
-			updateSaveButtonState()
-
-			// Get the TextView reference from the binding to indicate that a photo has been downloaded.
-			photoDownloadedTextView = binding.photoDownloadedTv
-
-			// Set the visibility of the TextView to VISIBLE to show the user that the photo has been downloaded.
-			photoDownloadedTextView?.visibility = View.VISIBLE
+	private val getContent =
+		registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+			uri?.let {
+				Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the")
+				photoDownloadedTextView?.visibility = View.VISIBLE
+				// Open an InputStream for the selected image and decode it into a Bitmap.
+				// Open an InputStream for the selected image URI.
+				val inputStream = requireActivity().contentResolver.openInputStream(it)
+				
+				// Decode the InputStream into a Bitmap.
+				selectedImage = BitmapFactory.decodeStream(inputStream)
+				
+				// Update the state of the save button based on the selected image and text field content.
+				updateSaveButtonState()
+				
+				// Get the TextView reference from the binding to indicate that a photo has been downloaded.
+				photoDownloadedTextView = binding.photoDownloadedTv
+				
+				// Set the visibility of the TextView to VISIBLE to show the user that the photo has been downloaded.
+				photoDownloadedTextView?.visibility = View.VISIBLE
+			}
 		}
-	}
 	
 	/**
 	 * Scales a given bitmap to ensure that its width or height does not exceed a specified maximum size.
@@ -120,6 +121,7 @@ class EntryGratitudeFragment : Fragment() {
 		// Create and return the scaled bitmap using the scaling matrix.
 		return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
 	}
+	
 	/**
 	 * Converts a given bitmap into a ByteArray. The method ensures that the resulting ByteArray
 	 * does not exceed a specified size in kilobytes (KB) by scaling down the bitmap if necessary.
@@ -170,10 +172,15 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	// Inflate the layout for this fragment using data binding within onCreateView
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "EntryGratitudeFragment onCreateView()")
 		// Inflate the layout for this fragment
-		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_entry_gratitude, container, false)
+		binding =
+			DataBindingUtil.inflate(inflater, R.layout.fragment_entry_gratitude, container, false)
 		
 		// Return the root view for the Fragment's UI
 		return binding.root
@@ -196,7 +203,7 @@ class EntryGratitudeFragment : Fragment() {
 		// Get the arguments passed to the fragment
 		val args: EntryGratitudeFragmentArgs by navArgs()
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): args = $args")
-
+		
 		// Get the entryId from the arguments
 		entryId = args.entryId
 		
@@ -204,16 +211,25 @@ class EntryGratitudeFragment : Fragment() {
 		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
 		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): existingEntry = $existingEntry")
 		
+		// Add a text changed listener to the textField to monitor changes.
 		textField.addTextChangedListener(object : TextWatcher {
+			
+			// This method is called before the text is changed.
+			// Currently, no action is taken before the text changes.
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
+				// No action needed here.
 			}
 			
+			// This method is called when the text is being changed.
+			// Currently, no action is taken during the text change.
 			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
+				// No action needed here.
 			}
 			
+			// This method is called after the text has been changed.
+			// After the text changes, the state of the save button is updated.
 			override fun afterTextChanged(s: Editable) {
+				// Update the state of the save button based on the new text.
 				updateSaveButtonState()
 			}
 		})
@@ -228,19 +244,29 @@ class EntryGratitudeFragment : Fragment() {
 			// Set the text of the textField to the text of the entry if it exists
 			binding.textTf.setText(entry.text ?: "")
 			
+			// Check if the entry has an associated image.
 			if (entry.image != null) {
+				// Decode the byte array of the image into a bitmap.
 				val bitmap = BitmapFactory.decodeByteArray(entry.image, 0, entry.image!!.size)
+				
+				// Set the decoded bitmap to the selectedImage variable.
 				selectedImage = bitmap
+				
+				// Get a reference to the TextView that indicates the presence of a downloaded photo.
 				photoDownloadedTextView = binding.photoDownloadedTv
+				
+				// Update the TextView's text to indicate that an image already exists for this entry.
 				photoDownloadedTextView?.text =
 					getString(R.string.an_image_already_exists_in_this_entry)
+				
+				// Make the TextView visible to the user.
 				photoDownloadedTextView?.visibility = View.VISIBLE
 			}
 		})
 		
 		// Set up a TextWatcher for the date input field to validate its format.
 		setUpTextWatcher()
-
+		
 		// Attach listeners to UI components to handle user interactions.
 		setupListeners()
 		
@@ -252,18 +278,18 @@ class EntryGratitudeFragment : Fragment() {
 		saveButton.setOnClickListener {
 			// Navigate to the JournalGratitudeFragment using the generated navigation action.
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
-
+			
 			// Retrieve the entered date and text from the respective input fields.
 			val date = dateField.text.toString()
 			val text = textField.text.toString()
-
+			
 			// Check if the entered date matches the pattern.
 			if (!datePattern.matches(date)) {
 				// If the date does not match the pattern, show an error message and return.
 				dateField.error = "Please enter the date in the format DD.MM.YYYY"
 				return@setOnClickListener
 			}
-
+			
 			// Split the date string into day, month, and year.
 			val dateParts = date.split(".")
 			val day = dateParts[0].toInt()
@@ -272,7 +298,7 @@ class EntryGratitudeFragment : Fragment() {
 			
 			// Retrieve the existing entry
 			val entry = existingEntry.value
-
+			
 			// Check if the date has been changed
 			if (day != entry!!.day || month != entry.month || year != entry.year) {
 				// If the date has been changed, update the date of the entry
@@ -280,12 +306,12 @@ class EntryGratitudeFragment : Fragment() {
 				entry.month = month
 				entry.year = year
 			}
-
+			
 			// Update the text of the entry
 			entry.text = text
-
-		// If an image has been selected, convert it to a ByteArray for storage.
-		// If no image has been selected, this will be null.
+			
+			// If an image has been selected, convert it to a ByteArray for storage.
+			// If no image has been selected, this will be null.
 			val image = selectedImage?.let { bitmapToByteArray(it) }
 			entry.image = image
 			
@@ -318,8 +344,8 @@ class EntryGratitudeFragment : Fragment() {
 		// When this button is clicked, it navigates back in the back stack.
 		backButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
-			deleteEntry(entryId)
-		}
+				deleteEntry(entryId)
+			}
 			findNavController().popBackStack()
 		}
 		
@@ -387,7 +413,7 @@ class EntryGratitudeFragment : Fragment() {
 	 * @param entryId The ID of the entry to be deleted.
 	 */
 	private fun deleteEntry(entryId: Long) {
-			viewModel.deleteEntryById(entryId)
+		viewModel.deleteEntryById(entryId)
 		Log.d("Delete", "deleteEntry()")
 	}
 	
@@ -436,19 +462,28 @@ class EntryGratitudeFragment : Fragment() {
 					saveButton.alpha = 1f
 					Log.e("EntryGratitudeFragment", "Date format is correct")
 				}
-				
+				// Check if the input string matches the expected date pattern.
 				if (datePattern.matches(s.toString())) {
+					// Split the date string into its day, month, and year components.
 					val dateParts = s.toString().split(".")
 					val day = dateParts[0].toInt()
 					val month = dateParts[1].toInt()
 					val year = dateParts[2].toInt()
+					
+					// Check if the provided date is in the future.
 					if (isFutureDate(day, month, year)) {
-						// Display a cheerful message and disable the save button.
-						Toast.makeText(context, "Awesome that you look forward to the future, but only entries from the present or past can be added to the gratitude journal! 😃", Toast.LENGTH_LONG).show()
+						// Display a message to the user indicating that future dates are not allowed.
+						Toast.makeText(
+							context,
+							"Awesome that you look forward to the future, but only entries from the present or past can be added to the gratitude journal! 😃",
+							Toast.LENGTH_LONG
+						).show()
+						
+						// Disable the save button since the input is invalid.
 						saveButton.isEnabled = false
 						saveButton.alpha = 0.4f
 					} else {
-						// Enable the save button if the text is correct.
+						// Enable the save button since the input is valid.
 						saveButton.isEnabled = true
 						saveButton.alpha = 1f
 					}

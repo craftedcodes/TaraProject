@@ -205,25 +205,33 @@ class RegisterFragment : Fragment() {
 				findNavController().navigate(R.id.homeFragment)
 			}
 			.create()
-
-		// Set clickable spans for "Terms and Conditions" and "Privacy Policy".
+		
+		// Set a clickable span for the "Terms and Conditions" text.
 		message.setSpan(object : ClickableSpan() {
 			override fun onClick(widget: View) {
+				// Navigate to the "Terms and Conditions" fragment when clicked.
 				findNavController().navigate(R.id.termsConditionsFragment)
-				alertDialog.dismiss()  // Close the AlertDialog
+				// Dismiss the AlertDialog after navigation.
+				alertDialog.dismiss()
 			}
 		}, termsStart, termsStart + "Terms and Conditions".length, 0)
-		
+
+		// Set a clickable span for the "Privacy Policy" text.
 		message.setSpan(object : ClickableSpan() {
 			override fun onClick(widget: View) {
+				// Navigate to the "Privacy Policy" fragment when clicked.
 				findNavController().navigate(R.id.privacyFragment)
-				alertDialog.dismiss()  // Close the AlertDialog
+				// Dismiss the AlertDialog after navigation.
+				alertDialog.dismiss()
 			}
 		}, privacyStart, privacyStart + "Privacy Policy".length, 0)
-		
+
+		// Display the AlertDialog.
 		alertDialog.show()
-		// Make the message text clickable.
+
+		// Enable links and clickable spans in the AlertDialog's message.
 		(alertDialog.findViewById<TextView>(android.R.id.message))?.movementMethod =
 			LinkMovementMethod.getInstance()
+		
 	}
 }
