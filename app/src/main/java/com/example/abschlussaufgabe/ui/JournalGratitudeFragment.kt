@@ -6,7 +6,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.pdf.PdfDocument
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -156,7 +155,6 @@ class JournalGratitudeFragment : Fragment() {
 					EntryAdapter(requireContext(), entries, viewModel)
 			}
 			
-			
 			// After resetting, the reset button should be invisible and disabled
 			binding.resetBtn.visibility = View.GONE
 			
@@ -240,7 +238,7 @@ class JournalGratitudeFragment : Fragment() {
 			}
 		}
 
-// Add a text changed listener to the start date input field.
+		// Add a text changed listener to the start date input field.
 		binding.startDateTf.addTextChangedListener(object : TextWatcher {
 			// This method is called before the text is changed.
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -292,7 +290,6 @@ class JournalGratitudeFragment : Fragment() {
 			// Display the created dialog to the user.
 			.show()
 	}
-	
 	
 	/**
 	 * Exports journal entries to a PDF file.
