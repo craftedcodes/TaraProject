@@ -80,6 +80,39 @@
                         android:layout_margin="16dp"
                         android:backgroundTint="#203E45" />
 
+                    <LinearLayout
+                        android:id="@+id/empty_data_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
+                        <!-- Empty data message -->
+                        <TextView
+                            android:id="@+id/empty_data_text_view1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="36dp"
+                            android:gravity="center"
+                            android:text="@string/not_enough_data"
+                            android:textColor="#FFFFFF"
+                            android:fontFamily="@font/merriweathersans_variablefont_wght"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/empty_data_text_view2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="36dp"
+                            android:gravity="center"
+                            android:text="@string/keep_writing_to_see_your_progress_unfold"
+                            android:textColor="#FFFFFF"
+                            android:fontFamily="@font/merriweathersans_variablefont_wght"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Chart type selection buttons -->

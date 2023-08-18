@@ -156,4 +156,7 @@
     <string name="users_have_the_right_to_information_about_the_stored_data_as_well_as_the_right_to_deletion_of_this_data">Users have the right to information about the stored data as well as the right to deletion of this data.</string>
     <string name="for_questions_about_the_privacy_policy_or_your_rights_please_contact_ruth_schumacher_at_schubau_protonmail_com">For questions about the privacy policy or your rights, please contact Ruth Schumacher at schubau@protonmail.com.</string>
     <string name="country">country</string>
+    <string name="not_enough_data_keep_writing_entries_to_see_your_progress_unfold">Not enough data. Keep writing entries to see your progress unfold!</string>
+    <string name="not_enough_data">Not enough data</string>
+    <string name="keep_writing_to_see_your_progress_unfold">Keep writing to see your progress unfold!</string>
 </resources>
