@@ -56,32 +56,26 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		get() = _done
 	
 	/**
-	 * Fetches all entries from the repository.
-	 */
-	fun getAllEntries() {
-		viewModelScope.launch {
-			_loading.value = ApiStatus.LOADING
-			try {
-				repository.getAllEntries()
-				_loading.value = ApiStatus.DONE
-			} catch (e: Exception) {
-				Log.e(ENTRY_VIEW_MODEL_TAG, "Error getting entries")
-				_loading.value = if (entries.value.isNullOrEmpty()) ApiStatus.ERROR else ApiStatus.DONE
-			}
-		}
-	}
-	
-	/**
-	 * Asynchronously fetches all entries from the repository.
+	 * Asynchronously fetches all gratitude journal entries from the local database.
+	 * Updates the LiveData with the fetched entries and handles any potential exceptions.
 	 */
 	fun getAllEntriesAsync() {
+		// Launch a coroutine within the ViewModel's scope.
 		viewModelScope.launch {
+			// Indicate that the data fetching process has started.
 			_loading.value = ApiStatus.LOADING
+			
 			try {
+				// Fetch all entries from the repository and update the LiveData.
 				_entries.value = repository.getAllEntriesAsync()
+				
+				// Indicate that the data fetching process has completed successfully.
 				_loading.value = ApiStatus.DONE
 			} catch (e: Exception) {
+				// Log the error if there's an exception while fetching the entries.
 				Log.e(ENTRY_VIEW_MODEL_TAG, "Error getting entries")
+				
+				// Update the loading status based on whether entries are available in LiveData.
 				_loading.value = if (_entries.value.isNullOrEmpty()) ApiStatus.ERROR else ApiStatus.DONE
 			}
 		}
@@ -101,25 +95,40 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	}
 	
 	/**
-	 * Deletes an entry by its ID from the repository.
+	 * Deletes a specific gratitude journal entry from the local database based on its unique ID.
+	 * After deletion, it updates the LiveData with the latest entries and decrements the entry count by 1.
 	 *
-	 * @param id The ID of the entry to be deleted.
+	 * @param id The unique ID of the gratitude journal entry to be deleted.
 	 */
 	fun deleteEntryById(id: Long) {
+		// Launch a coroutine within the ViewModel's scope.
 		viewModelScope.launch {
+			// Delete the entry with the specified ID from the repository.
 			repository.deleteEntryById(id)
+			
+			// Update the LiveData with the latest entries from the repository.
 			_entries.value = repository.getAllEntriesAsync()
+			
+			// Decrement the entry count by 1.
 			updateEntryCount(-1)
 		}
 	}
 	
 	/**
-	 * Deletes all entries from the repository.
+	 * Deletes all gratitude journal entries from the local database.
+	 * After deletion, it updates the LiveData with the latest entries (which should be empty)
+	 * and sets the loading status to DONE.
 	 */
 	fun deleteAllEntries() {
+		// Launch a coroutine within the ViewModel's scope.
 		viewModelScope.launch {
+			// Delete all entries from the repository.
 			repository.deleteAllEntries()
+			
+			// Update the LiveData with the latest entries from the repository.
 			_entries.value = repository.getAllEntriesAsync()
+			
+			// Set the loading status to DONE to indicate the operation's completion.
 			_loading.value = ApiStatus.DONE
 		}
 	}
@@ -148,27 +157,44 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	}
 	
 	/**
-	 * Saves the count of entries for a specific day to Firestore.
+	 * Saves the count of gratitude journal entries to Firestore.
 	 *
-	 * @param countEntry The count of entries for the day.
+	 * @param countEntry The count of entries to be saved.
 	 */
 	fun saveCountEntryToFirestore(countEntry: Int) {
+		// Retrieve the Firestore collection associated with the current user's UID.
 		val collection = Firebase.auth.currentUser?.let { db.collection(it.uid) }
+		
+		// Create a data map with the count to be saved.
 		val data = hashMapOf("count" to countEntry)
+		
+		// Save the count to the Firestore document corresponding to the current date.
 		collection?.document("${LocalDate.now()}")?.set(data)
 	}
 	
 	/**
-	 * Updates the count of entries in shared preferences and Firestore.
+	 * Updates the count of gratitude journal entries in shared preferences and Firestore.
 	 *
-	 * @param change The change in count (can be positive or negative).
+	 * @param change The amount by which the entry count should be adjusted.
+	 *               This can be positive (for adding entries) or negative (for removing entries).
 	 */
 	private fun updateEntryCount(change: Int) {
+		// Retrieve the shared preferences for storing the count of entries.
 		val countSharedPreferences = context.getSharedPreferences("countPref", Context.MODE_PRIVATE)
+		
+		// Fetch the current count of entries from shared preferences. Default to 0 if not found.
 		var count = countSharedPreferences.getInt("count", 0)
+		
+		// Adjust the count based on the provided change value.
 		count += change
+		
+		// Update the count of entries in shared preferences.
 		countSharedPreferences.edit().putInt("count", count).apply()
+		
+		// Save the updated count to Firestore.
 		saveCountEntryToFirestore(count)
+		
+		// Indicate that the loading or processing status is complete.
 		_loading.value = ApiStatus.DONE
 	}
 }
