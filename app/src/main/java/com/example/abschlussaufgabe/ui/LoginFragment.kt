@@ -5,7 +5,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.abschlussaufgabe.viewModel.AffirmationViewModel
+import com.example.abschlussaufgabe.viewModel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.databinding.FragmentLoginBinding
 
@@ -14,12 +17,11 @@ import com.schubau.tara.databinding.FragmentLoginBinding
  * A Fragment representing the login screen of the application.
  */
 class LoginFragment : Fragment() {
+	// Property to hold the view model for this fragment.
+	private val viewModel: AuthViewModel by viewModels()
 	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentLoginBinding
-	
-	// Property to hold the FirebaseAuth instance.
-	private lateinit var auth: FirebaseAuth
 	
 	/**
 	 * Called to have the fragment instantiate its user interface view.
@@ -37,9 +39,6 @@ class LoginFragment : Fragment() {
 		
 		// Inflate the layout for this fragment using the inflate method of the FragmentLoginBinding class.
 		binding = FragmentLoginBinding.inflate(inflater, container, false)
-		
-		// Create the FirebaseAuth instance.
-		auth = FirebaseAuth.getInstance()
 		
 		// Return the root view of the inflated layout.
 		return binding.root
@@ -64,6 +63,17 @@ class LoginFragment : Fragment() {
 		
 		// Set up text watchers for input validation
 		setupTextWatchers()
+		
+		// Observe the LiveData objects from the ViewModel.
+		viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
+			if (success) {
+				// Navigate to the animation fragment upon successful login.
+				findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
+			} else {
+				// Display a toast message if login fails.
+				Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+			}
+		}
 	}
 	
 	/**
@@ -87,7 +97,7 @@ class LoginFragment : Fragment() {
 			}
 		}
 
-// TextWatcher to observe changes in the email and password text fields.
+		// TextWatcher to observe changes in the email and password text fields.
 		val textWatcher = object : TextWatcher {
 			// Called before the text is changed. Not used in this implementation.
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -125,6 +135,11 @@ class LoginFragment : Fragment() {
 			val password = binding.passwordTf.text.toString()
 			loginUser(email, password)
 		}
+		
+		// Set onClickListener for the forgot password button.
+		binding.passwordForgottenBtn.setOnClickListener {
+			findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToPasswordResetFragment())
+		}
 	}
 	
 	/**
@@ -134,17 +149,15 @@ class LoginFragment : Fragment() {
 	 * @param password The password of the user.
 	 */
 	private fun loginUser(email: String, password: String) {
-		// Try to sign in the user with the provided email and password
-		auth.signInWithEmailAndPassword(email, password)
-			.addOnCompleteListener { task ->
-				if (task.isSuccessful) {
-					// If the login is successful, navigate to the animation fragment
-					findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
-				} else {
-					// If the login fails, show a toast with the error message
-					Toast.makeText(context, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-				}
-			}
+		if ( email.isNotEmpty() && password.isNotEmpty() ) {
+			viewModel.loginUser(email, password)
+			
+		} else {
+			Toast.makeText(
+                requireContext(),
+                "Login failed. Please try again.",
+                Toast.LENGTH_SHORT
+            ).show()
+		}
 	}
-	
 }

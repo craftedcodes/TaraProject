@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_loginFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordResetFragment"
+            app:destination="@id/passwordResetFragment" />
     </fragment>
     <fragment
         android:id="@+id/animationFragment"
@@ -151,4 +154,15 @@
         android:id="@+id/termsConditionsFragment"
         android:name="com.example.abschlussaufgabe.ui.TermsConditionsFragment"
         android:label="TermsConditionsFragment" />
+    <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="com.example.abschlussaufgabe.ui.PasswordResetFragment"
+        android:label="PasswordResetFragment" >
+        <action
+            android:id="@+id/action_passwordResetFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_passwordResetFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

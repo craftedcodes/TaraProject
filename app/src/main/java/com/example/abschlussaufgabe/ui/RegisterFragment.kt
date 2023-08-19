@@ -1,35 +1,34 @@
 package com.example.abschlussaufgabe.ui
 
-// Required imports for the class.
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.schubau.tara.R
-import com.schubau.tara.databinding.FragmentRegisterBinding
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.abschlussaufgabe.viewModel.AuthViewModel
+import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentRegisterBinding
 
 /**
  * A Fragment representing the registration screen of the application.
  */
 class RegisterFragment : Fragment() {
 	
-	// Holds the binding instance for this fragment's view.
+	// Binding instance for this fragment's view.
 	private lateinit var binding: FragmentRegisterBinding
 	
-	// Holds the FirebaseAuth instance.
-	private lateinit var auth: FirebaseAuth
+	// ViewModel instance for authentication operations.
+	private val viewModel: AuthViewModel by viewModels()
 	
 	/**
 	 * Called to have the fragment instantiate its user interface view.
@@ -44,57 +43,80 @@ class RegisterFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		
 		// Inflate the layout for this fragment and bind it to the FragmentRegisterBinding instance.
-		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
-		
-		// Get the FirebaseAuth instance.
-		auth = FirebaseAuth.getInstance()
-		
-		// Return the root view of the inflated layout.
+		binding = FragmentRegisterBinding.inflate(inflater, container, false)
 		return binding.root
 	}
 	
-	/**
-	 * Called immediately after onCreateView() has returned, but before any saved state has been restored in the view.
-	 *
-	 * @param view The View returned by onCreateView().
-	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
-	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		// Ensure proper initialization of the view by calling the super method.
 		super.onViewCreated(view, savedInstanceState)
 		
-		// Initially set the register button to be disabled and semi-transparent.
-		binding.registerBtn.isEnabled = false
-		binding.registerBtn.alpha = 0.4f
-		
-		// Set up click listeners for the UI components.
+		// Set up click listeners and text watchers for the UI components.
 		setupListeners()
-		
-		// Set up text watchers for the UI components.
 		setupTextWatchers()
+		
+		// Observe the LiveData objects from the ViewModel.
+		viewModel.registerSuccess.observe(viewLifecycleOwner) { success ->
+			if (success) {
+				// Navigate to the login fragment upon successful registration.
+				findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+			} else {
+				// Display a toast message if registration fails.
+				Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT).show()
+			}
+		}
 	}
 	
 	/**
-	 * Checks if the given password meets the required criteria:
-	 * - At least one uppercase letter
-	 * - At least one lowercase letter
-	 * - At least two digits
-	 * - At least one special character (non-alphanumeric and not an underscore)
-	 * - At least 12 characters in length
-	 *
-	 * @param password The password string to validate.
-	 * @return True if the password meets all criteria, false otherwise.
+	 * Sets up click listeners for the UI components in the fragment.
 	 */
-	private fun isValidPassword(password: String): Boolean {
-		val hasUppercase = "[A-Z]".toRegex().containsMatchIn(password)
-		val hasLowercase = "[a-z]".toRegex().containsMatchIn(password)
-		val hasTwoDigits = "\\d.*\\d".toRegex().containsMatchIn(password)
-		val hasSpecialChar = "[\\W_]".toRegex().containsMatchIn(password)
-		val hasMinLength = password.length >= 12
+	private fun setupListeners() {
+		// Navigate back when the quit button is clicked.
+		binding.quitBtn.setOnClickListener {
+			findNavController().popBackStack()
+		}
 		
-		return hasUppercase && hasLowercase && hasTwoDigits && hasSpecialChar && hasMinLength
+		// Display terms and conditions dialog when the register button is clicked.
+		binding.registerBtn.setOnClickListener {
+			val message = SpannableString("By registering, you accept our Terms and Conditions and Privacy Policy.")
+			val termsStart = message.indexOf("Terms and Conditions")
+			val privacyStart = message.indexOf("Privacy Policy")
+			
+			// Create clickable spans for terms and privacy policy.
+			message.setSpan(object : ClickableSpan() {
+				override fun onClick(widget: View) {
+					findNavController().navigate(R.id.termsConditionsFragment)
+				}
+			}, termsStart, termsStart + "Terms and Conditions".length, 0)
+			
+			message.setSpan(object : ClickableSpan() {
+				override fun onClick(widget: View) {
+					findNavController().navigate(R.id.privacyFragment)
+				}
+			}, privacyStart, privacyStart + "Privacy Policy".length, 0)
+			
+			// Display the AlertDialog.
+			val alertDialog = AlertDialog.Builder(requireContext())
+				.setMessage(message)
+				.setPositiveButton("Accept") { _, _ ->
+					val email = binding.eMailTf.text.toString()
+					val password = binding.passwordTf.text.toString()
+					val repeatPassword = binding.repeatPasswordTf.text.toString()
+					
+					if (password == repeatPassword) {
+						viewModel.registerUser(email, password)
+					} else {
+						Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+					}
+				}
+				.setNegativeButton("Decline", null)
+				.create()
+			
+			alertDialog.show()
+			
+			// Enable links and clickable spans in the AlertDialog's message.
+			(alertDialog.findViewById<TextView>(android.R.id.message))?.movementMethod = LinkMovementMethod.getInstance()
+		}
 	}
 	
 	/**
@@ -109,7 +131,6 @@ class RegisterFragment : Fragment() {
 			val repeatPassword = binding.repeatPasswordTf.text.toString()
 			
 			// Enable the register button if all fields are non-empty and the password is valid.
-			// Otherwise, disable the button.
 			if (email.isNotEmpty() && isValidPassword(password) && repeatPassword.isNotEmpty()) {
 				binding.registerBtn.isEnabled = true
 				binding.registerBtn.alpha = 1f
@@ -122,11 +143,8 @@ class RegisterFragment : Fragment() {
 		// TextWatcher to observe changes in the email, password, and repeat password fields.
 		val textWatcher = object : TextWatcher {
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-			
 			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-			
 			override fun afterTextChanged(s: Editable) {
-				// Validate the fields after their content has changed.
 				validateFields()
 			}
 		}
@@ -138,100 +156,18 @@ class RegisterFragment : Fragment() {
 	}
 	
 	/**
-	 * Sets up click listeners for the UI components in the fragment.
-	 */
-	private fun setupListeners() {
-		// Navigate back in the navigation stack when the quit button is clicked.
-		binding.quitBtn.setOnClickListener {
-			findNavController().popBackStack()
-		}
-		
-		// Set an onClick listener for the register button.
-		binding.registerBtn.setOnClickListener {
-			// Retrieve the entered email from the email input field.
-			val email = binding.eMailTf.text.toString()
-			
-			// Retrieve the entered password from the password input field.
-			val password = binding.passwordTf.text.toString()
-			
-			// Retrieve the repeated password from the repeat password input field.
-			val repeatPassword = binding.repeatPasswordTf.text.toString()
-			
-			// Check if the entered password matches the repeated password.
-			if (password == repeatPassword) {
-				// If the passwords match, attempt to register the user.
-				registerUser(email, password)
-			} else {
-				// If the passwords do not match, show a toast indicating the mismatch.
-				Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
-			}
-		}
-	}
-	
-	/**
-	 * Attempts to register a new user using Firebase authentication.
+	 * Validates the given password based on certain criteria.
 	 *
-	 * @param email The email address to be used for the new user registration.
-	 * @param password The password to be used for the new user registration.
+	 * @param password The password string to validate.
+	 * @return True if the password meets all criteria, false otherwise.
 	 */
-	private fun registerUser(email: String, password: String) {
-		// Create a SpannableString for the message with clickable links.
-		val message =
-			SpannableString("By registering, you accept our Terms and Conditions and Privacy Policy.")
-		val termsStart = message.indexOf("Terms and Conditions")
-		val privacyStart = message.indexOf("Privacy Policy")
+	private fun isValidPassword(password: String): Boolean {
+		val hasUppercase = "[A-Z]".toRegex().containsMatchIn(password)
+		val hasLowercase = "[a-z]".toRegex().containsMatchIn(password)
+		val hasTwoDigits = "\\d.*\\d".toRegex().containsMatchIn(password)
+		val hasSpecialChar = "[\\W_]".toRegex().containsMatchIn(password)
+		val hasMinLength = password.length >= 12
 		
-		// Create the AlertDialog.
-		val alertDialog = AlertDialog.Builder(requireContext())
-			.setMessage(message)
-			.setPositiveButton("Accept") { _, _ ->
-				// Try to create a new user with the provided email and password using Firebase authentication.
-				auth.createUserWithEmailAndPassword(email, password)
-					.addOnCompleteListener { task ->
-						if (task.isSuccessful) {
-							// If the registration is successful, navigate to the login fragment.
-							findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
-						} else {
-							// If the registration fails, show a toast with the error message.
-							Toast.makeText(
-								context,
-								"Registration failed: ${task.exception?.message}",
-								Toast.LENGTH_SHORT
-							).show()
-						}
-					}
-			}
-			.setNegativeButton("Decline") { _, _ ->
-				findNavController().navigate(R.id.homeFragment)
-			}
-			.create()
-		
-		// Set a clickable span for the "Terms and Conditions" text.
-		message.setSpan(object : ClickableSpan() {
-			override fun onClick(widget: View) {
-				// Navigate to the "Terms and Conditions" fragment when clicked.
-				findNavController().navigate(R.id.termsConditionsFragment)
-				// Dismiss the AlertDialog after navigation.
-				alertDialog.dismiss()
-			}
-		}, termsStart, termsStart + "Terms and Conditions".length, 0)
-
-		// Set a clickable span for the "Privacy Policy" text.
-		message.setSpan(object : ClickableSpan() {
-			override fun onClick(widget: View) {
-				// Navigate to the "Privacy Policy" fragment when clicked.
-				findNavController().navigate(R.id.privacyFragment)
-				// Dismiss the AlertDialog after navigation.
-				alertDialog.dismiss()
-			}
-		}, privacyStart, privacyStart + "Privacy Policy".length, 0)
-
-		// Display the AlertDialog.
-		alertDialog.show()
-
-		// Enable links and clickable spans in the AlertDialog's message.
-		(alertDialog.findViewById<TextView>(android.R.id.message))?.movementMethod =
-			LinkMovementMethod.getInstance()
-		
+		return hasUppercase && hasLowercase && hasTwoDigits && hasSpecialChar && hasMinLength
 	}
 }

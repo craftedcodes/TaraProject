@@ -29,6 +29,8 @@ class AffirmationFragment : Fragment() {
 	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentAffirmationBinding
+	
+    // Property to hold the view model for this fragment.
 	private val viewModel: AffirmationViewModel by viewModels()
 	
 	/**

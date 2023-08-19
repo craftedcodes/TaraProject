@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.abschlussaufgabe.viewModel.AuthViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
@@ -35,6 +37,8 @@ private const val PROFILE_TAG = "ProfileFragment"
  * Displays user's gratitude note activity and emergency contact details.
  */
 class ProfileFragment : Fragment() {
+	// ViewModel instance for authentication operations.
+	private val viewModel: AuthViewModel by viewModels()
 	
 	// Firebase Firestore instance to access the database.
 	private val db = FirebaseFirestore.getInstance()
@@ -201,31 +205,70 @@ class ProfileFragment : Fragment() {
 		// When clicked, the user is navigated to the home fragment, effectively logging them out.
 		binding.logoutBtn.setOnClickListener {
 			// Log the user out from Firebase
-			auth.signOut()
-			
-			// Navigate the user to the desired fragment/screen after logout
-			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
+			viewModel.logoutUser()
+		}
+		
+		// Observes the current user and navigates to the home fragment.
+		viewModel.currentUser.observe(viewLifecycleOwner) { user ->
+			if (user == null) {
+				// Navigate the user to the desired fragment/screen after logout
+				findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
+			}
 		}
 	}
 	
+	/**
+	 * Determines whether data should be fetched based on the time since the last fetch.
+	 *
+	 * @return Boolean indicating if data should be fetched.
+	 */
 	private fun shouldFetchData(): Boolean {
+		// Get the current time.
 		val currentTime = LocalDateTime.now()
+		
+		// Check if the last fetch time is null or if the duration since the last fetch is greater than or equal to 1 hour.
 		if (lastFetchTime == null || Duration.between(lastFetchTime, currentTime).toHours() >= 1) {
+			// Update the last fetch time to the current time.
 			lastFetchTime = currentTime
+			
+			// Log the result of the check.
 			Log.d(PROFILE_TAG, "shouldFetchData result: true")
+			
+			// Return true indicating data should be fetched.
 			return true
 		}
+		
+		// Log the result of the check.
 		Log.d(PROFILE_TAG, "shouldFetchData result: false")
+		
+		// Return false indicating data should not be fetched.
 		return false
 	}
 	
+	/**
+	 * Generates a list of dates in string format between the provided start and end dates.
+	 *
+	 * @param startDate The starting date of the range.
+	 * @param endDate The ending date of the range.
+	 * @return List of dates in string format.
+	 */
 	private fun getDatesInRange(startDate: LocalDate, endDate: LocalDate): List<String> {
+		// Initialize a mutable list to store the dates.
 		val dates = mutableListOf<String>()
+		
+		// Start with the provided start date.
 		var currentDate = startDate
+		
+		// Loop until the current date surpasses the end date.
 		while (!currentDate.isAfter(endDate)) {
+			// Add the current date to the list.
 			dates.add(currentDate.toString())
+			
+			// Move to the next day.
 			currentDate = currentDate.plusDays(1)
 		}
+		
+		// Return the list of dates.
 		return dates
 	}
 	
