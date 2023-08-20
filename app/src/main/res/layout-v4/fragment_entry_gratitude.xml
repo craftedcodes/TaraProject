@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/bg_light"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:minHeight="54dp"
                 android:shadowColor="#61000000"
@@ -156,7 +156,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:text="@string/save"
                 app:icon="@drawable/iconsave"
-                app:iconTint="@color/white"
+                app:iconTint="@color/bg_light"
                 tools:ignore="InefficientWeight" />
 
         </LinearLayout>

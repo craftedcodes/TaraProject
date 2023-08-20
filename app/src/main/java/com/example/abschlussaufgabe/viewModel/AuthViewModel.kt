@@ -23,7 +23,6 @@ class AuthViewModel : ViewModel() {
 	val currentUser: LiveData<FirebaseUser?>
 		get() = _currentUser
 	
-	
 	// MutableLiveData for tracking the success of user registration.
 	private val _registerSuccess = MutableLiveData<Boolean>()
 	

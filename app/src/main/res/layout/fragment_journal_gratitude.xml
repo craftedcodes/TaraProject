@@ -56,7 +56,7 @@
             <ImageButton
                 android:id="@+id/animation_nav_btn"
                 style="@style/NavButtonStyle"
-                android:background="@color/white"
+                android:background="@color/bg_light"
                 android:contentDescription="@string/navigation_to_animation"
                 android:src="@drawable/chevronup" />
 
@@ -136,7 +136,7 @@
                     android:minHeight="54dp"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/filter"
-                    android:textColor="@color/white"
+                    android:textColor="@color/bg_light"
                     android:backgroundTint="@color/outline_bg_light"
                     android:layout_margin="16dp"
                     android:textSize="20sp"
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16sp"
                     android:visibility="gone"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/bg_light"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/reset"
                     android:textAlignment="center"
@@ -165,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16sp"
                     android:visibility="visible"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/bg_light"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/export_gratitude_journal_entries"
                     android:textAlignment="center"

@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/bg_light"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:text="@string/quit"
                 android:textColor="@color/error_bg_light"
@@ -155,7 +155,7 @@
                 android:backgroundTint="@color/primary_bg_light"
                 android:text="@string/register"
                 android:fontFamily="@font/psychedelic_lotus"
-                android:textColor="@color/white"
+                android:textColor="@color/bg_light"
                 android:layout_margin="8dp"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>

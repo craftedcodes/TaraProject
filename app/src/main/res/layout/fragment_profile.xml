@@ -10,7 +10,7 @@
 
     <!-- Main layout container -->
     <LinearLayout
-        android:background="@color/white"
+        android:background="@color/bg_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -124,7 +124,7 @@
                         android:layout_height="48dp"
                         android:layout_marginHorizontal="16dp"
                         android:alpha="1"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/bg_light"
                         android:contentDescription="@string/line_chart"
                         android:scaleType="centerCrop"
                         android:src="@drawable/iconlinechart"
@@ -138,7 +138,7 @@
                         android:layout_height="48dp"
                         android:layout_marginHorizontal="16dp"
                         android:alpha="0.6"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/bg_light"
                         android:contentDescription="@string/heart_graphic"
                         android:scaleType="centerCrop"
                         android:src="@drawable/iconheart"
@@ -152,7 +152,7 @@
                         android:layout_height="48dp"
                         android:layout_marginHorizontal="16dp"
                         android:alpha="0.6"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/bg_light"
                         android:contentDescription="@string/heat_map"
                         android:scaleType="centerCrop"
                         android:src="@drawable/iconheatmap"
@@ -222,7 +222,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/bg_light"
                     android:visibility="gone">
 
                     <!-- Contact card layout -->
@@ -305,7 +305,7 @@
                                         android:layout_width="52dp"
                                         android:layout_height="52dp"
                                         android:layout_marginEnd="16dp"
-                                        android:background="@color/white"
+                                        android:background="@color/bg_light"
                                         android:contentDescription="@string/trash_icon"
                                         android:scaleType="centerCrop"
                                         android:src="@drawable/icontrash"
@@ -317,7 +317,7 @@
                                         android:layout_width="40dp"
                                         android:layout_height="40dp"
                                         android:layout_marginEnd="16dp"
-                                        android:background="@color/white"
+                                        android:background="@color/bg_light"
                                         android:contentDescription="@string/edit_button"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/iconfountainpen" />
@@ -362,7 +362,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@color/bg_light"
                 android:contentDescription="@string/logout"
                 android:src="@drawable/iconlogout"
                 app:tint="@color/neutral_c_tx_light"
@@ -374,7 +374,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@color/bg_light"
                 android:contentDescription="@string/settings"
                 android:src="@drawable/iconsettings"
                 app:tint="@color/neutral_c_tx_light" />

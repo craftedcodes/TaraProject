@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:minWidth="360dp"
             android:layout_marginVertical="8dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/bg_light"
             android:elevation="@dimen/cardview_default_elevation">
 
             <!-- Layout for image and text -->
@@ -82,7 +82,7 @@
                             android:layout_width="52dp"
                             android:layout_height="52dp"
                             android:src="@drawable/icontrash"
-                            android:background="@color/white"
+                            android:background="@color/bg_light"
                             android:layout_marginEnd="16dp"
                             android:scaleType="centerCrop"
                             android:contentDescription="@string/trash_icon" />
@@ -94,7 +94,7 @@
                             android:layout_height="40dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/iconfountainpen"
-                            android:background="@color/white"
+                            android:background="@color/bg_light"
                             android:layout_marginEnd="16dp"
                             android:contentDescription="@string/edit_button" />
 

@@ -12,7 +12,7 @@
         style="@style/MainLayoutStyle"
         android:orientation="vertical"
         android:weightSum="10"
-        android:background="@color/white"
+        android:background="@color/bg_light"
         tools:context=".ui.AffirmationFragment">
 
         <!--Action bar-->
@@ -169,7 +169,7 @@
                 android:src="@drawable/chevrondown"
                 android:contentDescription="@string/navigation_to_animation"
                 android:layout_marginBottom="8dp"
-                android:background="@color/white"/>
+                android:background="@color/bg_light"/>
 
         </LinearLayout>
 

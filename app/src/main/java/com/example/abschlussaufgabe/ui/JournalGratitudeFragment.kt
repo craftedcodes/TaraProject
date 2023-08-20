@@ -46,6 +46,7 @@ const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 class JournalGratitudeFragment : Fragment() {
 	// Declare a late-initialized variable for the FragmentJournalGratitudeBinding instance.
 	private lateinit var binding: FragmentJournalGratitudeBinding
+	//TODO: if auth.currentUser is not null then load entries from database and write entries etc.
 	
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
@@ -325,7 +326,7 @@ class JournalGratitudeFragment : Fragment() {
 		for (entryView in entryViews) {
 			// Calculate the height of the current entry view.
 			val entryHeight = entryView.measuredHeight
-			
+			// TODO: Problem liegt in measuredHeight. Google nach Lösung.
 			// Check if adding the current entry view to the current page would exceed the page height.
 			if (currentPageEntries.sumOf { it.measuredHeight } + entryHeight <= heightPixels) {
 				// If not, add the entry view to the current page.
@@ -373,6 +374,9 @@ class JournalGratitudeFragment : Fragment() {
 		val file = File(context?.filesDir, "entries.pdf")
 		pdfDocument.writeTo(FileOutputStream(file))
 		pdfDocument.close()
+		
+		// TODO: Test mit Verry hat gezeigt, dass die Datei nicht richtig zu PDF konvertiert wird. KORREKTUR!
+		
 		
 		// Send the PDF via email.
 		sendPdfViaEmail(file)
@@ -427,6 +431,8 @@ class JournalGratitudeFragment : Fragment() {
 		} else {
 			// Notify the user if there was an error sending the email.
 			Toast.makeText(context, "Failed to send email.", Toast.LENGTH_SHORT).show()
+			
+			// TODO: Test mit Verry hat gezeigt, dass die App hier rein geht. KORREKTUR!
 		}
 	}
 	
