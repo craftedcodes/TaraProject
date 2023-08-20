@@ -68,7 +68,12 @@ class JournalGratitudeFragment : Fragment() {
 	}
 	
 	/**
-	 * Inflates the fragment's layout and initializes the data binding.
+	 * Inflates the fragment's layout and initializes data binding.
+	 *
+	 * @param inflater LayoutInflater to inflate the views.
+	 * @param container ViewGroup to be the parent of the generated hierarchy.
+	 * @param savedInstanceState Bundle to save the instance state.
+	 * @return View representing the root of the inflated layout.
 	 */
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +105,11 @@ class JournalGratitudeFragment : Fragment() {
 		viewModel.entries.observe(viewLifecycleOwner) { entries ->
 			binding.outerRvGratitudeJournal.adapter =
 				EntryAdapter(requireContext(), entries, viewModel)
+		}
+		
+		// After setting the adapter, enqueue the Runnable to get the heights of the entryViews.
+		binding.outerRvGratitudeJournal.post {
+			processEntryViews()
 		}
 		
 		// Initialize and set up click listeners for various UI components.
@@ -283,8 +293,14 @@ class JournalGratitudeFragment : Fragment() {
 			.setMessage("Do you really want to export the gratitude journal entries? If you confirm, all entries will be deleted from your device.")
 			// Set the positive button to confirm the export action.
 			.setPositiveButton("Confirm") { _, _ ->
-				// Call the function to export entries to a PDF when the user confirms.
-				exportEntriesToPdf()
+				// Process the entry views and get the pages
+				val pages = processEntryViews()
+				
+				// Begin the PDF creation process
+				exportEntriesToPdf(pages)
+				
+				// Show alert dialog with the number of pages to be generated.
+				showAlertDialog(pages.size)
 			}
 			// Set the negative button to cancel the export action.
 			.setNegativeButton("Cancel", null)
@@ -293,61 +309,44 @@ class JournalGratitudeFragment : Fragment() {
 	}
 	
 	/**
-	 * Exports journal entries to a PDF file.
+	 * Processes the entryViews to determine how they should be placed on the pages.
 	 */
-	private fun exportEntriesToPdf() {
-		// 1. Determine screen density and generate DIN A4 size in pixels.
-		val metrics = resources.displayMetrics
-		val density = metrics.densityDpi / 160f  // Convert DPI to scale factor
+	private fun processEntryViews(): List<List<View>> {
 		
-		// DIN A4 dimensions in millimeters.
-		val widthMm = 210
-		val heightMm = 297
+		// Retrieve the height in pixels of a DIN A4 paper size. The underscore (_) is used to ignore the width value.
+		val (_, heightPixels) = getDinA4SizeInPixels()
 		
-		// Convert mm to pixels.
-		val widthPixels = (widthMm * density * 160) / 25.4f
-		val heightPixels = (heightMm * density * 160) / 25.4f
-		
-		// 2. Calculate how many entries fit on each page.
-		
-		// Fetch the list of entries from the ViewModel or default to an empty list if null.
+		// Retrieve the list of entries from the ViewModel. If the value is null, default to an empty list.
 		val entries = viewModel.entries.value ?: listOf()
 		
-		// Convert the list of entries to their corresponding view representations.
-		val entryViews = (binding.outerRvGratitudeJournal.adapter as EntryAdapter).convertEntriesToViews(entries)
+		// Retrieve the adapter associated with the RecyclerView that displays the gratitude journal entries.
+		val adapter = binding.outerRvGratitudeJournal.adapter
 		
-		// Initialize a list to hold the entries of the current page.
-		var currentPageEntries = mutableListOf<View>()
-		
-		// Initialize a list to hold the lists of entries for each page.
-		val pages = mutableListOf<List<View>>()
-		
-		// Iterate through each entry view to determine its placement on a page.
-		for (entryView in entryViews) {
-			// Calculate the height of the current entry view.
-			val entryHeight = entryView.measuredHeight
-			// TODO: Problem liegt in measuredHeight. Google nach Lösung.
-			// Check if adding the current entry view to the current page would exceed the page height.
-			if (currentPageEntries.sumOf { it.measuredHeight } + entryHeight <= heightPixels) {
-				// If not, add the entry view to the current page.
-				currentPageEntries.add(entryView)
-			} else {
-				// If yes, finalize the current page and start a new one.
-				pages.add(currentPageEntries)
-				currentPageEntries = mutableListOf(entryView)
-			}
+		// Check if the adapter is an instance of EntryAdapter.
+		// If it is, convert the list of entries to a list of entry views using the adapter's method.
+		// Otherwise, default to an empty list of views.
+		val entryViews = if (adapter is EntryAdapter) {
+			adapter.convertEntriesToViews(entries)
+		} else {
+			listOf<View>()
 		}
 		
-		// Add any remaining entries to the last page.
-		if (currentPageEntries.isNotEmpty()) {
-			pages.add(currentPageEntries)
-		}
+		// Calculate how the entry views should be distributed across the pages based on the height in pixels of a DIN A4 paper size.
+		return calculatePages(entryViews, heightPixels)
+	}
+	
+	/**
+	 * Exports journal entries to a PDF file.
+	 */
+	private fun exportEntriesToPdf(pages: List<List<View>>) {
+		// 1. Get DIN A4 size in pixels.
+		val (widthPixels, heightPixels) = getDinA4SizeInPixels()
 		
-		// 3. Generate the PDF file based on the calculated pages.
-		val pdfDocument = PdfDocument()
-		
-		// Show alert dialog with the number of pages to be generated.
+		// 2. Show alert dialog with the number of pages to be generated.
 		showAlertDialog(pages.size)
+		
+		// 3. Generate the PDF file based on the provided pages.
+		val pdfDocument = PdfDocument()
 		
 		// Iterate through each page and its entries.
 		for ((pageIndex, pageEntries) in pages.withIndex()) {
@@ -356,7 +355,27 @@ class JournalGratitudeFragment : Fragment() {
 			val page = pdfDocument.startPage(pageInfo)
 			
 			// Draw each entry view onto the page's canvas.
+			// Iterate over each entry view in the provided list of page entries.
 			for (entryView in pageEntries) {
+				
+				// Measure the entry view's dimensions.
+				// The width is set to be exactly the same as the width in pixels, while the height is set to be at most the height in pixels.
+				entryView.measure(
+					// Create a measure specification for the width that specifies an exact size.
+					View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
+					
+					// Create a measure specification for the height that specifies a maximum size.
+					View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
+				)
+				
+				// Layout the entry view at the top-left corner of its container.
+				// The dimensions used are the ones determined by the previous measure call.
+				entryView.layout(0, 0, entryView.measuredWidth, entryView.measuredHeight)
+				
+				// Log the dimensions of the entry view for debugging purposes.
+				Log.d("PDF_EXPORT", "Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}")
+				
+				// Draw the entry view onto the canvas of the current PDF page.
 				entryView.draw(page.canvas)
 			}
 			
@@ -374,9 +393,6 @@ class JournalGratitudeFragment : Fragment() {
 		val file = File(context?.filesDir, "entries.pdf")
 		pdfDocument.writeTo(FileOutputStream(file))
 		pdfDocument.close()
-		
-		// TODO: Test mit Verry hat gezeigt, dass die Datei nicht richtig zu PDF konvertiert wird. KORREKTUR!
-		
 		
 		// Send the PDF via email.
 		sendPdfViaEmail(file)
@@ -433,6 +449,8 @@ class JournalGratitudeFragment : Fragment() {
 			Toast.makeText(context, "Failed to send email.", Toast.LENGTH_SHORT).show()
 			
 			// TODO: Test mit Verry hat gezeigt, dass die App hier rein geht. KORREKTUR!
+			// Close the AlertDialog
+			dismissAlertDialog()
 		}
 	}
 	
@@ -487,6 +505,80 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	private fun dismissAlertDialog() {
 		alertDialog.dismiss()
+	}
+	
+	/**
+	 * Calculates the size of a DIN A4 page in pixels.
+	 *
+	 * @return Pair of width and height in pixels.
+	 */
+	private fun getDinA4SizeInPixels(): Pair<Float, Float> {
+		
+		// Retrieve the display metrics associated with the resources of the current context.
+		val metrics = resources.displayMetrics
+		
+		// Calculate the density scale factor by dividing the device's DPI (dots per inch) by the base density (160 DPI).
+		// This scale factor is used to convert device-independent pixels (dp) to pixels.
+		val density = metrics.densityDpi / 160f  // Convert DPI to scale factor
+		
+		// Define the standard dimensions of a DIN A4 paper in millimeters.
+		val widthMm = 210
+		val heightMm = 297
+		
+		// Convert the width and height from millimeters to pixels.
+		// The conversion uses the previously calculated density scale factor and a constant (160/25.4) to convert from millimeters to inches.
+		val widthPixels = (widthMm * density * 160) / 25.4f
+		val heightPixels = (heightMm * density * 160) / 25.4f
+		
+		// Return the calculated width and height in pixels as a pair.
+		return Pair(widthPixels, heightPixels)
+	}
+	
+	/**
+	 * Calculates the distribution of entry views across multiple pages based on the given height constraint.
+	 *
+	 * @param entryViews List of entry views to be distributed.
+	 * @param heightPixels Maximum height constraint for each page.
+	 * @return List of pages, where each page is represented by a list of entry views.
+	 */
+	private fun calculatePages(entryViews: List<View>, heightPixels: Float): List<List<View>> {
+		
+		// Initialize a mutable list to store the pages of entry views.
+		val pages = mutableListOf<List<View>>()
+		
+		// Initialize a mutable list to store the current page's entry views.
+		var currentPageEntries = mutableListOf<View>()
+		
+		// Iterate over each entry view in the provided list.
+		for (entryView in entryViews) {
+			
+			// Get the height of the current entry view.
+			val entryHeight = entryView.measuredHeight
+			
+			// Check if the total height of the current page's entry views plus the height of the current entry view is within the height constraint.
+			if (currentPageEntries.sumOf { it.measuredHeight } + entryHeight <= heightPixels) {
+				
+				// If within the height constraint, add the current entry view to the current page's entry views.
+				currentPageEntries.add(entryView)
+			} else {
+				
+				// If exceeding the height constraint, add the current page's entry views to the pages list.
+				pages.add(currentPageEntries)
+				
+				// Start a new page with the current entry view as its first entry.
+				currentPageEntries = mutableListOf(entryView)
+			}
+		}
+		
+		// After iterating over all entry views, check if there are any remaining entry views in the current page's list.
+		if (currentPageEntries.isNotEmpty()) {
+			
+			// If there are remaining entry views, add them as a new page to the pages list.
+			pages.add(currentPageEntries)
+		}
+		
+		// Return the list of pages.
+		return pages
 	}
 	
 	/**
