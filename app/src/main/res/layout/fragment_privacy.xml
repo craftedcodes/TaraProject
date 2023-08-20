@@ -23,7 +23,8 @@
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/back_button"
-                android:src="@drawable/iconarrowback" />
+                android:src="@drawable/iconarrowback"
+                app:tint="?attr/colorSurfaceContainer"/>
 
             <!-- Home button text -->
             <TextView
