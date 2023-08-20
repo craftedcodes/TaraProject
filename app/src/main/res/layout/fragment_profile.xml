@@ -10,29 +10,32 @@
 
     <!-- Main layout container -->
     <LinearLayout
-        android:background="@color/bg_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="?attr/backgroundColor"
         tools:context=".ui.ProfileFragment">
 
         <!-- Top action bar -->
         <LinearLayout
-            style="@style/ActionBarStyle">
+            style="@style/ActionBarStyle"
+            android:background="?attr/backgroundColor">
 
             <!-- Back button -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/back_button"
-                android:src="@drawable/iconarrowback" />
+                android:src="@drawable/iconarrowback"
+                app:tint="?attr/colorSurfaceContainer"
+                android:layout_margin="4dp"/>
 
             <!-- Home button -->
             <ImageButton
                 android:id="@+id/home_btn_logo"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/tara"
-                android:src="@drawable/logo01" />
+                android:src="@drawable/logo01"/>
 
             <!-- Home button text -->
             <TextView
@@ -50,7 +53,7 @@
                 android:contentDescription="@string/tara"
                 android:src="@drawable/iconprofile"
                 android:visibility="invisible"
-                app:tint="@color/neutral_c_tx_light" />
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 
@@ -58,10 +61,12 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="640dp"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:background="?attr/backgroundColor">
 
             <!-- Main layout style -->
-            <LinearLayout style="@style/MainLayoutStyle">
+            <LinearLayout style="@style/MainLayoutStyle"
+                android:background="?attr/backgroundColor">
 
                 <!-- Chart view card -->
                 <com.google.android.material.card.MaterialCardView
@@ -69,7 +74,7 @@
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_weight="3"
-                    android:backgroundTint="#203E45">
+                    android:backgroundTint="?attr/colorOnSurface">
 
                     <!-- Chart view -->
                     <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
@@ -77,7 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="16dp"
-                        android:backgroundTint="#203E45" />
+                        android:backgroundTint="?attr/colorOnSurface" />
 
                     <LinearLayout
                         android:id="@+id/empty_data_text_view"
@@ -152,12 +157,12 @@
                         android:layout_height="48dp"
                         android:layout_marginHorizontal="16dp"
                         android:alpha="0.6"
-                        android:backgroundTint="@color/bg_light"
+                        android:backgroundTint="?attr/backgroundColor"
                         android:contentDescription="@string/heat_map"
                         android:scaleType="centerCrop"
                         android:src="@drawable/iconheatmap"
                         android:visibility="gone"
-                        app:tint="@color/neutral_c_tx_light" />
+                        app:tint="?attr/colorSurfaceContainer" />
 
                 </LinearLayout>
 
@@ -203,10 +208,10 @@
                                 android:id="@+id/add_contact_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/error_c_bg_light"
+                                android:backgroundTint="?attr/colorErrorContainer"
                                 android:fontFamily="@font/psychedelic_lotus"
                                 android:text="@string/add_contact"
-                                android:textColor="@color/error_c_tx_light" />
+                                android:textColor="?attr/colorOnError" />
 
                         </LinearLayout>
 
@@ -222,7 +227,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/bg_light"
+                    android:backgroundTint="?attr/backgroundColor"
                     android:visibility="gone">
 
                     <!-- Contact card layout -->
@@ -266,7 +271,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/psychedelic_lotus"
                                     android:text="@string/mom"
-                                    android:textColor="@color/primary_bg_light"
+                                    android:textColor="?attr/colorPrimary"
                                     android:textSize="24sp" />
 
                                 <!-- Contact number -->
@@ -277,7 +282,7 @@
                                     android:layout_marginVertical="4dp"
                                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                                     android:text="@string/_0123_234786239"
-                                    android:textColor="@color/neutral_c_tx_light"
+                                    android:textColor="?attr/colorSurfaceContainer"
                                     android:textSize="16sp" />
 
                                 <!-- Contact message -->
@@ -288,7 +293,7 @@
                                     android:layout_marginBottom="16dp"
                                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                                     android:text="@string/i_have_a_panic_attack_right_now_please_call_me"
-                                    android:textColor="@color/neutral_c_tx_light"
+                                    android:textColor="?attr/colorSurfaceContainer"
                                     android:textSize="16sp" />
 
                                 <!-- Contact action buttons -->
@@ -297,6 +302,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:gravity="end"
+                                    android:background="?attr/backgroundColor"
                                     android:orientation="horizontal">
 
                                     <!-- Delete contact button -->
@@ -305,7 +311,7 @@
                                         android:layout_width="52dp"
                                         android:layout_height="52dp"
                                         android:layout_marginEnd="16dp"
-                                        android:background="@color/bg_light"
+                                        android:background="?attr/backgroundColor"
                                         android:contentDescription="@string/trash_icon"
                                         android:scaleType="centerCrop"
                                         android:src="@drawable/icontrash"
@@ -317,8 +323,9 @@
                                         android:layout_width="40dp"
                                         android:layout_height="40dp"
                                         android:layout_marginEnd="16dp"
-                                        android:background="@color/bg_light"
+                                        android:background="?attr/backgroundColor"
                                         android:contentDescription="@string/edit_button"
+                                        app:tint="?attr/colorOnBackground"
                                         android:scaleType="fitCenter"
                                         android:src="@drawable/iconfountainpen" />
 
@@ -338,7 +345,7 @@
                             android:fontFamily="@font/merriweathersans_variablefont_wght"
                             android:text="@string/please_note"
                             android:textAlignment="center"
-                            android:textColor="@color/neutral_c_tx_light"
+                            android:textColor="?attr/colorSurfaceContainer"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -354,7 +361,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="?attr/backgroundColor">
 
             <!-- Logout button -->
             <ImageButton
@@ -362,10 +370,10 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="@color/bg_light"
+                android:background="?attr/backgroundColor"
                 android:contentDescription="@string/logout"
                 android:src="@drawable/iconlogout"
-                app:tint="@color/neutral_c_tx_light"
+                app:tint="?attr/colorSurfaceContainer"
                 tools:ignore="NestedWeights" />
 
             <!-- Settings button -->
@@ -374,10 +382,10 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="@color/bg_light"
+                android:background="?attr/backgroundColor"
                 android:contentDescription="@string/settings"
                 android:src="@drawable/iconsettings"
-                app:tint="@color/neutral_c_tx_light" />
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 

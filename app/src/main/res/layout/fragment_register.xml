@@ -20,7 +20,7 @@
             android:textAlignment="center"
             android:text="@string/tara"
             android:fontFamily="@font/psychedelic_lotus"
-            android:textColor="@color/primary_bg_light"
+            android:textColor="?attr/colorPrimary"
             android:textSize="24sp"
             android:shadowColor="#7E000000"
             android:shadowDx="2"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:layout_margin="32dp"
-            android:backgroundTint="@color/secondary_c_bg_light">
+            android:backgroundTint="?attr/colorSecondary">
 
             <!-- This LinearLayout contains an information card. The card has a MaterialCardView as its root layout,
      which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
@@ -53,7 +53,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
-                    app:tint="@color/secondary_c_tx_light"
+                    app:tint="?attr/colorOnSecondary"
                     android:contentDescription="@string/to_cover_data_storage"
                     android:layout_marginEnd="16dp"/>
 
@@ -65,7 +65,7 @@
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:gravity="center_vertical"
                     android:text="@string/to_cover_data_storage"
-                    android:textColor="@color/secondary_c_tx_light"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -139,11 +139,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/bg_light"
+                android:backgroundTint="?attr/backgroundColor"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:text="@string/quit"
-                android:textColor="@color/error_bg_light"
-                app:strokeColor="@color/error_bg_light"
+                android:textColor="?attr/colorOnError"
+                app:strokeColor="?attr/colorOnError"
                 app:strokeWidth="1dp"
                 tools:ignore="ButtonStyle" />
 
@@ -152,10 +152,10 @@
                 android:id="@+id/register_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/primary_bg_light"
+                android:backgroundTint="?attr/colorPrimary"
                 android:text="@string/register"
                 android:fontFamily="@font/psychedelic_lotus"
-                android:textColor="@color/bg_light"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_margin="8dp"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>

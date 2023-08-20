@@ -10,19 +10,22 @@
     <!-- Main LinearLayout with the style of MainLayoutStyle -->
     <LinearLayout
         style="@style/MainLayoutStyle"
-        tools:context=".ui.EmergencyContactFragment">
+        tools:context=".ui.EmergencyContactFragment"
+        android:background="?attr/backgroundColor">
 
         <!-- Action bar section -->
         <LinearLayout
             style="@style/ActionBarStyle"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="?attr/backgroundColor">
 
             <!-- Back button -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/back_button"
-                android:src="@drawable/iconarrowback" />
+                android:src="@drawable/iconarrowback"
+                app:tint="?attr/colorSurfaceContainer"/>
 
             <!-- Home button with logo -->
             <ImageButton
@@ -47,7 +50,7 @@
                 android:contentDescription="@string/tara"
                 android:src="@drawable/iconprofile"
                 android:visibility="invisible"
-                app:tint="@color/neutral_c_tx_light" />
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 
@@ -79,7 +82,7 @@
             android:text="@string/tap_picture_to_choose_another_avatar"
             android:fontFamily="@font/merriweathersans_variablefont_wght"
             android:textSize="12sp"
-            android:textColor="@color/outline_bg_light"
+            android:textColor="?attr/colorSurfaceContainer"
             android:textAlignment="center"
             android:layout_marginVertical="4dp"
             />
@@ -106,7 +109,8 @@
                 android:id="@+id/ccp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="8dp"
+                app:ccp_contentColor="?attr/colorSurfaceContainer"/>
 
             <!-- TextInputLayout for entering the phone number -->
         <com.google.android.material.textfield.TextInputLayout
@@ -153,17 +157,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/bg_light"
+                android:backgroundTint="?attr/backgroundColor"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:minHeight="54dp"
-                android:shadowColor="#61000000"
                 android:shadowDx="8"
                 android:shadowDy="4"
                 android:shadowRadius="8"
                 android:text="@string/quit"
-                android:textColor="@color/error_bg_light"
+                android:textColor="?attr/colorOnError"
                 android:textSize="20sp"
-                app:strokeColor="@color/error_bg_light"
+                app:strokeColor="?attr/colorOnError"
                 app:strokeWidth="1dp"
                 tools:ignore="ButtonStyle" />
 
@@ -172,8 +175,9 @@
                 android:id="@+id/save_btn"
                 style="@style/PrimaryButtonStyle"
                 android:text="@string/save"
+                android:textColor="?attr/colorOnPrimary"
                 app:icon="@drawable/iconsave"
-                app:iconTint="@color/bg_light"
+                app:iconTint="?attr/colorOnPrimary"
                 tools:ignore="InefficientWeight" />
 
         </LinearLayout>
@@ -184,12 +188,12 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:layout_margin="32dp"
-            android:backgroundTint="@color/secondary_c_bg_light">
+            android:backgroundTint="?attr/colorSecondary">
 
             <!-- This LinearLayout contains an information card. The card has a MaterialCardView as its root layout,
-     which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
-     an ImageView that serves as an information icon and a TextView that displays the information text.
-     The ImageView and TextView are arranged horizontally and centered vertically within the LinearLayout. -->
+            which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
+            an ImageView that serves as an information icon and a TextView that displays the information text.
+            The ImageView and TextView are arranged horizontally and centered vertically within the LinearLayout. -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -203,7 +207,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
-                    app:tint="@color/secondary_c_tx_light"
+                    app:tint="?attr/colorOnSecondary"
                     android:contentDescription="@string/to_cover_data_storage"
                     android:layout_marginEnd="16dp"/>
 
@@ -215,7 +219,7 @@
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:gravity="center_vertical"
                     android:text="@string/please_remember"
-                    android:textColor="@color/secondary_c_tx_light"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="12sp" />
 
             </LinearLayout>

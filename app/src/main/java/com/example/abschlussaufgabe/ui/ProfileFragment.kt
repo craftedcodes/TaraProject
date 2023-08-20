@@ -215,6 +215,10 @@ class ProfileFragment : Fragment() {
 				findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
 			}
 		}
+		
+		binding.settingsBtn.setOnClickListener {
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSettingsFragment())
+		}
 	}
 	
 	/**

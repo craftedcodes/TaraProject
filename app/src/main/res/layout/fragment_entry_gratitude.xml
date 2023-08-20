@@ -12,19 +12,22 @@
     <LinearLayout
         style="@style/MainLayoutStyle"
         tools:context=".ui.EntryGratitudeFragment"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:background="?attr/backgroundColor">
 
         <!-- Action bar layout -->
         <LinearLayout
             style="@style/ActionBarStyle"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="?attr/backgroundColor">
 
             <!-- Back button -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:src="@drawable/iconarrowback"
-                android:contentDescription="@string/back_button" />
+                android:contentDescription="@string/back_button"
+                app:tint="?attr/colorSurfaceContainer"/>
 
             <!-- Home button -->
             <ImageButton
@@ -48,7 +51,7 @@
                 android:id="@+id/profile_btn_logo"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/iconprofile"
-                app:tint="@color/neutral_c_tx_light" />
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 
@@ -107,7 +110,7 @@
                 android:textSize="16sp"
                 android:textAlignment="center"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
-                android:textColor="@color/outline_bg_light"
+                android:textColor="?attr/colorSurfaceContainer"
                 android:text="@string/photo_successfully_downloaded"
                 android:layout_weight="1"
                 android:visibility="invisible"
@@ -120,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/iconphoto"
                 app:maxImageSize="40dp"
-                android:backgroundTint="@color/surface_c_tx_light"
+                android:backgroundTint="?attr/colorSurfaceContainer"
                 app:tint="@color/surface_c_bg_light"
                 android:contentDescription="@string/gallery"/>
 
@@ -129,7 +132,8 @@
         <!-- Save button container -->
         <LinearLayout
             style="@style/HorizontalLayoutStyle"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="?attr/backgroundColor">
 
             <!-- Quit button -->
             <Button
@@ -137,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/bg_light"
+                android:backgroundTint="?attr/backgroundColor"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:minHeight="54dp"
                 android:shadowColor="#61000000"
@@ -145,9 +149,9 @@
                 android:shadowDy="4"
                 android:shadowRadius="8"
                 android:text="@string/quit"
-                android:textColor="@color/error_bg_light"
+                android:textColor="?attr/colorOnErrorContainer"
                 android:textSize="20sp"
-                app:strokeColor="@color/error_bg_light"
+                app:strokeColor="?attr/colorOnErrorContainer"
                 app:strokeWidth="1dp"
                 tools:ignore="ButtonStyle"
                 android:layout_marginTop="16dp" />
@@ -158,7 +162,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:text="@string/save"
                 app:icon="@drawable/iconsave"
-                app:iconTint="@color/bg_light"
+                app:iconTint="?attr/colorOnPrimary"
                 tools:ignore="InefficientWeight" />
 
         </LinearLayout>

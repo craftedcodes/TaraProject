@@ -1,6 +1,7 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,12 +62,26 @@ class HomeFragment : Fragment() {
 	private fun initializeRiveAnimation() {
 		// Obtain a reference to the Rive Animation View from the binding object.
 		val riveView = binding.riveAnimationView
-
-		// Set the Rive animation resource to be displayed in the Rive Animation View.
-		riveView.setRiveResource(R.raw.tara_light)
-
+		
+		// Set the Rive animation resource based on the current theme.
+		val riveResource = if (isSystemInDarkTheme()) {
+			R.raw.tara_dark
+		} else {
+			R.raw.tara_light
+		}
+		
+		riveView.setRiveResource(riveResource)
+		
 		// Start playing the specified animation ("Timeline 1") in a loop.
 		riveView.play("Timeline 1", Loop.LOOP)
+	}
+	
+	/**
+	 * Returns true if the system is in dark theme.
+	 * @return True if the system is in dark theme.
+	 */
+	private fun isSystemInDarkTheme(): Boolean {
+		return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 	}
 	
 	/**

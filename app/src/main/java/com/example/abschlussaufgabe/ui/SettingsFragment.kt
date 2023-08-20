@@ -1,60 +1,112 @@
 package com.example.abschlussaufgabe.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.R
+import com.schubau.tara.databinding.FragmentSettingsBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+private const val SETTINGS_FRAGMENT_TAG = "SETTINGS FRAGMENT TAG"
 class SettingsFragment : Fragment() {
-	// TODO: Rename and change types of parameters
-	private var param1: String? = null
-	private var param2: String? = null
+	private lateinit var binding: FragmentSettingsBinding
 	
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		arguments?.let {
-			param1 = it.getString(ARG_PARAM1)
-			param2 = it.getString(ARG_PARAM2)
-		}
-	}
+	private lateinit var auth: FirebaseAuth
 	
 	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View? {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_settings, container, false)
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+		binding = FragmentSettingsBinding.inflate(inflater, container, false)
+		auth = FirebaseAuth.getInstance()
+		
+		return binding.root
 	}
 	
-	companion object {
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment using the provided parameters.
-		 *
-		 * @param param1 Parameter 1.
-		 * @param param2 Parameter 2.
-		 * @return A new instance of fragment SettingsFragment.
-		 */
-		// TODO: Rename and change types and number of parameters
-		@JvmStatic
-		fun newInstance(param1: String, param2: String) =
-			SettingsFragment().apply {
-				arguments = Bundle().apply {
-					putString(ARG_PARAM1, param1)
-					putString(ARG_PARAM2, param2)
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+        
+        binding.logoutBtn.setOnClickListener {
+            auth.signOut()
+        }
+		
+		binding.homeBtnLogo.setOnClickListener {
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAnimationFragment())
+		}
+		
+		binding.homeBtnText.setOnClickListener {
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAnimationFragment())
+		}
+		
+		binding.backBtn.setOnClickListener {
+			findNavController().navigateUp()
+		}
+		
+		binding.termsConditionsCard.setOnClickListener {
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToTermsConditionsFragment())
+		}
+		
+		binding.privacyCard.setOnClickListener {
+            findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToPrivacyFragment())
+        }
+		
+		binding.deleteAccountCard.setOnClickListener {
+			val inflater = layoutInflater
+			val dialogView = inflater.inflate(R.layout.dialog_delete_account, null)
+			val emailEditText = dialogView.findViewById<EditText>(R.id.emailEditText)
+			val passwordEditText = dialogView.findViewById<EditText>(R.id.passwordEditText)
+			
+			val alertDialog = AlertDialog.Builder(requireContext())
+				.setTitle("Delete Account")
+				.setMessage("Are you sure you want to delete your account and end your subscription?")
+				.setView(dialogView)
+				.setPositiveButton("Delete Account") { _, _ ->
+					val email = emailEditText.text.toString()
+					val password = passwordEditText.text.toString()
+					
+					if (email.isBlank() || password.isBlank()) {
+						Toast.makeText(requireContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+					} else {
+						val user = auth.currentUser
+						val credential = EmailAuthProvider.getCredential(email, password)
+						user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+							if (task.isSuccessful) {
+								user.delete().addOnCompleteListener { deleteTask ->
+									if (deleteTask.isSuccessful) {
+										Toast.makeText(requireContext(), "We're sad to see you go.", Toast.LENGTH_SHORT).show()
+										findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
+									} else {
+										Toast.makeText(requireContext(), "Error deleting account.", Toast.LENGTH_SHORT).show()
+									}
+								}
+							} else {
+								Toast.makeText(requireContext(), "Incorrect email or password.", Toast.LENGTH_SHORT).show()
+							}
+						}
+					}
 				}
+				.setNegativeButton("Dismiss") { dialog, _ ->
+					dialog.dismiss()
+				}
+				.create()
+			
+			alertDialog.show()
+		}
+		
+		binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
+			if (isChecked) {
+				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+			} else {
+				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 			}
+		}
 	}
 }

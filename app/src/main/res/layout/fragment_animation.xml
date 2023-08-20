@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <!-- Data binding section for the layout -->
     </data>
 
     <LinearLayout
         style="@style/MainLayoutStyle"
+        android:background="?attr/backgroundColor"
         tools:context=".ui.AnimationFragment">
 
         <!-- Action bar -->
@@ -36,13 +36,14 @@
                 android:id="@+id/profile_btn"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/iconprofile"
-                app:tint="@color/neutral_c_tx_light" />
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 
         <!-- Animation section -->
         <RelativeLayout
             android:id="@+id/animation_right_btn"
+            android:background="?attr/backgroundColor"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="14">
@@ -62,6 +63,7 @@
                 style="@style/NavButtonStyle"
                 android:src="@drawable/chevronright"
                 android:background="#00000000"
+                app:tint="?attr/colorSurfaceContainer"
                 android:layout_marginHorizontal="8dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
@@ -103,9 +105,23 @@
         <!-- Get help button -->
         <Button
             android:id="@+id/get_help_btn"
-            style="@style/PrimaryButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="64dp"
+            android:background="@drawable/get_help_button"
+            android:backgroundTint="?attr/colorError"
             android:layout_weight="0.2"
-            android:text="@string/get_help"/>
+            android:textColor="?attr/colorOnError"
+            android:text="@string/get_help"
+            android:textSize="20sp"
+            android:fontFamily="@font/psychedelic_lotus"
+            android:textAllCaps="false"
+            android:layout_margin="8dp"
+            android:shadowColor="#BF000000"
+            android:shadowDx="8"
+            android:shadowDy="8"
+            android:shadowRadius="8"
+            />
 
         <!-- Navigation to gratitude journal -->
         <LinearLayout
@@ -133,7 +149,9 @@
                 android:src="@drawable/chevrondown"
                 android:contentDescription="@string/navigation_to_affirmation"
                 android:layout_marginBottom="8dp"
-                android:background="@color/bg_light"/>
+                android:background="?attr/backgroundColor"
+                app:tint="?attr/colorSurfaceContainer"
+                />
         </LinearLayout>
 
     </LinearLayout>

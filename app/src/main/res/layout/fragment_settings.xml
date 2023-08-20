@@ -1,14 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.SettingsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:gravity="fill"
+        tools:context=".ui.SettingsFragment"
+        android:background="?attr/backgroundColor"
+        android:baselineAligned="true">
 
-</FrameLayout>
+        <!-- Top action bar -->
+        <LinearLayout
+            style="@style/ActionBarStyle"
+            android:background="?attr/backgroundColor">
+
+            <!-- Back button -->
+            <ImageButton
+                android:id="@+id/back_btn"
+                style="@style/ActionBarButtonStyle"
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/iconarrowback"
+                app:tint="?attr/colorSurfaceContainer" />
+
+            <!-- Home button -->
+            <ImageButton
+                android:id="@+id/home_btn_logo"
+                style="@style/ActionBarButtonStyle"
+                android:contentDescription="@string/tara"
+                android:src="@drawable/logo01" />
+
+            <!-- Home button text -->
+            <TextView
+                android:id="@+id/home_btn_text"
+                style="@style/LogoTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/tara"
+                tools:ignore="NestedWeights" />
+
+            <!-- Toggle button instead of Profile button -->
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/toggle_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/thumb_selector"
+                app:thumbTint="@color/secondary_bg_dark"
+                app:trackTint="@color/surface_c_tx_dark" />
+
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:orientation="vertical"
+                android:background="?attr/backgroundColor"
+                tools:ignore="InefficientWeight">
+
+                <!-- CardView for FAQ -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/faq_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="?attr/backgroundColor"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/faq"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for About -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/about_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="?attr/backgroundColor"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/about"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for Terms & Conditions -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/terms_conditions__card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="?attr/backgroundColor"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/terms_amp_conditions"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for Privacy Policy -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/privacy_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="?attr/backgroundColor"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/privacy_policy"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for Imprint -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/imprint_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="?attr/backgroundColor"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/imprint"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for Delete Account -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/delete_account_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="?attr/backgroundColor"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="@string/delete_account"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Add other cards similarly -->
+
+            </LinearLayout>
+
+        <!-- Dropdown for language selection -->
+
+
+        <!-- Bottom action bar -->
+        <LinearLayout
+            android:id="@+id/bottom_action_bar"
+            android:layout_weight="0.01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="?attr/backgroundColor">
+
+            <!-- Logout button -->
+            <ImageButton
+                android:id="@+id/logout_btn"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="3"
+                android:background="?attr/backgroundColor"
+                android:contentDescription="@string/logout"
+                android:layout_gravity="start"
+                android:src="@drawable/iconlogout"
+                app:tint="?attr/colorSurfaceContainer"
+                tools:ignore="NestedWeights" />
+
+            <!-- Settings button -->
+            <Spinner
+                android:id="@+id/language_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="64dp"
+                android:layout_gravity="center"
+                android:background="?attr/backgroundColor"
+                android:entries="@array/languages" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

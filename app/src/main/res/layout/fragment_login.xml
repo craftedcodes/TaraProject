@@ -28,7 +28,7 @@
             android:shadowRadius="8"
             android:text="@string/tara"
             android:textAlignment="center"
-            android:textColor="@color/primary_bg_light"
+            android:textColor="?attr/colorPrimary"
             android:textSize="24sp"
             />
 
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/bg_light"
+                android:backgroundTint="?attr/backgroundColor"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:minHeight="54dp"
                 android:shadowColor="#61000000"
@@ -101,9 +101,9 @@
                 android:shadowDy="4"
                 android:shadowRadius="8"
                 android:text="@string/quit"
-                android:textColor="@color/error_bg_light"
+                android:textColor="?attr/colorOnError"
                 android:textSize="20sp"
-                app:strokeColor="@color/error_bg_light"
+                app:strokeColor="?attr/colorOnError"
                 app:strokeWidth="1dp"
                 tools:ignore="ButtonStyle" />
 
@@ -126,8 +126,8 @@
             android:fontFamily="@font/merriweathersans_variablefont_wght"
             android:text="@string/password_forgotten"
             android:textAlignment="center"
-            android:textColor="@color/neutral_c_tx_light"
-            android:backgroundTint="@color/bg_light"
+            android:textColor="?attr/colorSurfaceContainer"
+            android:backgroundTint="?attr/backgroundColor"
             android:textSize="16sp"
             android:textStyle="bold" />
 

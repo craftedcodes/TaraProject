@@ -10,6 +10,7 @@
     <RelativeLayout
         style="@style/MainLayoutStyle"
         android:fitsSystemWindows="true"
+        android:background="?attr/backgroundColor"
         tools:context=".ui.JournalGratitudeFragment">
 
         <!-- ActionBar LinearLayout -->
@@ -17,7 +18,8 @@
             android:id="@+id/action_bar"
             android:layout_width="match_parent"
             android:layout_alignParentTop="true"
-            style="@style/ActionBarStyle">
+            style="@style/ActionBarStyle"
+            android:background="?attr/backgroundColor">
 
             <!-- Home button -->
             <ImageButton
@@ -39,7 +41,7 @@
                 android:id="@+id/profile_btn_logo"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/iconprofile"
-                app:tint="@color/neutral_c_tx_light" />
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 
@@ -50,15 +52,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
+            android:background="?attr/backgroundColor"
             android:layout_below="@id/action_bar">
 
             <!-- Navigation button -->
             <ImageButton
                 android:id="@+id/animation_nav_btn"
                 style="@style/NavButtonStyle"
-                android:background="@color/bg_light"
+                android:background="?attr/backgroundColor"
                 android:contentDescription="@string/navigation_to_animation"
-                android:src="@drawable/chevronup" />
+                android:src="@drawable/chevronup"
+                app:tint="?attr/colorSurfaceContainer"/>
 
             <!-- Floating Action Button for navigation -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -74,7 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/animation_fab"
-            android:layout_above="@+id/new_entry_fab">
+            android:layout_above="@+id/new_entry_fab"
+            android:background="?attr/backgroundColor">
 
             <!-- Main LinearLayout for the ScrollView content -->
             <LinearLayout
@@ -136,8 +141,8 @@
                     android:minHeight="54dp"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/filter"
-                    android:textColor="@color/bg_light"
-                    android:backgroundTint="@color/outline_bg_light"
+                    android:textColor="?attr/backgroundColor"
+                    android:backgroundTint="?attr/colorSurfaceContainer"
                     android:layout_margin="16dp"
                     android:textSize="20sp"
                     tools:ignore="ButtonStyle"
@@ -149,12 +154,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16sp"
                     android:visibility="gone"
-                    android:backgroundTint="@color/bg_light"
+                    android:backgroundTint="?attr/backgroundColor"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/reset"
                     android:textAlignment="center"
-                    android:textColor="@color/outline_bg_light"
-                    app:strokeColor="@color/outline_bg_light"
+                    android:textColor="?attr/colorSurfaceContainer"
+                    app:strokeColor="?attr/colorSurfaceContainer"
                     app:strokeWidth="1dp"
                     android:textStyle="bold"
                     tools:ignore="ButtonStyle" />
@@ -165,12 +170,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16sp"
                     android:visibility="visible"
-                    android:backgroundTint="@color/bg_light"
+                    android:backgroundTint="?attr/backgroundColor"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
                     android:text="@string/export_gratitude_journal_entries"
                     android:textAlignment="center"
-                    android:textColor="@color/outline_bg_light"
-                    app:strokeColor="@color/outline_bg_light"
+                    android:textColor="?attr/colorSurfaceContainer"
+                    app:strokeColor="?attr/colorSurfaceContainer"
                     app:strokeWidth="1dp"
                     android:textStyle="bold"
                     tools:ignore="ButtonStyle" />
@@ -184,6 +189,7 @@
                     android:layout_width="match_parent"
                     tools:listitem="@layout/entry_rv"
                     android:gravity="center_horizontal"
+                    android:background="?attr/backgroundColor"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>

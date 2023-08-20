@@ -6,7 +6,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:background">@color/bg_light</item>
+        <item name="android:background">?android:attr/colorBackground</item>
     </style>
 
     <!--STYLE HORIZONTAL LAYOUT-->
@@ -39,7 +39,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
         <item name="android:fontFamily">@font/psychedelic_lotus</item>
-        <item name="android:textColor">@color/primary_bg_light</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">24sp</item>
         <item name="android:shadowColor">#7E000000</item>
         <item name="android:shadowDx">2</item>
@@ -58,13 +58,14 @@
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">?attr/backgroundColor</item>
     </style>
 
     <!--STYLE ACTION BAR BUTTON-->
     <style name="ActionBarButtonStyle" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_width">62dp</item>
         <item name="android:layout_height">62dp</item>
-        <item name="android:backgroundTint">@color/bg_light</item>
+        <item name="android:backgroundTint">?attr/backgroundColor</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
@@ -74,23 +75,19 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="minHeight">64dp</item>
         <item name="android:background">@drawable/rounded_button</item>
-        <item name="backgroundTint">@color/primary_bg_light</item>
-        <item name="android:textColor">@color/bg_light</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/psychedelic_lotus</item>
         <item name="android:layout_margin">8dp</item>
-        <item name="android:shadowColor">#BF000000</item>
-        <item name="android:shadowDx">8</item>
-        <item name="android:shadowDy">4</item>
-        <item name="android:shadowRadius">8</item>
     </style>
 
     <!--STYLE ATTENTION CARD-->
     <style name="AttentionCardView" parent="Widget.MaterialComponents.CardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="cardBackgroundColor">@color/error_bg_light</item>
+        <item name="cardBackgroundColor">?attr/colorError</item>
         <item name="android:layout_margin">24dp</item>
         <item name="cardCornerRadius">32dp</item>
     </style>
@@ -99,7 +96,7 @@
     <style name="AttentionTextView" parent="TextAppearance.AppCompat">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/bg_light</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:fontFamily">@font/merriweathersans_variablefont_wght</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
@@ -111,12 +108,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:background">@drawable/fab_bg</item>
-        <item name="backgroundTint">@color/primary_bg_light</item>
-        <item name="android:foregroundTint">@color/bg_light</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:foregroundTint">?attr/colorOnPrimary</item>
         <item name="android:foregroundTintMode">add</item>
         <item name="android:longClickable">false</item>
-        <item name="tint">@color/bg_light</item>
-        <item name="rippleColor">@color/bg_light</item>
         <item name="maxImageSize">36dp</item>
     </style>
 
@@ -126,12 +121,12 @@
         <item name="android:layout_height">100dp</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:background">@drawable/fab_bg</item>
-        <item name="backgroundTint">@color/primary_c_bg_light</item>
-        <item name="android:foregroundTint">@color/primary_c_tx_light</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:foregroundTint">?attr/colorOnPrimary</item>
         <item name="android:foregroundTintMode">add</item>
         <item name="android:longClickable">false</item>
-        <item name="tint">@color/primary_c_tx_light</item>
-        <item name="rippleColor">@color/bg_light</item>
+        <item name="tint">?attr/colorOnPrimary</item>
+        <item name="rippleColor">?attr/colorOnBackground</item>
         <item name="maxImageSize">40dp</item>
     </style>
 
@@ -143,14 +138,14 @@
 
     <!--STYLE DIALOG THEME-->
     <style name="DialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
-        <!-- Hintergrund des Headers -->
-        <item name="colorAccent">@color/surface_c_tx_light</item>
-        <!-- Ausgewählter Tag -->
-        <item name="android:colorControlActivated">@color/surface_c_tx_light</item>
-        <!-- Tage des Monats -->
-        <item name="android:textColorPrimary">@color/surface_c_tx_light</item>
-        <!-- Wochentage -->
-        <item name="android:textColorSecondary">@color/surface_c_tx_light</item>
+        <!-- Background of the Header -->
+        <item name="colorAccent">?attr/colorOnSurface</item>
+        <!-- Chosen Day -->
+        <item name="android:colorControlActivated">?attr/colorOnSurface</item>
+        <!-- Days of the Month -->
+        <item name="android:textColorPrimary">?attr/colorOnBackground</item>
+        <!-- Week Days -->
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
     </style>
 
     <!--STYLE TEXT INPUT FIELD-->
@@ -166,7 +161,7 @@
         <item name="errorEnabled">true</item>
         <item name="helperTextEnabled">true</item>
         <item name="helperTextTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
-        <item name="helperTextTextColor">@color/neutral_c_tx_light</item>
+        <item name="helperTextTextColor">?attr/colorSurfaceContainer</item>
         <item name="hintEnabled">true</item>
         <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
         <item name="android:background">@drawable/contact_border</item>
@@ -187,7 +182,7 @@
         <item name="errorEnabled">true</item>
         <item name="helperTextEnabled">true</item>
         <item name="helperTextTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
-        <item name="helperTextTextColor">@color/secondary_c_tx_light</item>
+        <item name="helperTextTextColor">?attr/colorOnSurface</item>
         <item name="hintEnabled">true</item>
         <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
         <item name="android:background">@drawable/contact_border</item>
