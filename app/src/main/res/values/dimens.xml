@@ -2,5 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
+    <dimen name="selected_stroke_width">2dp</dimen>
+    <dimen name="default_stroke_width">1dp</dimen>
 
 </resources>

@@ -16,6 +16,7 @@
         <TextView
             android:id="@+id/tara_text"
             android:text="@string/tara"
+            android:textColor="?attr/colorPrimary"
             style="@style/ActionBarTextViewStyle"
             android:gravity="center"/>
 
@@ -81,6 +82,7 @@
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
                     android:layout_margin="8dp"
+                    app:tint="?attr/colorOnError"
                     android:contentDescription="@string/unlock" />
 
                 <!-- TextView for displaying the attention text -->

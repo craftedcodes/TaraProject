@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Data binding section -->
     <data>
@@ -18,148 +18,242 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/tara"
+            android:layout_marginVertical="8dp"
             android:fontFamily="@font/psychedelic_lotus"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="24sp"
             android:shadowColor="#7E000000"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="8"
-            android:layout_marginVertical="8dp"/>
+            android:text="@string/tara"
+            android:textAlignment="center"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp" />
 
-        <!-- Information card view -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_margin="32dp"
-            android:backgroundTint="?attr/colorSecondary">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <!-- This LinearLayout contains an information card. The card has a MaterialCardView as its root layout,
-     which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
-     an ImageView that serves as an information icon and a TextView that displays the information text.
-     The ImageView and TextView are arranged horizontally and centered vertically within the LinearLayout. -->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                tools:ignore="UseCompoundDrawables"
-                android:layout_margin="16dp">
-
-                <!-- Information icon -->
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/iconexclamation"
-                    app:tint="?attr/colorOnSecondary"
-                    android:contentDescription="@string/to_cover_data_storage"
-                    android:layout_marginEnd="16dp"/>
-
-                <!-- Information text -->
-                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!-- Information card view -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_margin="32dp"
+                    android:backgroundTint="?attr/colorSecondary"
+                    android:padding="16dp">
+
+                    <!-- This LinearLayout contains an information card. The card has a MaterialCardView as its root layout,
+             which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
+             an ImageView that serves as an information icon and a TextView that displays the information text.
+             The ImageView and TextView are arranged horizontally and centered vertically within the LinearLayout. -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <!-- Information icon -->
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/to_cover_data_storage"
+                            android:src="@drawable/iconexclamation"
+                            app:tint="?attr/colorOnSecondary" />
+
+                        <!-- Information text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/merriweathersans_variablefont_wght"
+                            android:gravity="center_vertical"
+                            android:text="@string/to_cover_data_storage"
+                            android:textColor="?attr/colorOnSecondary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscription_plans"
                     android:fontFamily="@font/merriweathersans_variablefont_wght"
-                    android:gravity="center_vertical"
-                    android:text="@string/to_cover_data_storage"
-                    android:textColor="?attr/colorOnSecondary"
-                    android:textSize="12sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
+                <!-- Button container -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/per_month"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16dp"
+                        app:cardBackgroundColor="?attr/colorSurface"
+                        android:clickable="true">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_margin="16dp">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/_5_99"
+                                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textAlignment="center"
+                                android:textColor="?attr/colorOnSurface"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/per_month"
+                                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                                android:textSize="12sp"
+                                android:textAlignment="center"
+                                android:textColor="?attr/colorOnSurface"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/per_year"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16dp"
+                        app:cardBackgroundColor="?attr/colorSurface"
+                        android:clickable="true">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_margin="16dp">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/_50"
+                                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textAlignment="center"
+                                android:textColor="?attr/colorOnSurface"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/per_year"
+                                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                                android:textSize="12sp"
+                                android:textAlignment="center"
+                                android:textColor="?attr/colorOnSurface"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- Email input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    app:endIconMode="clear_text"
+                    app:helperText="@string/e_mail"
+                    app:helperTextEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/e_mail_tf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/your_mail_address_ym_com"
+                        android:inputType="textEmailAddress" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- TextInputLayout for the password input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    app:endIconMode="password_toggle"
+                    app:helperText="@string/password">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password_tf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/min_12_glyphs"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Repeat password input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    app:endIconMode="password_toggle"
+                    app:helperText="@string/repeat_password">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/repeat_password_tf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/repeat_the_chosen_password"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Button container -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- Quit button -->
+                    <Button
+                        android:id="@+id/quit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:backgroundTint="?attr/backgroundColor"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght"
+                        android:text="@string/quit"
+                        android:textColor="?attr/colorOnError"
+                        app:strokeColor="?attr/colorOnError"
+                        app:strokeWidth="1dp"
+                        tools:ignore="ButtonStyle" />
+
+                    <!-- Register button -->
+                    <Button
+                        android:id="@+id/register_btn"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:backgroundTint="?attr/colorPrimary"
+                        android:fontFamily="@font/psychedelic_lotus"
+                        android:text="@string/register"
+                        android:textColor="?attr/colorOnPrimary" />
+                </LinearLayout>
             </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Email input field -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            app:endIconMode="clear_text"
-            app:helperText="@string/e_mail"
-            app:helperTextEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/e_mail_tf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/your_mail_address_ym_com"
-                android:inputType="textEmailAddress" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- TextInputLayout for the password input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginHorizontal="32dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:helperText="@string/password"
-            app:endIconMode="password_toggle">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_tf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/min_12_glyphs"
-                android:inputType="textPassword"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Repeat password input field -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginHorizontal="32dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:helperText="@string/repeat_password"
-            app:endIconMode="password_toggle">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/repeat_password_tf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/repeat_the_chosen_password"
-                android:inputType="textPassword"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Button container -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <!-- Quit button -->
-            <Button
-                android:id="@+id/quit_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:backgroundTint="?attr/backgroundColor"
-                android:fontFamily="@font/merriweathersans_variablefont_wght"
-                android:text="@string/quit"
-                android:textColor="?attr/colorOnError"
-                app:strokeColor="?attr/colorOnError"
-                app:strokeWidth="1dp"
-                tools:ignore="ButtonStyle" />
-
-            <!-- Register button -->
-            <Button
-                android:id="@+id/register_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="?attr/colorPrimary"
-                android:text="@string/register"
-                android:fontFamily="@font/psychedelic_lotus"
-                android:textColor="?attr/colorOnPrimary"
-                android:layout_margin="8dp"
-                style="?android:attr/buttonBarButtonStyle" />
-        </LinearLayout>
-
+        </ScrollView>
     </LinearLayout>
 </layout>

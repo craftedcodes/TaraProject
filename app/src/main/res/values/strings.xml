@@ -163,4 +163,10 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="delete_account">Delete Account</string>
     <string name="enter_your_email_address_so_we_can_send_you_the_link_to_reset_your_password">Enter your email address, so we can send you the link to reset your password.</string>
+    <string name="_5_99">€ 5.99</string>
+    <string name="per_month">per month</string>
+    <string name="per_year">per year</string>
+    <string name="_50">€ 50</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="subscription_plans">Subscription Plans</string>
 </resources>

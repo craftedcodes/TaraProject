@@ -32,6 +32,7 @@ import com.example.abschlussaufgabe.data.local.LocalDatabase
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentEntryGratitudeBinding
 import kotlinx.coroutines.Dispatchers
@@ -39,17 +40,22 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.util.Calendar
 
+// Constant for logging purposes.
 const val ENTRY_GRATITUDE_FRAGMENT_TAG = "EntryGratitudeFragment"
 
 /**
- * Fragment to display and edit gratitude entries.
+ * A Fragment to display and edit gratitude entries.
  */
 class EntryGratitudeFragment : Fragment() {
-	// Lateinit variable for the data binding object
+	
+	// Lateinit variable for the data binding object.
 	private lateinit var binding: FragmentEntryGratitudeBinding
 	
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
+	
+	// Holds the FirebaseAuth instance.
+	private lateinit var auth: FirebaseAuth
 	
 	// Declare variables for the UI elements that will be initialized later.
 	private lateinit var backButton: ImageButton
@@ -74,9 +80,9 @@ class EntryGratitudeFragment : Fragment() {
 	private val getContent =
 		registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 			uri?.let {
-				Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the")
+				Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the gallery")
 				photoDownloadedTextView?.visibility = View.VISIBLE
-				// Open an InputStream for the selected image and decode it into a Bitmap.
+				
 				// Open an InputStream for the selected image URI.
 				val inputStream = requireActivity().contentResolver.openInputStream(it)
 				
@@ -139,26 +145,17 @@ class EntryGratitudeFragment : Fragment() {
 		// Start with the original bitmap.
 		var bitmapValue = bitmap
 		
-		// Log the width of the original bitmap for debugging purposes.
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue1: ${bitmapValue.width}")
-		
 		// Initial compression quality.
 		val quality = 100
 		
 		// Compress the bitmap into the ByteArrayOutputStream.
 		bitmapValue.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
 		
-		// Log the width of the bitmap after initial compression for debugging purposes.
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue2: ${bitmapValue.width}")
-		
 		// While the size of the ByteArray exceeds the target size and the bitmap's width is greater than or equal to 50,
 		// scale down the bitmap and compress it again.
 		while (outputStream.toByteArray().size > targetSizeKB * 1024 && bitmapValue.width >= 50) {
 			// Reset the ByteArrayOutputStream to remove the previous bytes.
 			outputStream.reset()
-			
-			// Log the width of the bitmap before scaling for debugging purposes.
-			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "BitmapValue3: ${bitmapValue.width}")
 			
 			// Scale down the bitmap by half.
 			bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
@@ -177,7 +174,6 @@ class EntryGratitudeFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "EntryGratitudeFragment onCreateView()")
 		// Inflate the layout for this fragment
 		binding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_entry_gratitude, container, false)
@@ -190,26 +186,25 @@ class EntryGratitudeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated()")
+		
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): database = $database")
 		val repository = EntryRepository(database)
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): repository = $repository")
+		
+		// Get the FirebaseAuth instance.
+		auth = FirebaseAuth.getInstance()
 		
 		// Initialize UI components using data binding.
 		initializeUIElements()
 		
 		// Get the arguments passed to the fragment
 		val args: EntryGratitudeFragmentArgs by navArgs()
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): args = $args")
 		
 		// Get the entryId from the arguments
 		entryId = args.entryId
 		
 		// Initialize the existingEntry variable
 		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
-		Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "onViewCreated(): existingEntry = $existingEntry")
 		
 		// Add a text changed listener to the textField to monitor changes.
 		textField.addTextChangedListener(object : TextWatcher {
@@ -236,31 +231,35 @@ class EntryGratitudeFragment : Fragment() {
 		
 		// Observe changes to the existingEntry
 		existingEntry.observe(viewLifecycleOwner, Observer { entry ->
-			Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "existingEntry observer: entry = $entry")
-			// If the entryId is 0, the entry does not exist yet.
-			// Once the entry is retrieved, update the dateField
-			dateField.setText(formatDate(entry.day, entry.month, entry.year))
-			
-			// Set the text of the textField to the text of the entry if it exists
-			binding.textTf.setText(entry.text ?: "")
-			
-			// Check if the entry has an associated image.
-			if (entry.image != null) {
-				// Decode the byte array of the image into a bitmap.
-				val bitmap = BitmapFactory.decodeByteArray(entry.image, 0, entry.image!!.size)
+			if (auth.currentUser != null) {
+				// If the entryId is 0, the entry does not exist yet.
+				// Once the entry is retrieved, update the dateField
+				dateField.setText(formatDate(entry.day, entry.month, entry.year))
 				
-				// Set the decoded bitmap to the selectedImage variable.
-				selectedImage = bitmap
+				// Set the text of the textField to the text of the entry if it exists
+				binding.textTf.setText(entry.text ?: "")
 				
-				// Get a reference to the TextView that indicates the presence of a downloaded photo.
-				photoDownloadedTextView = binding.photoDownloadedTv
-				
-				// Update the TextView's text to indicate that an image already exists for this entry.
-				photoDownloadedTextView?.text =
-					getString(R.string.an_image_already_exists_in_this_entry)
-				
-				// Make the TextView visible to the user.
-				photoDownloadedTextView?.visibility = View.VISIBLE
+				// Check if the entry has an associated image.
+				if (entry.image != null) {
+					// Decode the byte array of the image into a bitmap.
+					val bitmap = BitmapFactory.decodeByteArray(entry.image, 0, entry.image!!.size)
+					
+					// Set the decoded bitmap to the selectedImage variable.
+					selectedImage = bitmap
+					
+					// Get a reference to the TextView that indicates the presence of a downloaded photo.
+					photoDownloadedTextView = binding.photoDownloadedTv
+					
+					// Update the TextView's text to indicate that an image already exists for this entry.
+					photoDownloadedTextView?.text =
+						getString(R.string.an_image_already_exists_in_this_entry)
+					
+					// Make the TextView visible to the user.
+					photoDownloadedTextView?.visibility = View.VISIBLE
+				}
+			} else {
+				Toast.makeText(context, "Login to save your gratitude!", Toast.LENGTH_LONG).show()
+				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
 		})
 		
@@ -276,47 +275,52 @@ class EntryGratitudeFragment : Fragment() {
 		// Set an onClickListener for the save button.
 		// When this button is clicked, it navigates to the journalGratitudeFragment.
 		saveButton.setOnClickListener {
-			// Navigate to the JournalGratitudeFragment using the generated navigation action.
-			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
-			
-			// Retrieve the entered date and text from the respective input fields.
-			val date = dateField.text.toString()
-			val text = textField.text.toString()
-			
-			// Check if the entered date matches the pattern.
-			if (!datePattern.matches(date)) {
-				// If the date does not match the pattern, show an error message and return.
-				dateField.error = "Please enter the date in the format DD.MM.YYYY"
-				return@setOnClickListener
-			}
-			
-			// Split the date string into day, month, and year.
-			val dateParts = date.split(".")
-			val day = dateParts[0].toInt()
-			val month = dateParts[1].toInt()
-			val year = dateParts[2].toInt()
-			
-			// Retrieve the existing entry
-			val entry = existingEntry.value
-			
-			// Check if the date has been changed
-			if (day != entry!!.day || month != entry.month || year != entry.year) {
-				// If the date has been changed, update the date of the entry
-				entry.day = day
-				entry.month = month
-				entry.year = year
-			}
-			
-			// Update the text of the entry
-			entry.text = text
-			
-			// If an image has been selected, convert it to a ByteArray for storage.
-			// If no image has been selected, this will be null.
-			val image = selectedImage?.let { bitmapToByteArray(it) }
-			entry.image = image
-			
-			lifecycleScope.launch(Dispatchers.IO) {
-				repository.updateEntry(entry)
+			if (auth.currentUser != null) {
+				// Navigate to the JournalGratitudeFragment using the generated navigation action.
+				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
+				
+				// Retrieve the entered date and text from the respective input fields.
+				val date = dateField.text.toString()
+				val text = textField.text.toString()
+				
+				// Check if the entered date matches the pattern.
+				if (!datePattern.matches(date)) {
+					// If the date does not match the pattern, show an error message and return.
+					dateField.error = "Please enter the date in the format DD.MM.YYYY"
+					return@setOnClickListener
+				}
+				
+				// Split the date string into day, month, and year.
+				val dateParts = date.split(".")
+				val day = dateParts[0].toInt()
+				val month = dateParts[1].toInt()
+				val year = dateParts[2].toInt()
+				
+				// Retrieve the existing entry
+				val entry = existingEntry.value
+				
+				// Check if the date has been changed
+				if (day != entry!!.day || month != entry.month || year != entry.year) {
+					// If the date has been changed, update the date of the entry
+					entry.day = day
+					entry.month = month
+					entry.year = year
+				}
+				
+				// Update the text of the entry
+				entry.text = text
+				
+				// If an image has been selected, convert it to a ByteArray for storage.
+				// If no image has been selected, this will be null.
+				val image = selectedImage?.let { bitmapToByteArray(it) }
+				entry.image = image
+				
+				lifecycleScope.launch(Dispatchers.IO) {
+					repository.updateEntry(entry)
+				}
+			} else {
+				Toast.makeText(context, "Login to save your gratitude!", Toast.LENGTH_LONG).show()
+				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
 		}
 	}
@@ -489,49 +493,26 @@ class EntryGratitudeFragment : Fragment() {
 					}
 				}
 			}
-		}
-		)
+		})
 	}
 	
 	/**
-	 * Format the date in the format DD.MM.YYYY.
+	 * Updates the state of the save button based on the content of the text field and the presence of a selected image.
+	 */
+	private fun updateSaveButtonState() {
+		saveButton.isEnabled = !(textField.text.isNullOrEmpty() && selectedImage == null)
+		saveButton.alpha = if (saveButton.isEnabled) 1f else 0.4f
+	}
+	
+	/**
+	 * Formats a date into a string representation.
 	 *
 	 * @param day The day of the month.
 	 * @param month The month of the year.
 	 * @param year The year.
-	 * @return Formatted date string.
+	 * @return A string representation of the date in the format "DD.MM.YYYY".
 	 */
 	private fun formatDate(day: Int, month: Int, year: Int): String {
 		return String.format("%02d.%02d.%04d", day, month, year)
-	}
-	
-	/**
-	 * Updates the state of the save button based on the content of the text field,
-	 * the presence of a selected image, and whether the date is in the past or present.
-	 */
-	private fun updateSaveButtonState() {
-		// Extract the date from the dateField
-		val dateParts = dateField.text.toString().split(".")
-		var isDateValid = false
-		
-		// Check if the date format is correct and if it's in the past or present
-		if (dateParts.size == 3) {
-			val day = dateParts[0].toInt()
-			val month = dateParts[1].toInt()
-			val year = dateParts[2].toInt()
-			isDateValid = !isFutureDate(day, month, year)
-		}
-		
-		// Check conditions for enabling the save button
-		val isTextPresent = textField.text!!.isNotEmpty()
-		val isImagePresent = selectedImage != null
-		
-		if (isDateValid && (isImagePresent || isTextPresent)) {
-			saveButton.isEnabled = true
-			saveButton.alpha = 1f
-		} else {
-			saveButton.isEnabled = false
-			saveButton.alpha = 0.4f
-		}
 	}
 }

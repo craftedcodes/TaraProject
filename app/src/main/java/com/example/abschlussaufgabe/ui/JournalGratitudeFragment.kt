@@ -224,23 +224,28 @@ class JournalGratitudeFragment : Fragment() {
 	 * After fetching, it adjusts the UI elements accordingly.
 	 */
 	private fun filterAndDisplayEntries() {
-		// Fetch and observe entries from the database within the specified date range.
-		viewModel.getEntriesByDataRange(
-			binding.startDateTf.text.toString(),
-			binding.endDateTf.text.toString()
-		).observe(viewLifecycleOwner) { entries ->
-			// Update the RecyclerView adapter with the filtered entries.
-			binding.outerRvGratitudeJournal.adapter =
-				EntryAdapter(requireContext(), entries, viewModel)
-		}
-		
-		// Adjust UI elements after filtering.
-		binding.apply {
-			resetBtn.apply {
-				visibility = View.VISIBLE
-				isEnabled = true
+		if (auth.currentUser != null) {
+			// Fetch and observe entries from the database within the specified date range.
+			viewModel.getEntriesByDataRange(
+				binding.startDateTf.text.toString(),
+				binding.endDateTf.text.toString()
+			).observe(viewLifecycleOwner) { entries ->
+				// Update the RecyclerView adapter with the filtered entries.
+				binding.outerRvGratitudeJournal.adapter =
+					EntryAdapter(requireContext(), entries, viewModel)
 			}
-			exportBtn.visibility = View.GONE
+			
+			// Adjust UI elements after filtering.
+			binding.apply {
+				resetBtn.apply {
+					visibility = View.VISIBLE
+					isEnabled = true
+				}
+				exportBtn.visibility = View.GONE
+			}
+		} else {
+			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
 	
@@ -323,27 +328,32 @@ class JournalGratitudeFragment : Fragment() {
 	 * If the user confirms, the entries are exported to a PDF and then deleted from the device.
 	 */
 	private fun showExportConfirmationDialog() {
-		// Create a new AlertDialog builder with the current context.
-		AlertDialog.Builder(requireContext())
-			// Set the title of the dialog.
-			.setTitle("Export Entries")
-			// Set the message to inform the user about the consequences of exporting.
-			.setMessage("Do you really want to export the gratitude journal entries? If you confirm, all entries will be deleted from your device.")
-			// Set the positive button to confirm the export action.
-			.setPositiveButton("Confirm") { _, _ ->
-				// Process the entry views and get the pages
-				val pages = processEntryViews()
-				
-				// Begin the PDF creation process
-				exportEntriesToPdf(pages)
-				
-				// Show alert dialog with the number of pages to be generated.
-				showAlertDialog(pages.size)
-			}
-			// Set the negative button to cancel the export action.
-			.setNegativeButton("Cancel", null)
-			// Display the created dialog to the user.
-			.show()
+		if (auth.currentUser != null) {
+			// Create a new AlertDialog builder with the current context.
+			AlertDialog.Builder(requireContext())
+				// Set the title of the dialog.
+				.setTitle("Export Entries")
+				// Set the message to inform the user about the consequences of exporting.
+				.setMessage("Do you really want to export the gratitude journal entries? If you confirm, all entries will be deleted from your device.")
+				// Set the positive button to confirm the export action.
+				.setPositiveButton("Confirm") { _, _ ->
+					// Process the entry views and get the pages
+					val pages = processEntryViews()
+					
+					// Begin the PDF creation process
+					exportEntriesToPdf(pages)
+					
+					// Show alert dialog with the number of pages to be generated.
+					showAlertDialog(pages.size)
+				}
+				// Set the negative button to cancel the export action.
+				.setNegativeButton("Cancel", null)
+				// Display the created dialog to the user.
+				.show()
+		} else {
+			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
+		}
 	}
 	
 	/**
@@ -379,36 +389,24 @@ class JournalGratitudeFragment : Fragment() {
 	 * Exports journal entries to a PDF file.
 	 */
 	private fun exportEntriesToPdf(pages: List<List<View>>) {
-		// 1. Get DIN A4 size in pixels.
-		val (widthPixels, heightPixels) = getDinA4SizeInPixels()
-		
-		// 2. Show alert dialog with the number of pages to be generated.
-		showAlertDialog(pages.size)
-		
-		// 3. Generate the PDF file based on the provided pages.
-		val pdfDocument = PdfDocument()
-		generatePdfFromPages(pages, pdfDocument, widthPixels, heightPixels)
-		
-		// 4. Save and send the generated PDF.
-		saveAndSendPdf(pdfDocument)
+		if (auth.currentUser!= null) {
+			// 1. Get DIN A4 size in pixels.
+			val (widthPixels, heightPixels) = getDinA4SizeInPixels()
+			
+			// 2. Show alert dialog with the number of pages to be generated.
+			showAlertDialog(pages.size)
+			
+			// 3. Generate the PDF file based on the provided pages.
+			val pdfDocument = PdfDocument()
+			generatePdfFromPages(pages, pdfDocument, widthPixels, heightPixels)
+			
+			// 4. Save and send the generated PDF.
+			saveAndSendPdf(pdfDocument)
+		} else {
+			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
+		}
 	}
-	
-	/**
-	 * Shows an alert dialog indicating the number of pages to be generated.
-	 *
-	 * @param pageCount The number of pages.
-	 */
-	private fun showAlertForPages(pageCount: Int) {
-		// Assuming 'context' is available in this class (e.g., if this is inside an Activity or Fragment)
-		val alertDialog = AlertDialog.Builder(context)
-			.setTitle("PDF Export")
-			.setMessage("Generating $pageCount pages...")
-			.setCancelable(false) // This will prevent users from dismissing the dialog
-			.create()
-		
-		alertDialog.show()
-	}
-	
 	
 	/**
 	 * Generates a PDF document from the provided pages.
@@ -613,7 +611,7 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	@SuppressLint("SetTextI18n")
 	private fun updateAlertDialog(pageNumber: Int, totalPages: Int) {
-		// progressText.text = "Page $pageNumber of $totalPages converted..."
+		progressText.text = "Page $pageNumber of $totalPages converted..."
 	}
 	
 	/**

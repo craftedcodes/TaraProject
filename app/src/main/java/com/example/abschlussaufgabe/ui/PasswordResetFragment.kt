@@ -33,7 +33,6 @@ class PasswordResetFragment : Fragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		// Inflate the layout for this fragment using the inflate method of the FragmentPasswordResetBinding class.
 		binding = FragmentPasswordResetBinding.inflate(inflater, container, false)
 		return binding.root
 	}
@@ -45,8 +44,6 @@ class PasswordResetFragment : Fragment() {
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		
-		// Set up click listeners for the UI elements.
 		setUpListeners()
 	}
 	
@@ -55,29 +52,41 @@ class PasswordResetFragment : Fragment() {
 	 * This method defines the actions to be taken when various UI elements are clicked.
 	 */
 	private fun setUpListeners() {
-		// The onClickListener for the reset button.
 		binding.resetBtn.setOnClickListener {
-			// Retrieve the email entered by the user.
-			val email: String = binding.eMailTf.text.toString()
+			val email: String = binding.eMailTf.text.toString().trim()
 			
-			// Check if the email field is not empty.
 			if (email.isNotEmpty()) {
-				// Request the ViewModel to send a password reset email.
-				viewModel.sendPasswordResetEmail(email)
-				// Display a toast message to inform the user that a reset link has been sent.
-				Toast.makeText(context, "Reset link has been sent to $email", Toast.LENGTH_SHORT).show()
-				// Navigate the user to the login fragment.
-				findNavController().navigate(PasswordResetFragmentDirections.actionPasswordResetFragmentToLoginFragment())
+				sendPasswordResetEmail(email)
 			} else {
-				// Display a toast message to prompt the user to enter their email address.
-				Toast.makeText(context, "Enter your email address", Toast.LENGTH_SHORT).show()
+				promptForEmail()
 			}
 		}
 		
-		// The onClickListener for the quit button.
-		// When clicked, the user is navigated to the home fragment.
 		binding.quitBtn.setOnClickListener {
-			findNavController().navigate(PasswordResetFragmentDirections.actionPasswordResetFragmentToHomeFragment())
+			navigateToHome()
 		}
+	}
+	
+	/**
+	 * Sends a password reset email and navigates the user to the login fragment.
+	 */
+	private fun sendPasswordResetEmail(email: String) {
+		viewModel.sendPasswordResetEmail(email)
+		Toast.makeText(context, "Reset link has been sent to $email", Toast.LENGTH_SHORT).show()
+		findNavController().navigate(PasswordResetFragmentDirections.actionPasswordResetFragmentToLoginFragment())
+	}
+	
+	/**
+	 * Prompts the user to enter their email address.
+	 */
+	private fun promptForEmail() {
+		Toast.makeText(context, "Enter your email address", Toast.LENGTH_SHORT).show()
+	}
+	
+	/**
+	 * Navigates the user to the home fragment.
+	 */
+	private fun navigateToHome() {
+		findNavController().navigate(PasswordResetFragmentDirections.actionPasswordResetFragmentToHomeFragment())
 	}
 }
