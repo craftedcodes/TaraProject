@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentEmergencyContactBinding
 
@@ -23,6 +25,37 @@ class EmergencyContactFragment : Fragment() {
 	
 	// Variable for the selected country code.
 	private var selectedCountryCode: String? = null
+	// Lazy initialization of the main encryption key using the AES256_GCM scheme.
+	private val mainKey by lazy {
+		MasterKey.Builder(requireContext())
+			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+			.build()
+	}
+	
+	// Lazy initialization of encrypted shared preferences specifically for storing avatar-related data.
+// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
+	private val avatarSharedPreferences by lazy {
+		EncryptedSharedPreferences.create(
+			requireContext(),
+			AVATAR_PREFS,
+			mainKey,
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+		)
+	}
+	
+	// Lazy initialization of encrypted shared preferences specifically for storing contact-related data.
+// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
+	private val contactSharedPreferences by lazy {
+		EncryptedSharedPreferences.create(
+			requireContext(),
+			CONTACT_PREFS,
+			mainKey,
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+		)
+	}
+	
 	/**
 	 * Inflates the fragment layout and initializes the data binding.
 	 */
@@ -59,12 +92,9 @@ class EmergencyContactFragment : Fragment() {
 	 * Loads the user's selected avatar from shared preferences and sets it to the ImageView.
 	 */
 	private fun loadSelectedAvatar() {
-		// Retrieve shared preferences using the defined AVATAR_PREFS key.
-		val sharedPreferences = activity?.getSharedPreferences(AVATAR_PREFS, Context.MODE_PRIVATE)
-
 		// Fetch the resource ID of the selected avatar from shared preferences.
 		// If not found, default to R.drawable.avatar01.
-		val resId = sharedPreferences?.getInt("selected_avatar", R.drawable.avatar01) ?: R.drawable.avatar01
+		val resId = avatarSharedPreferences.getInt("selected_avatar", R.drawable.avatar01) ?: R.drawable.avatar01
 
 		// Set the ImageView's resource to the retrieved or default avatar.
 		binding.avatarIv.setImageResource(resId)
@@ -75,23 +105,21 @@ class EmergencyContactFragment : Fragment() {
 	 * Loads the user's emergency contact details from shared preferences and displays them in the UI.
 	 */
 	private fun loadContactDetails() {
-		// Retrieve shared preferences for the contact details using the defined key.
-		val sharedPreferences = activity?.getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
-
+		
 		// Fetch the contact name from shared preferences. Default to an empty string if not found.
-		val contactName = sharedPreferences?.getString("contact_name", "")
+		val contactName = contactSharedPreferences.getString("contact_name", "")
 
 		// Fetch the contact number from shared preferences. Default to an empty string if not found.
-		var contactNumber = sharedPreferences?.getString("contact_number", "")
+		var contactNumber = contactSharedPreferences.getString("contact_number", "")
 		if (contactNumber?.startsWith("null") == true) {
 			contactNumber = contactNumber.replaceFirst("null", "")
 		}
 
 		// Fetch the emergency message from shared preferences. Default to the predefined message if not found.
-		val contactMessage = sharedPreferences?.getString("contact_message", getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
+		val contactMessage = contactSharedPreferences?.getString("contact_message", getString(R.string.i_am_in_an_emotional_emergency_please_call_me))
 		
 		// Load the saved country code and set it to the CountryCodePicker
-		val savedCountryCode = sharedPreferences?.getString("selected_country_code", "")
+		val savedCountryCode = contactSharedPreferences?.getString("selected_country_code", "")
 		
 		// Set the retrieved contact name to the name TextView.
 		binding.nameTv.setText(contactName)
@@ -108,19 +136,13 @@ class EmergencyContactFragment : Fragment() {
 	}
 	
 	/**
-	 * Saves the user's emergency contact details to shared preferences.
+	 * Saves the user's emergency contact details to encrypted shared preferences.
 	 */
 	private fun saveContactDetails() {
-		// Obtain shared preferences using the defined CONTACT_PREFS key.
-		val sharedPreferences = activity?.getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
-
-		// Initiate the editor for the shared preferences to make changes.
-		val editor = sharedPreferences?.edit()
-
-		// Store the contact name from the name TextView into the shared preferences.
-		editor?.putString("contact_name", binding.nameTv.text.toString())
+		// Store the contact name from the name TextView into the encrypted shared preferences.
+		contactSharedPreferences.edit().putString("contact_name", binding.nameTv.text.toString()).apply()
 		
-		// Store the contact number from the number TextView into the shared preferences.
+		// Store the contact number from the number TextView into the encrypted shared preferences.
 		var contactNumber = binding.numberTv.text.toString()
 		
 		// Check if the contact number starts with "0" and remove it if it does.
@@ -141,14 +163,11 @@ class EmergencyContactFragment : Fragment() {
 		// Combine the selected country code with the contact number.
 		val fullContactNumber = "${binding.ccp.selectedCountryCodeWithPlus}$contactNumber"
 		
-		// Store the combined contact number into the shared preferences.
-		editor?.putString("contact_number", fullContactNumber)
-
-		// Store the emergency message from the message TextView into the shared preferences.
-		editor?.putString("contact_message", binding.messageTv.text.toString())
-
-		// Apply the changes made to the shared preferences.
-		editor?.apply()
+		// Store the combined contact number into the encrypted shared preferences.
+		contactSharedPreferences.edit().putString("contact_number", fullContactNumber).apply()
+		
+		// Store the emergency message from the message TextView into the encrypted shared preferences.
+		contactSharedPreferences.edit().putString("contact_message", binding.messageTv.text.toString()).apply()
 	}
 	
 	/**

@@ -12,8 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentAvatarEmergencyContactBinding
+
+
+// Constants for shared preferences key.
+private const val AVATAR_PREFS = "avatar_prefs"
 
 /**
  * Fragment for selecting an avatar for the emergency contact screen.
@@ -22,6 +28,26 @@ class AvatarEmergencyContactFragment : Fragment() {
 	
 	// Binding for this fragment's view.
 	private lateinit var binding: FragmentAvatarEmergencyContactBinding
+	
+	// Lazy initialization for the main encryption key.
+	// Utilizes the AES256_GCM encryption scheme for enhanced security.
+	private val mainKey by lazy {
+		MasterKey.Builder(requireContext())
+			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+			.build()
+	}
+	
+	// Lazy initialization for encrypted shared preferences dedicated to avatar data.
+	// Employs AES256_SIV for key encryption and AES256_GCM for value encryption to ensure data privacy.
+	private val avatarSharedPreferences by lazy {
+		EncryptedSharedPreferences.create(
+			requireContext(),
+			AVATAR_PREFS,
+			mainKey,
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+		)
+	}
 	
 	/**
 	 * Inflates the fragment's layout and initializes the data binding.
@@ -148,9 +174,13 @@ class AvatarEmergencyContactFragment : Fragment() {
 	 * @param resId The resource ID of the selected avatar.
 	 */
 	private fun saveSelectedAvatar(resId: Int) {
-		val sharedPreferences = activity?.getSharedPreferences("avatar_prefs", Context.MODE_PRIVATE)
-		val editor = sharedPreferences?.edit()
-		editor?.putInt("selected_avatar", resId)
-		editor?.apply()
+		// Obtain the editor for the encrypted shared preferences dedicated to avatar data.
+		val editor = avatarSharedPreferences.edit()
+		
+		// Store the provided resource ID under the key "selected_avatar".
+		editor.putInt("selected_avatar", resId)
+		
+		// Commit the changes to the shared preferences.
+		editor.apply()
 	}
 }

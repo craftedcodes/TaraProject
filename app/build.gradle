@@ -109,4 +109,10 @@ dependencies {
 
     // Country Code Picker Dependency
     implementation 'com.hbb20:ccp:2.7.1'
+
+    // Security Crypto Dependency
+    implementation "androidx.security:security-crypto:1.1.0-alpha06"
+
+    // SQLCipher Dependency
+    implementation 'net.zetetic:sqlcipher-android:4.5.4@aar'
 }

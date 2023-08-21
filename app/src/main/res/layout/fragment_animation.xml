@@ -117,10 +117,7 @@
             android:fontFamily="@font/psychedelic_lotus"
             android:textAllCaps="false"
             android:layout_margin="8dp"
-            android:shadowColor="#BF000000"
-            android:shadowDx="8"
-            android:shadowDy="8"
-            android:shadowRadius="8"
+            app:tint="?attr/colorError"
             />
 
         <!-- Navigation to gratitude journal -->

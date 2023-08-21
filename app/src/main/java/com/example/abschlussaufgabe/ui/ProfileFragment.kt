@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.example.abschlussaufgabe.viewModel.AuthViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
@@ -49,10 +51,43 @@ class ProfileFragment : Fragment() {
 	// Holds the FirebaseAuth instance.
 	private lateinit var auth: FirebaseAuth
 	
+	// Holds the timestamp of the last data fetch.
 	private var lastFetchTime: LocalDateTime? = null
 	
+	// List to store data points for the bar chart visualization.
 	private val barChart: MutableList<Int> = mutableListOf()
+	
+	// List to store data points for the line chart visualization.
 	private val lineChart: MutableList<Int> = mutableListOf()
+	
+	// Lazy initialization of the main encryption key using AES256_GCM scheme.
+	private val mainKey by lazy {
+		MasterKey.Builder(requireContext())
+			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+			.build()
+	}
+	
+	// Lazy initialization of encrypted shared preferences for storing avatar data.
+	private val avatarSharedPreferences by lazy {
+		EncryptedSharedPreferences.create(
+			requireContext(),
+			AVATAR_PREFS,
+			mainKey,
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+		)
+	}
+	
+	// Lazy initialization of encrypted shared preferences for storing contact data.
+	private val contactSharedPreferences by lazy {
+		EncryptedSharedPreferences.create(
+			requireContext(),
+			CONTACT_PREFS,
+			mainKey,
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+		)
+	}
 	
 	/**
 	 * Called to have the fragment instantiate its user interface view.
@@ -100,13 +135,6 @@ class ProfileFragment : Fragment() {
 	 * Load contact data from SharedPreferences and set it to the UI elements.
 	 */
 	private fun loadContactDataFromSharedPreferences() {
-		// Retrieve the shared preferences for the avatar settings.
-		val avatarSharedPreferences =
-			requireActivity().getSharedPreferences(AVATAR_PREFS, Context.MODE_PRIVATE)
-		
-		// Retrieve the shared preferences for the contact settings.
-		val contactSharedPreferences =
-			requireActivity().getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
 		
 		// Fetch the avatar resource ID from the shared preferences. If not found, default to 'avatar01'.
 		val avatarResource = avatarSharedPreferences.getInt("selected_avatar", R.drawable.avatar01)
@@ -125,6 +153,7 @@ class ProfileFragment : Fragment() {
 		binding.nameTv.text = name
 		binding.numberTv.text = number
 		binding.messageTv.text = message
+		Log.e(PROFILE_TAG, "Contact Name: $name, Contact Number: $number")
 		
 		// Check if both the name and number are provided.
 		// If they are, display the contact card and hide the attention card.
@@ -132,7 +161,6 @@ class ProfileFragment : Fragment() {
 			binding.contactCard.visibility = View.VISIBLE
 			binding.attentionCard.visibility = View.GONE
 		}
-		
 		
 		// The onClickListener for the edit button.
 		// When clicked, the user is navigated to the emergency contact fragment.
@@ -151,10 +179,6 @@ class ProfileFragment : Fragment() {
 	 * Delete contact data from SharedPreferences and update the UI accordingly.
 	 */
 	private fun deleteContactData() {
-		// Retrieve the shared preferences for the contact settings.
-		val contactSharedPreferences =
-			requireActivity().getSharedPreferences(CONTACT_PREFS, Context.MODE_PRIVATE)
-		
 		// Edit the shared preferences to remove the contact details.
 		contactSharedPreferences.edit().apply {
 			// Remove the contact name, number, and message from the shared preferences.
