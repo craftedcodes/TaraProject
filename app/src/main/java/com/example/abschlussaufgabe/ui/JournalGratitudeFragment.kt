@@ -37,6 +37,8 @@ import java.util.Calendar
 import android.content.Intent
 import android.widget.TextView
 import androidx.core.content.FileProvider
+import com.google.firebase.auth.FirebaseAuth
+import android.graphics.Canvas
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 
@@ -46,10 +48,14 @@ const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 class JournalGratitudeFragment : Fragment() {
 	// Declare a late-initialized variable for the FragmentJournalGratitudeBinding instance.
 	private lateinit var binding: FragmentJournalGratitudeBinding
-	//TODO: if auth.currentUser is not null then load entries from database and write entries etc.
+	
+	// Holds the FirebaseAuth instance.
+	private lateinit var auth: FirebaseAuth
 	
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
+	
+	private var journal = listOf<Entry>()
 	
 	// Global variables for the AlertDialog and its content
 	private lateinit var alertDialog: AlertDialog
@@ -62,9 +68,17 @@ class JournalGratitudeFragment : Fragment() {
 		// Call the superclass's implementation of onStart
 		super.onStart()
 		
-		// Fetch all the journal entries asynchronously from the database.
-		// This ensures that the UI remains responsive while the data is being fetched.
-		viewModel.getAllEntriesAsync()
+		// Get the FirebaseAuth instance.
+		auth = FirebaseAuth.getInstance()
+		
+		if (auth.currentUser != null) {
+			// Fetch all the journal entries asynchronously from the database.
+			// This ensures that the UI remains responsive while the data is being fetched.
+			viewModel.getAllEntriesAsync()
+		} else {
+			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
+		}
 	}
 	
 	/**
@@ -78,10 +92,20 @@ class JournalGratitudeFragment : Fragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View {
+	): View? {
 		// Inflate the layout for this fragment using the FragmentJournalGratitudeBinding class.
 		binding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_journal_gratitude, container, false)
+		
+		// Get the FirebaseAuth instance.
+		auth = FirebaseAuth.getInstance()
+		
+		// Check if the user is null.
+		if (auth.currentUser == null) {
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
+			return null
+		}
+		
 		// Return the root view of the binding object.
 		return binding.root
 	}
@@ -94,18 +118,19 @@ class JournalGratitudeFragment : Fragment() {
 		// Always call the superclasses implementation of this function.
 		super.onViewCreated(view, savedInstanceState)
 		
+		// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
+		viewModel.entries.observe(viewLifecycleOwner) { entries ->
+			binding.outerRvGratitudeJournal.adapter =
+				EntryAdapter(requireContext(), entries, viewModel)
+			journal = entries
+		}
+		
 		// Initially, hide the reset button from the user's view.
 		binding.resetBtn.visibility = View.GONE
 		
 		// Initially, set the filter button to be semi-transparent and disable its functionality.
 		binding.filterBtn.alpha = 0.4f
 		binding.filterBtn.isEnabled = false
-		
-		// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
-		viewModel.entries.observe(viewLifecycleOwner) { entries ->
-			binding.outerRvGratitudeJournal.adapter =
-				EntryAdapter(requireContext(), entries, viewModel)
-		}
 		
 		// After setting the adapter, enqueue the Runnable to get the heights of the entryViews.
 		binding.outerRvGratitudeJournal.post {
@@ -125,52 +150,12 @@ class JournalGratitudeFragment : Fragment() {
 	private fun setUpListeners() {
 		// Set up the click listener for the filter button.
 		binding.filterBtn.setOnClickListener {
-			// Extract the start and end date from the respective text fields.
-			val from = binding.startDateTf.text.toString()
-			val to = binding.endDateTf.text.toString()
-			
-			// Fetch and observe entries from the database within the specified date range.
-			viewModel.getEntriesByDataRange(from, to).observe(viewLifecycleOwner) { entries ->
-				// Update the RecyclerView adapter with the filtered entries.
-				binding.outerRvGratitudeJournal.adapter =
-					EntryAdapter(requireContext(), entries, viewModel)
-			}
-			
-			// After filtering, the reset button should be visible and enabled.
-			binding.resetBtn.visibility = View.VISIBLE
-			binding.resetBtn.isEnabled = true
-			
-			// After filtering, the export button should be invisible.
-			binding.exportBtn.visibility = View.GONE
+			filterAndDisplayEntries()
 		}
 		
 		// Set up the click listener for the reset button.
 		binding.resetBtn.setOnClickListener {
-			// Clear the content of the start and end date text fields.
-			binding.startDateTf.text?.clear()
-			binding.endDateTf.text?.clear()
-			
-			// Set the filter button to be semi-transparent and disable its functionality.
-			// This indicates that no filter is currently applied.
-			binding.filterBtn.alpha = 0.4f
-			binding.filterBtn.isEnabled = false
-			
-			// Fetch all journal entries asynchronously from the database.
-			// This action resets the view to display all entries without any applied filters.
-			viewModel.getAllEntriesAsync()
-			
-			// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
-			// This ensures that the displayed entries reflect the most recent data.
-			viewModel.entries.observe(viewLifecycleOwner) { entries ->
-				binding.outerRvGratitudeJournal.adapter =
-					EntryAdapter(requireContext(), entries, viewModel)
-			}
-			
-			// After resetting, the reset button should be invisible and disabled
-			binding.resetBtn.visibility = View.GONE
-			
-			// After resetting, the export button should be visible.
-			binding.exportBtn.visibility = View.VISIBLE
+			resetJournalView()
 		}
 		
 		// Set up the click listener for the home button logo.
@@ -215,69 +200,122 @@ class JournalGratitudeFragment : Fragment() {
 		// Regular expression pattern to match valid dates in the format DD.MM.YYYY.
 		val datePattern = "(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}".toRegex()
 		
-		// Lambda function to validate the start and end date fields.
-		val validateDateFields = {
-			// Retrieve the start date from the input field.
-			val startDate = binding.startDateTf.text.toString()
-			// Retrieve the end date from the input field.
-			val endDate = binding.endDateTf.text.toString()
-			
-			/// Check if both the start and end dates match the valid date pattern.
-			if (datePattern.matches(startDate) && datePattern.matches(endDate)) {
-				// Split the dates into components
-				val startParts = startDate.split(".")
-				val endParts = endDate.split(".")
-				
-				// Create LocalDate objects for both dates
-				val startLocalDate = LocalDate.of(startParts[2].toInt(), startParts[1].toInt(), startParts[0].toInt())
-				val endLocalDate = LocalDate.of(endParts[2].toInt(), endParts[1].toInt(), endParts[0].toInt())
-				
-				// Check if the start date is before or equal to the end date
-				if (!startLocalDate.isAfter(endLocalDate)) {
-					// If valid, set the filter button to be fully opaque and enable it.
-					binding.filterBtn.alpha = 1f
-					binding.filterBtn.isEnabled = true
-				} else {
-					// If invalid, set the filter button to be semi-transparent and disable it.
-					binding.filterBtn.alpha = 0.4f
-					binding.filterBtn.isEnabled = false
-				}
+		// Add a text changed listener to the start date input field.
+		binding.startDateTf.addTextChangedListener(object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			override fun afterTextChanged(s: Editable) {
+				validateDateFields(datePattern)
+			}
+		})
+		
+		// Add a text changed listener to the end date input field.
+		binding.endDateTf.addTextChangedListener(object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			override fun afterTextChanged(s: Editable) {
+				validateDateFields(datePattern)
+			}
+		})
+	}
+	
+	/**
+	 * Fetches and displays entries from the database within the specified date range.
+	 * After fetching, it adjusts the UI elements accordingly.
+	 */
+	private fun filterAndDisplayEntries() {
+		// Fetch and observe entries from the database within the specified date range.
+		viewModel.getEntriesByDataRange(
+			binding.startDateTf.text.toString(),
+			binding.endDateTf.text.toString()
+		).observe(viewLifecycleOwner) { entries ->
+			// Update the RecyclerView adapter with the filtered entries.
+			binding.outerRvGratitudeJournal.adapter =
+				EntryAdapter(requireContext(), entries, viewModel)
+		}
+		
+		// Adjust UI elements after filtering.
+		binding.apply {
+			resetBtn.apply {
+				visibility = View.VISIBLE
+				isEnabled = true
+			}
+			exportBtn.visibility = View.GONE
+		}
+	}
+	
+	/**
+	 * Resets the journal view by clearing any applied filters and fetching all entries.
+	 *
+	 * This function is triggered when the reset button is clicked. It clears the content of the start
+	 * and end date text fields, sets the filter button to be semi-transparent to indicate no filter is
+	 * applied, and fetches all journal entries from the database. The RecyclerView's adapter is then
+	 * updated to reflect the most recent data.
+	 */
+	private fun resetJournalView() {
+		// Clear the content of the start and end date text fields.
+		binding.startDateTf.text?.clear()
+		binding.endDateTf.text?.clear()
+		
+		// Set the filter button to be semi-transparent and disable its functionality.
+		binding.filterBtn.apply {
+			alpha = 0.4f
+			isEnabled = false
+		}
+		
+		// Fetch all journal entries asynchronously from the database.
+		viewModel.getAllEntriesAsync()
+		
+		// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
+		viewModel.entries.observe(viewLifecycleOwner) { entries ->
+			binding.outerRvGratitudeJournal.adapter =
+				EntryAdapter(requireContext(), entries, viewModel)
+		}
+	}
+	
+	/**
+	 * Validates the start and end date fields against a given date pattern.
+	 *
+	 * @param datePattern The regular expression pattern to validate against.
+	 */
+	private fun validateDateFields(datePattern: Regex) {
+		val startDate = binding.startDateTf.text.toString()
+		val endDate = binding.endDateTf.text.toString()
+		
+		if (datePattern.matches(startDate) && datePattern.matches(endDate)) {
+			if (isValidDateRange(startDate, endDate)) {
+				// If valid, set the filter button to be fully opaque and enable it.
+				binding.filterBtn.alpha = 1f
+				binding.filterBtn.isEnabled = true
 			} else {
 				// If invalid, set the filter button to be semi-transparent and disable it.
 				binding.filterBtn.alpha = 0.4f
 				binding.filterBtn.isEnabled = false
 			}
+		} else {
+			// If invalid, set the filter button to be semi-transparent and disable it.
+			binding.filterBtn.alpha = 0.4f
+			binding.filterBtn.isEnabled = false
 		}
-
-		// Add a text changed listener to the start date input field.
-		binding.startDateTf.addTextChangedListener(object : TextWatcher {
-			// This method is called before the text is changed.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-			
-			// This method is called when the text is being changed.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-			
-			// This method is called after the text has been changed.
-			override fun afterTextChanged(s: Editable) {
-				// Validate the date fields after the text has changed.
-				validateDateFields()
-			}
-		})
-
-		// Add a text changed listener to the end date input field.
-		binding.endDateTf.addTextChangedListener(object : TextWatcher {
-			// This method is called before the text is changed.
-			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-			
-			// This method is called when the text is being changed.
-			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-			
-			// This method is called after the text has been changed.
-			override fun afterTextChanged(s: Editable) {
-				// Validate the date fields after the text has changed.
-				validateDateFields()
-			}
-		})
+	}
+	
+	/**
+	 * Checks if the start date is before or equal to the end date.
+	 *
+	 * @param startDate The start date in the format DD.MM.YYYY.
+	 * @param endDate The end date in the format DD.MM.YYYY.
+	 * @return True if the start date is before or equal to the end date, false otherwise.
+	 */
+	private fun isValidDateRange(startDate: String, endDate: String): Boolean {
+		val startParts = startDate.split(".")
+		val endParts = endDate.split(".")
+		
+		val startLocalDate =
+			LocalDate.of(startParts[2].toInt(), startParts[1].toInt(), startParts[0].toInt())
+		val endLocalDate =
+			LocalDate.of(endParts[2].toInt(), endParts[1].toInt(), endParts[0].toInt())
+		
+		return !startLocalDate.isAfter(endLocalDate)
 	}
 	
 	/**
@@ -317,7 +355,9 @@ class JournalGratitudeFragment : Fragment() {
 		val (_, heightPixels) = getDinA4SizeInPixels()
 		
 		// Retrieve the list of entries from the ViewModel. If the value is null, default to an empty list.
-		val entries = viewModel.entries.value ?: listOf()
+		//val entries = viewModel.entries.value ?: listOf()
+		val entries = journal
+		Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "Break down $entries")
 		
 		// Retrieve the adapter associated with the RecyclerView that displays the gratitude journal entries.
 		val adapter = binding.outerRvGratitudeJournal.adapter
@@ -347,54 +387,114 @@ class JournalGratitudeFragment : Fragment() {
 		
 		// 3. Generate the PDF file based on the provided pages.
 		val pdfDocument = PdfDocument()
+		generatePdfFromPages(pages, pdfDocument, widthPixels, heightPixels)
 		
-		// Iterate through each page and its entries.
+		// 4. Save and send the generated PDF.
+		saveAndSendPdf(pdfDocument)
+	}
+	
+	/**
+	 * Shows an alert dialog indicating the number of pages to be generated.
+	 *
+	 * @param pageCount The number of pages.
+	 */
+	private fun showAlertForPages(pageCount: Int) {
+		// Assuming 'context' is available in this class (e.g., if this is inside an Activity or Fragment)
+		val alertDialog = AlertDialog.Builder(context)
+			.setTitle("PDF Export")
+			.setMessage("Generating $pageCount pages...")
+			.setCancelable(false) // This will prevent users from dismissing the dialog
+			.create()
+		
+		alertDialog.show()
+	}
+	
+	
+	/**
+	 * Generates a PDF document from the provided pages.
+	 *
+	 * @param pages The list of pages with their entries.
+	 * @param pdfDocument The PDF document to be generated.
+	 * @param widthPixels The width in pixels for the PDF pages.
+	 * @param heightPixels The height in pixels for the PDF pages.
+	 */
+	private fun generatePdfFromPages(
+		pages: List<List<View>>,
+		pdfDocument: PdfDocument,
+		widthPixels: Float,
+		heightPixels: Float
+	) {
 		for ((pageIndex, pageEntries) in pages.withIndex()) {
-			// Create a new page with the specified width and height.
-			val pageInfo = PdfDocument.PageInfo.Builder(widthPixels.toInt(), heightPixels.toInt(), pageIndex + 1).create()
+			val pageInfo = PdfDocument.PageInfo.Builder(
+				widthPixels.toInt(),
+				heightPixels.toInt(),
+				pageIndex + 1
+			).create()
 			val page = pdfDocument.startPage(pageInfo)
 			
-			// Draw each entry view onto the page's canvas.
-			// Iterate over each entry view in the provided list of page entries.
-			for (entryView in pageEntries) {
-				
-				// Measure the entry view's dimensions.
-				// The width is set to be exactly the same as the width in pixels, while the height is set to be at most the height in pixels.
-				entryView.measure(
-					// Create a measure specification for the width that specifies an exact size.
-					View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
-					
-					// Create a measure specification for the height that specifies a maximum size.
-					View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
-				)
-				
-				// Layout the entry view at the top-left corner of its container.
-				// The dimensions used are the ones determined by the previous measure call.
-				entryView.layout(0, 0, entryView.measuredWidth, entryView.measuredHeight)
-				
-				// Log the dimensions of the entry view for debugging purposes.
-				Log.d("PDF_EXPORT", "Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}")
-				
-				// Draw the entry view onto the canvas of the current PDF page.
-				entryView.draw(page.canvas)
-			}
+			drawEntriesOnPage(pageEntries, page.canvas, widthPixels, heightPixels)
 			
-			// Finalize the current page in the PDF document.
 			pdfDocument.finishPage(page)
 			
-			// Update the progress dialog.
 			updateAlertDialog(pageIndex + 1, pages.size)
 		}
-		
-		// Dismiss the progress dialog.
+	}
+	
+	/**
+	 * Draws the provided entries on the given canvas.
+	 *
+	 * @param entries The list of entry views to be drawn.
+	 * @param canvas The canvas of the PDF page.
+	 * @param widthPixels The width in pixels for the entries.
+	 * @param heightPixels The height in pixels for the entries.
+	 */
+	private fun drawEntriesOnPage(
+		entries: List<View>,
+		canvas: Canvas,
+		widthPixels: Float,
+		heightPixels: Float
+	) {
+		for (entryView in entries) {
+			measureAndLayoutEntryView(entryView, widthPixels, heightPixels)
+			entryView.draw(canvas)
+		}
+	}
+	
+	/**
+	 * Measures and layouts the provided entry view.
+	 *
+	 * @param entryView The view to be measured and laid out.
+	 * @param widthPixels The width in pixels for the entry view.
+	 * @param heightPixels The height in pixels for the entry view.
+	 */
+	private fun measureAndLayoutEntryView(
+		entryView: View,
+		widthPixels: Float,
+		heightPixels: Float
+	) {
+		entryView.measure(
+			View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
+			View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
+		)
+		entryView.layout(0, 0, entryView.measuredWidth, entryView.measuredHeight)
+		Log.d(
+			"PDF_EXPORT",
+			"Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}"
+		)
+	}
+	
+	/**
+	 * Saves the generated PDF to a file and sends it via email.
+	 *
+	 * @param pdfDocument The generated PDF document.
+	 */
+	private fun saveAndSendPdf(pdfDocument: PdfDocument) {
 		dismissAlertDialog()
 		
-		// Save the generated PDF to a file.
 		val file = File(context?.filesDir, "entries.pdf")
 		pdfDocument.writeTo(FileOutputStream(file))
 		pdfDocument.close()
 		
-		// Send the PDF via email.
 		sendPdfViaEmail(file)
 	}
 	
@@ -414,8 +514,14 @@ class JournalGratitudeFragment : Fragment() {
 			// Set the email body text.
 			putExtra(Intent.EXTRA_TEXT, "Attached are the exported gratitude journal entries.")
 			
+			putExtra(Intent.EXTRA_EMAIL, arrayOf(auth.currentUser!!.email))
+			
 			// Convert the file to a content URI using FileProvider to ensure secure sharing of the file.
-			val fileUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.fileprovider", file)
+			val fileUri = FileProvider.getUriForFile(
+				requireContext(),
+				"${requireContext().packageName}.fileprovider",
+				file
+			)
 			
 			// Attach the file to the email.
 			putExtra(Intent.EXTRA_STREAM, fileUri)
@@ -437,22 +543,35 @@ class JournalGratitudeFragment : Fragment() {
 	/**
 	 * A launcher to handle the result of sending an email.
 	 */
-	private val emailResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-		if (result.resultCode == Activity.RESULT_OK) {
-			// Delete all entries if the email was sent successfully.
-			viewModel.deleteAllEntries()
+	private val emailResultLauncher =
+		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+			Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "${result.resultCode} == ${Activity.RESULT_OK}")
+			// Create a new AlertDialog builder with the current context.
+			val alertDialogBuilder = AlertDialog.Builder(requireContext())
 			
-			// Notify the user that the entries were exported to a PDF.
-			Toast.makeText(context, "Entries exported to PDF.", Toast.LENGTH_SHORT).show()
-		} else {
-			// Notify the user if there was an error sending the email.
-			Toast.makeText(context, "Failed to send email.", Toast.LENGTH_SHORT).show()
+			// Set the title and message for the AlertDialog.
+			alertDialogBuilder.setTitle("Export Confirmation")
+			alertDialogBuilder.setMessage("Was the export successful? Do you want to delete all entries from your device?")
 			
-			// TODO: Test mit Verry hat gezeigt, dass die App hier rein geht. KORREKTUR!
+			// Set the positive button to confirm the deletion.
+			alertDialogBuilder.setPositiveButton("Yes, Delete") { _, _ ->
+				// Call the deleteAll() function from the viewModel to delete all entries.
+				viewModel.deleteAllEntries()
+				Toast.makeText(context, "All entries have been deleted.", Toast.LENGTH_SHORT).show()
+			}
+			
+			// Set the negative button to cancel the deletion.
+			alertDialogBuilder.setNegativeButton("Cancel", null)
+			
+			// Display the created AlertDialog to the user.
+			alertDialogBuilder.show()
+			
 			// Close the AlertDialog
 			dismissAlertDialog()
 		}
-	}
+	
+	// TODO: Minh hat herausgefunden, dass es kein verlässliches Feedback von den Email Diensten gibt.
+	// TODO: Alert dialog, wo User gefragt wird, ob der Export erfolgreich war und Einträge nun gelöscht werden sollen.
 	
 	/**
 	 * Displays an AlertDialog to the user indicating the progress of the PDF conversion.
@@ -497,7 +616,7 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	@SuppressLint("SetTextI18n")
 	private fun updateAlertDialog(pageNumber: Int, totalPages: Int) {
-		progressText.text = "Page $pageNumber of $totalPages converted..."
+		// progressText.text = "Page $pageNumber of $totalPages converted..."
 	}
 	
 	/**
@@ -585,69 +704,74 @@ class JournalGratitudeFragment : Fragment() {
 	 * Creates a new gratitude journal entry and saves it to the database.
 	 */
 	private fun createNewEntry() {
-		// Get the current date
-		Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "createNewEntry() is being called")
-		val calendar = Calendar.getInstance()
-		
-		// Create a new Entry object with the entered date, text, and image.
-		val entry = Entry(
-			day = calendar.get(Calendar.DAY_OF_MONTH),
-			month = calendar.get(Calendar.MONTH) + 1,
-			year = calendar.get(Calendar.YEAR),
-			text = null,
-			image = null
-		)
-		
-		// Obtain an instance of the local database for the current context.
-		val database = LocalDatabase.getDatabase(requireContext())
-		
-		// Create a repository instance using the obtained local database.
-		val repository = EntryRepository(database)
-		
-		// Launch a coroutine in the IO dispatcher for database operations.
-		lifecycleScope.launch(Dispatchers.IO) {
+		if (auth.currentUser != null) {
+			// Get the current date
+			Log.e(JOURNAL_GRATITUDE_FRAGMENT_TAG, "createNewEntry() is being called")
+			val calendar = Calendar.getInstance()
 			
-			// Insert the new entry into the local database and retrieve its ID.
-			// Insert the new entry into the repository and retrieve its ID.
-			val entryId = repository.insertEntry(entry)
+			// Create a new Entry object with the entered date, text, and image.
+			val entry = Entry(
+				day = calendar.get(Calendar.DAY_OF_MONTH),
+				month = calendar.get(Calendar.MONTH) + 1,
+				year = calendar.get(Calendar.YEAR),
+				text = null,
+				image = null
+			)
 			
-			// Access the shared preferences to get and update the count of entries.
-			val countSharedPreferences =
-				requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
+			// Obtain an instance of the local database for the current context.
+			val database = LocalDatabase.getDatabase(requireContext())
 			
-			// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
-			var count = countSharedPreferences.getInt("count", 0)
+			// Create a repository instance using the obtained local database.
+			val repository = EntryRepository(database)
 			
-			// Retrieve the date of the last entry from shared preferences. Default to the current date if not found.
-			val date = countSharedPreferences.getString("date", LocalDate.now().toString())
-			
-			// Check if the date from shared preferences is different from the current date.
-			// If it is, reset the count to 0, indicating a new day.
-			if (date != LocalDate.now().toString()) {
-				count = 0
-			}
-			
-			// Increment the count of entries.
-			count++
-			
-			// Update the date in shared preferences to the current date.
-			countSharedPreferences.edit().putString("date", LocalDate.now().toString()).apply()
-			
-			// Update the count of entries in shared preferences.
-			countSharedPreferences.edit().putInt("count", count).apply()
-			
-			// Increment the count for the specific day in Firestore.
-			viewModel.saveCountEntryToFirestore(count)
-			
-			// Switch to the Main dispatcher to perform UI operations.
-			withContext(Dispatchers.Main) {
-				// Navigate to the entry gratitude fragment with the ID of the newly created entry.
-				findNavController().navigate(
-					JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(
-						entryId = entryId
+			// Launch a coroutine in the IO dispatcher for database operations.
+			lifecycleScope.launch(Dispatchers.IO) {
+				
+				// Insert the new entry into the local database and retrieve its ID.
+				// Insert the new entry into the repository and retrieve its ID.
+				val entryId = repository.insertEntry(entry)
+				
+				// Access the shared preferences to get and update the count of entries.
+				val countSharedPreferences =
+					requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
+				
+				// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
+				var count = countSharedPreferences.getInt("count", 0)
+				
+				// Retrieve the date of the last entry from shared preferences. Default to the current date if not found.
+				val date = countSharedPreferences.getString("date", LocalDate.now().toString())
+				
+				// Check if the date from shared preferences is different from the current date.
+				// If it is, reset the count to 0, indicating a new day.
+				if (date != LocalDate.now().toString()) {
+					count = 0
+				}
+				
+				// Increment the count of entries.
+				count++
+				
+				// Update the date in shared preferences to the current date.
+				countSharedPreferences.edit().putString("date", LocalDate.now().toString()).apply()
+				
+				// Update the count of entries in shared preferences.
+				countSharedPreferences.edit().putInt("count", count).apply()
+				
+				// Increment the count for the specific day in Firestore.
+				viewModel.saveCountEntryToFirestore(count)
+				
+				// Switch to the Main dispatcher to perform UI operations.
+				withContext(Dispatchers.Main) {
+					// Navigate to the entry gratitude fragment with the ID of the newly created entry.
+					findNavController().navigate(
+						JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToEntryGratitudeFragment(
+							entryId = entryId
+						)
 					)
-				)
+				}
 			}
+		} else {
+			Toast.makeText(context, "You must be signed in to create a gratitude journal entry.", Toast.LENGTH_SHORT).show()
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
 }
