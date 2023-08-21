@@ -570,9 +570,6 @@ class JournalGratitudeFragment : Fragment() {
 			dismissAlertDialog()
 		}
 	
-	// TODO: Minh hat herausgefunden, dass es kein verlässliches Feedback von den Email Diensten gibt.
-	// TODO: Alert dialog, wo User gefragt wird, ob der Export erfolgreich war und Einträge nun gelöscht werden sollen.
-	
 	/**
 	 * Displays an AlertDialog to the user indicating the progress of the PDF conversion.
 	 *
