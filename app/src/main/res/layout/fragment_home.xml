@@ -9,6 +9,7 @@
     <!-- Main LinearLayout with the style of MainLayoutStyle -->
     <LinearLayout
         style="@style/MainLayoutStyle"
+        android:background="?attr/backgroundColor"
         tools:context=".ui.HomeFragment">
 
         <!-- TextView for displaying the app name -->

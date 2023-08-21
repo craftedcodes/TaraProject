@@ -1,17 +1,19 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
-import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.abschlussaufgabe.data.datamodels.ChartColors
 import com.example.abschlussaufgabe.viewModel.AuthViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
@@ -100,12 +102,18 @@ class ProfileFragment : Fragment() {
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View {
+	): View? {
 		// Inflate the layout for this fragment using the inflate method of the FragmentProfileBinding class.
 		binding = FragmentProfileBinding.inflate(inflater, container, false)
 		
 		// Get the FirebaseAuth instance.
 		auth = FirebaseAuth.getInstance()
+		
+		// Check if the user is null.
+		if (auth.currentUser == null) {
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
+			return null
+		}
 		
 		// Load the emergency contact details from SharedPreferences.
 		loadContactDataFromSharedPreferences()
@@ -120,14 +128,16 @@ class ProfileFragment : Fragment() {
 	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		// Call the super method to ensure proper initialization of the view.
+		// Invoke the parent class's onViewCreated method to ensure the view is correctly initialized.
 		super.onViewCreated(view, savedInstanceState)
-		
+
+		// Populate Firestore with 30 dummy data entries for testing or demonstration purposes.
 		save30DummyDataToFirestore()
-		
+
+		// Retrieve a specific count entry from Firestore for further processing or display.
 		getCountEntryFromFirestore()
-		
-		// Set up listeners for the UI elements.
+
+		// Initialize and assign event listeners to the relevant UI components in the view.
 		setUpListeners()
 	}
 	
@@ -176,24 +186,34 @@ class ProfileFragment : Fragment() {
 	}
 	
 	/**
-	 * Delete contact data from SharedPreferences and update the UI accordingly.
+	 * Deletes contact data from SharedPreferences and updates the UI accordingly.
+	 * If the user is not logged in, a toast message is shown and the user is navigated to the home fragment.
 	 */
 	private fun deleteContactData() {
-		// Edit the shared preferences to remove the contact details.
-		contactSharedPreferences.edit().apply {
-			// Remove the contact name, number, and message from the shared preferences.
-			remove("contact_name")
-			remove("contact_number")
-			remove("contact_message")
-			// Commit the changes to the shared preferences.
-			apply()
+		// Check if the user is currently logged in.
+		if (auth.currentUser != null ) {
+			// Begin editing the shared preferences.
+			contactSharedPreferences.edit().apply {
+				// Remove the contact name from the shared preferences.
+				remove("contact_name")
+				// Remove the contact number from the shared preferences.
+				remove("contact_number")
+				// Remove the contact message from the shared preferences.
+				remove("contact_message")
+				// Commit the changes to the shared preferences.
+				apply()
+			}
+			
+			// Set the contact card's visibility to GONE, hiding it from the UI.
+			binding.contactCard.visibility = View.GONE
+			// Set the attention card's visibility to VISIBLE, indicating the absence of contact details.
+			binding.attentionCard.visibility = View.VISIBLE
+		} else {
+			// Display a toast message indicating the user is not logged in.
+			Toast.makeText(context, "You are not logged in.", Toast.LENGTH_SHORT).show()
+			// Navigate the user to the home fragment.
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
 		}
-		
-		// Hide the contact card from the UI.
-		binding.contactCard.visibility = View.GONE
-		// Display the attention card to indicate the absence of contact details.
-		binding.attentionCard.visibility = View.VISIBLE
-		
 	}
 	
 	/**
@@ -394,36 +414,44 @@ class ProfileFragment : Fragment() {
 	 * This method initializes the data for the bar and line charts and configures the chart's appearance and behavior.
 	 */
 	private fun setupChartData(barData: Array<Any>, lineData: Array<Any>) {
+		// Check if both barData and lineData are empty.
 		if (barData.isEmpty() && lineData.isEmpty()) {
-			binding.aaChartView.visibility = View.GONE
-			binding.emptyDataTextView.visibility = View.VISIBLE
-			binding.emptyDataTextView1.visibility = View.VISIBLE
-			binding.emptyDataTextView2.visibility = View.VISIBLE
+			// Hide the chart view if there's no data to display.
+			setViewVisibility(binding.aaChartView, false)
+			// Show the primary empty data message.
+			setViewVisibility(binding.emptyDataTextView, true)
+			// Show the secondary empty data message.
+			setViewVisibility(binding.emptyDataTextView1, true)
+			// Show the tertiary empty data message.
+			setViewVisibility(binding.emptyDataTextView2, true)
+			// Exit the function early since there's no data to process.
 			return
 		}
-		
-		binding.aaChartView.visibility = View.VISIBLE
-		binding.emptyDataTextView.visibility = View.GONE
-		binding.emptyDataTextView1.visibility = View.GONE
-		binding.emptyDataTextView2.visibility = View.GONE
-		
-		val seriesList = mutableListOf<AASeriesElement>()
-		
-		// Add the current month's data as a column chart series.
-		seriesList.add(
-			AASeriesElement().name("Current month").color("#FFDAD6").type(AAChartType.Column)
-				.data(barData)
-		)
 
-// Check if there's data for the previous month.
-		if (lineData.isNotEmpty()) {
-			// Add the previous month's data as a line chart series.
-			seriesList.add(
-				AASeriesElement().name("Previous month").color("#FFE088").type(AAChartType.Line)
-					.data(lineData)
-			)
-		}
-		
+		// Display the chart view since there's data to show.
+		setViewVisibility(binding.aaChartView, true)
+		// Hide the primary empty data message.
+		setViewVisibility(binding.emptyDataTextView, false)
+		// Hide the secondary empty data message.
+		setViewVisibility(binding.emptyDataTextView1, false)
+		// Hide the tertiary empty data message.
+		setViewVisibility(binding.emptyDataTextView2, false)
+
+		// Retrieve the appropriate colors based on the current theme (light/dark mode).
+		val (barColor, lineColor, axesTextColor, titleColor) = getChartColors()
+
+		// Initialize a list to hold the data series for the chart.
+		val seriesList = mutableListOf<AASeriesElement>()
+			.apply {
+				// Add the current month's data as a column chart series.
+				add(AASeriesElement().name("Current month").color(barColor).type(AAChartType.Column).data(barData))
+				// If there's data for the previous month, add it as a line chart series.
+				if (lineData.isNotEmpty()) {
+					add(AASeriesElement().name("Previous month").color(lineColor).type(AAChartType.Line).data(lineData))
+				}
+			}
+
+		// Configure the chart model with the desired settings.
 		val aaChartModel = AAChartModel()
 			.chartType(AAChartType.Column)
 			.title(getString(R.string.your_gratitude_note_activity))
@@ -431,10 +459,41 @@ class ProfileFragment : Fragment() {
 			.dataLabelsEnabled(true)
 			.series(seriesList.toTypedArray())
 			.yAxisTitle("Amount of notes per day")
-			.axesTextColor("#FFFFFF")
-			.titleStyle(AAStyle().color("#FFFFFF"))
-		
+			.axesTextColor(axesTextColor)
+			.titleStyle(AAStyle().color(titleColor))
+
+		// Draw the chart with the configured model.
 		binding.aaChartView.aa_drawChartWithChartModel(aaChartModel)
+	}
+	
+	/**
+	 * Sets the visibility of a given view.
+	 *
+	 * @param view The view whose visibility needs to be set.
+	 * @param isVisible A boolean indicating whether the view should be visible or not.
+	 */
+	private fun setViewVisibility(view: View, isVisible: Boolean) {
+		// Set the view's visibility to VISIBLE if isVisible is true, otherwise set it to GONE.
+		view.visibility = if (isVisible) View.VISIBLE else View.GONE
+	}
+	
+	/**
+	 * Determines the appropriate chart colors based on the current theme mode (dark or light).
+	 *
+	 * @return ChartColors An instance containing the colors for the bar, line, axes text, and title.
+	 */
+	private fun getChartColors(): ChartColors {
+		// Check if the app is currently in dark mode.
+		val isDarkMode = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+		
+		// Return the appropriate color set based on the theme mode.
+		return if (isDarkMode) {
+			// Colors for Dark Mode.
+			ChartColors("#A06F60", "#A07F40", "#FFFFFF", "#FFFFFF")
+		} else {
+			// Colors for Light Mode.
+			ChartColors("#FFDAD6", "#FFE088", "#000000", "#000000")
+		}
 	}
 	
 	/**

@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_animationFragment_to_journalGratitudeFragment"
             app:destination="@id/journalGratitudeFragment" />
+        <action
+            android:id="@+id/action_animationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/affirmationFragment"
@@ -89,6 +92,9 @@
         <action
             android:id="@+id/action_journalGratitudeFragment_to_entryGratitudeFragment"
             app:destination="@id/entryGratitudeFragment" />
+        <action
+            android:id="@+id/action_journalGratitudeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -120,6 +126,9 @@
         <action
             android:id="@+id/action_emergencyContactFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_emergencyContactFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/avatarEmergencyContactFragment"
@@ -131,6 +140,9 @@
         <action
             android:id="@+id/action_avatarEmergencyContactFragment_to_animationFragment"
             app:destination="@id/animationFragment" />
+        <action
+            android:id="@+id/action_avatarEmergencyContactFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/entryGratitudeFragment"
@@ -148,6 +160,9 @@
         <argument
             android:name="entry_id"
             app:argType="long" />
+        <action
+            android:id="@+id/action_entryGratitudeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"

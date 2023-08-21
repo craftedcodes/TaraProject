@@ -24,9 +24,19 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+    
         // Initialize the shared preferences with the name "mode_shared_prefs".
         sharedPreferences = getSharedPreferences("mode_shared_prefs", MODE_PRIVATE)
+    
+        // Set the content view to the main activity layout.
+        setContentView(R.layout.activity_main)
+    }
+    
+    /**
+     * Called when the activity is first created.
+     */
+    override fun onResume() {
+        super.onResume()
         
         // Retrieve the user's dark mode preference from shared preferences.
         val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
@@ -37,9 +47,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-        
-        // Set the content view to the main activity layout.
-        setContentView(R.layout.activity_main)
     }
 }
 

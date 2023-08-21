@@ -11,6 +11,7 @@
     <!-- Main layout container -->
     <LinearLayout
         style="@style/MainLayoutStyle"
+        android:background="?attr/backgroundColor"
         tools:context=".ui.RegisterFragment">
 
         <!-- Title text -->

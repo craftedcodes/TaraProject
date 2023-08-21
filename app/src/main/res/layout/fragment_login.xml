@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:background="?attr/backgroundColor"
         tools:context=".ui.LoginFragment">
 
         <!-- TextView for the title -->
@@ -96,10 +97,6 @@
                 android:backgroundTint="?attr/backgroundColor"
                 android:fontFamily="@font/merriweathersans_variablefont_wght"
                 android:minHeight="54dp"
-                android:shadowColor="#61000000"
-                android:shadowDx="8"
-                android:shadowDy="4"
-                android:shadowRadius="8"
                 android:text="@string/quit"
                 android:textColor="?attr/colorOnError"
                 android:textSize="20sp"

@@ -1,7 +1,9 @@
 package com.example.abschlussaufgabe.ui
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -28,6 +30,9 @@ class SettingsFragment : Fragment() {
 	
 	private lateinit var auth: FirebaseAuth
 	
+	private lateinit var sharedPreferences: SharedPreferences
+	
+	
 	/**
 	 * Inflates the fragment layout and initializes the data binding.
 	 */
@@ -47,6 +52,8 @@ class SettingsFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
+		sharedPreferences = requireContext().getSharedPreferences("mode_shared_prefs", Context.MODE_PRIVATE)
+		
 		setUpListeners()
 	}
 	
@@ -54,13 +61,10 @@ class SettingsFragment : Fragment() {
 	 * Sets up listeners for various UI components to handle user interactions.
 	 */
 	private fun setUpListeners() {
-		// Use normal SharedPreferences instead of EncryptedSharedPreferences
-		val sharedPreferences = requireContext().getSharedPreferences("mode_shared_prefs", Context.MODE_PRIVATE)
-		
-		
 		// Listener to handle user logout.
 		binding.logoutBtn.setOnClickListener {
 			auth.signOut()
+			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
 		}
 		
 		// Listener to navigate to the AnimationFragment when the home logo button is clicked.
@@ -90,57 +94,109 @@ class SettingsFragment : Fragment() {
 		
 		// Listener to handle account deletion.
 		binding.deleteAccountCard.setOnClickListener {
-			val inflater = layoutInflater
-			val dialogView = inflater.inflate(R.layout.dialog_delete_account, null)
-			val emailEditText = dialogView.findViewById<EditText>(R.id.emailEditText)
-			val passwordEditText = dialogView.findViewById<EditText>(R.id.passwordEditText)
-			
-			val alertDialog = AlertDialog.Builder(requireContext())
-				.setTitle("Delete Account")
-				.setMessage("Are you sure you want to delete your account and end your subscription?")
-				.setView(dialogView)
-				.setPositiveButton("Delete Account") { _, _ ->
-					val email = emailEditText.text.toString()
-					val password = passwordEditText.text.toString()
-					
-					if (email.isBlank() || password.isBlank()) {
-						Toast.makeText(requireContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show()
-					} else {
-						val user = auth.currentUser
-						val credential = EmailAuthProvider.getCredential(email, password)
-						user?.reauthenticate(credential)?.addOnCompleteListener { task ->
-							if (task.isSuccessful) {
-								user.delete().addOnCompleteListener { deleteTask ->
-									if (deleteTask.isSuccessful) {
-										Toast.makeText(requireContext(), "We're sad to see you go.", Toast.LENGTH_SHORT).show()
-										findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
-									} else {
-										Toast.makeText(requireContext(), "Error deleting account.", Toast.LENGTH_SHORT).show()
-									}
-								}
-							} else {
-								Toast.makeText(requireContext(), "Incorrect email or password.", Toast.LENGTH_SHORT).show()
-							}
-						}
-					}
-				}
-				.setNegativeButton("Dismiss") { dialog, _ ->
-					dialog.dismiss()
-				}
-				.create()
-			
-			alertDialog.show()
+			showDeleteAccountDialog()
 		}
+		
+		// Retrieve the current mode (dark or light) from shared preferences.
+		val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+
+		// Set the switch's checked state based on the current mode.
+		binding.toggleSwitch.isChecked = isDarkMode
 		
 		// Listener to handle dark mode toggle.
 		binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-			if (isChecked) {
-				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-				sharedPreferences.edit().putBoolean("dark_mode", true).apply()
-			} else {
-				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-				sharedPreferences.edit().putBoolean("dark_mode", false).apply()
+			handleDarkModeToggle(isChecked)
+		}
+	}
+	
+	/**
+	 * Sets up and displays the account deletion dialog.
+	 * This dialog prompts the user to confirm their intention to delete their account.
+	 * Upon confirmation, the user's credentials are re-authenticated and the account is deleted.
+	 */
+	@SuppressLint("InflateParams")
+	private fun showDeleteAccountDialog() {
+		// Inflate the custom dialog view.
+		val dialogView = layoutInflater.inflate(R.layout.dialog_delete_account, null)
+		val emailEditText = dialogView.findViewById<EditText>(R.id.emailEditText)
+		val passwordEditText = dialogView.findViewById<EditText>(R.id.passwordEditText)
+		
+		// Build and configure the alert dialog.
+		AlertDialog.Builder(requireContext()).apply {
+			setTitle("Delete Account")
+			setMessage("Are you sure you want to delete your account and end your subscription?")
+			setView(dialogView)
+			setPositiveButton("Delete Account") { _, _ ->
+				val email = emailEditText.text.toString()
+				val password = passwordEditText.text.toString()
+				
+				if (isValidInput(email, password)) {
+					deleteUserAccount(email, password)
+				} else {
+					Toast.makeText(requireContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+				}
 			}
+			setNegativeButton("Dismiss") { dialog, _ ->
+				dialog.dismiss()
+			}
+			create().show()
+		}
+	}
+	
+	/**
+	 * Validates the email and password input fields.
+	 *
+	 * @param email The email input from the user.
+	 * @param password The password input from the user.
+	 * @return Boolean indicating whether the input is valid.
+	 */
+	private fun isValidInput(email: String, password: String): Boolean {
+		return email.isNotBlank() && password.isNotBlank()
+	}
+	
+	/**
+	 * Re-authenticates the user with the provided credentials and deletes the account upon successful re-authentication.
+	 *
+	 * @param email The email input from the user.
+	 * @param password The password input from the user.
+	 */
+	private fun deleteUserAccount(email: String, password: String) {
+		val user = auth.currentUser
+		val credential = EmailAuthProvider.getCredential(email, password)
+		
+		user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+			if (task.isSuccessful) {
+				user.delete().addOnCompleteListener { deleteTask ->
+					if (deleteTask.isSuccessful) {
+						Toast.makeText(requireContext(), "We're sad to see you go.", Toast.LENGTH_SHORT).show()
+						findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
+					} else {
+						Toast.makeText(requireContext(), "Error deleting account.", Toast.LENGTH_SHORT).show()
+					}
+				}
+			} else {
+				Toast.makeText(requireContext(), "Incorrect email or password.", Toast.LENGTH_SHORT).show()
+			}
+		}
+	}
+	
+	/**
+	 * Toggles the app's theme mode between dark and light based on the switch's checked state.
+	 * The selected mode is saved in shared preferences for persistence across app restarts.
+	 *
+	 * @param isChecked Boolean indicating whether the switch is checked (true for dark mode, false for light mode).
+	 */
+	private fun handleDarkModeToggle(isChecked: Boolean) {
+		if (isChecked) {
+			// Set the app's theme to dark mode.
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+			// Save the user's preference for dark mode in shared preferences.
+			sharedPreferences.edit().putBoolean("dark_mode", true).apply()
+		} else {
+			// Set the app's theme to light mode.
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+			// Save the user's preference for light mode in shared preferences.
+			sharedPreferences.edit().putBoolean("dark_mode", false).apply()
 		}
 	}
 }

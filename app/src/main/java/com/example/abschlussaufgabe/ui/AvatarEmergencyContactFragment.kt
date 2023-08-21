@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.firebase.auth.FirebaseAuth
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentAvatarEmergencyContactBinding
 
@@ -49,13 +50,25 @@ class AvatarEmergencyContactFragment : Fragment() {
 		)
 	}
 	
+	// Define a private companion object for the class.
+	private companion object {
+		// Constant representing the number of columns in the grid layout.
+		const val COLUMN_COUNT = 4
+		
+		// Constant representing the size of avatars in density-independent pixels (DP).
+		const val AVATAR_SIZE_DP = 80
+	}
+	
+	// Holds the FirebaseAuth instance.
+	private lateinit var auth: FirebaseAuth
+	
 	/**
 	 * Inflates the fragment's layout and initializes the data binding.
 	 */
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View {
+	): View? {
 		// Inflate the layout for this fragment.
 		binding = DataBindingUtil.inflate(
 			inflater,
@@ -63,6 +76,16 @@ class AvatarEmergencyContactFragment : Fragment() {
 			container,
 			false
 		)
+		
+		// Get the FirebaseAuth instance.
+		auth = FirebaseAuth.getInstance()
+		
+		// Check if the user is null.
+		if (auth.currentUser == null) {
+			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToHomeFragment())
+			return null
+		}
+		
 		// Return the root view.
 		return binding.root
 	}
@@ -132,14 +155,14 @@ class AvatarEmergencyContactFragment : Fragment() {
 		)
 		
 		// Configure the grid layout to display avatars.
-		binding.gridLayout.columnCount = 4
+		binding.gridLayout.columnCount = COLUMN_COUNT
 		
 		for (resId in imageResources) {
 			// Create and configure an ImageView for each avatar.
 			val imageView = ImageView(context).apply {
-				val dpValue = 80 // Size in dp.
-				val d = context.resources.displayMetrics.density
-				val pixelValue = (dpValue * d).toInt() // Conversion to pixels.
+				
+				// Convert DP to Pixels once for all avatars.
+				val pixelValue = context.dpToPx(AVATAR_SIZE_DP)
 				
 				// Set the layout parameters for the ImageView.
 				layoutParams = GridLayout.LayoutParams().apply {
@@ -167,6 +190,18 @@ class AvatarEmergencyContactFragment : Fragment() {
 			// Add the configured ImageView to the grid layout.
 			binding.gridLayout.addView(imageView)
 		}
+	}
+	
+	/**
+	 * Converts a value in density-independent pixels (dp) to pixels (px).
+	 *
+	 * @param dp The value in density-independent pixels.
+	 * @return The converted value in pixels.
+	 */
+	private fun Context.dpToPx(dp: Int): Int {
+		// Multiply the dp value by the display's density factor to convert it to pixels.
+		// Then, round the result to the nearest whole number using toInt().
+		return (dp * resources.displayMetrics.density).toInt()
 	}
 	
 	/**
