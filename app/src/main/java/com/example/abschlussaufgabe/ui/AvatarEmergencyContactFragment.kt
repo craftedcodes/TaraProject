@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -209,13 +210,18 @@ class AvatarEmergencyContactFragment : Fragment() {
 	 * @param resId The resource ID of the selected avatar.
 	 */
 	private fun saveSelectedAvatar(resId: Int) {
-		// Obtain the editor for the encrypted shared preferences dedicated to avatar data.
-		val editor = avatarSharedPreferences.edit()
-		
-		// Store the provided resource ID under the key "selected_avatar".
-		editor.putInt("selected_avatar", resId)
-		
-		// Commit the changes to the shared preferences.
-		editor.apply()
+		if (auth.currentUser != null) {
+			// Obtain the editor for the encrypted shared preferences dedicated to avatar data.
+			val editor = avatarSharedPreferences.edit()
+			
+			// Store the provided resource ID under the key "selected_avatar".
+			editor.putInt("selected_avatar", resId)
+			
+			// Commit the changes to the shared preferences.
+			editor.apply()
+		} else {
+			Toast.makeText(context, "You must be signed in to save an avatar.", Toast.LENGTH_SHORT).show()
+			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToHomeFragment())
+		}
 	}
 }
