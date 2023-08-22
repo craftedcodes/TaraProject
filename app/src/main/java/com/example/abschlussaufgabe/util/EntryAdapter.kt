@@ -67,7 +67,8 @@ class EntryAdapter(
 		
 		// Handle entry deletion.
 		holder.binding.deleteBtn.setOnClickListener {
-					viewModel.deleteEntryById(entry.id)
+			viewModel.deleteEntryById(entry.id)
+			viewModel.getAllEntriesAsync()
 		}
 		
 		// Handle entry editing.
@@ -92,6 +93,7 @@ class EntryAdapter(
 		for (entry in entries) {
 			// Inflate the entry layout using the EntryRvBinding.
 			val binding = EntryRvBinding.inflate(LayoutInflater.from(context))
+			binding.gratitudeIv.layoutParams.height = 500
 			
 			// Create a new view holder for the inflated layout.
 			val holder = ItemViewHolder(binding)

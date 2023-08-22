@@ -132,7 +132,7 @@ class ProfileFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		// Populate Firestore with 30 dummy data entries for testing or demonstration purposes.
-		save30DummyDataToFirestore()
+		//save30DummyDataToFirestore()
 
 		// Retrieve a specific count entry from Firestore for further processing or display.
 		getCountEntryFromFirestore()
@@ -346,21 +346,25 @@ class ProfileFragment : Fragment() {
 		val endDate = LocalDate.now()
 		val startDate = endDate.minusDays(60)
 		val dateRange = getDatesInRange(startDate, endDate)
-		
+		Log.d(PROFILE_TAG, "startdate = $startDate, enddate = $endDate")
 		// Initialize lists to store fetched data and a counter for fetched documents.
 		val fetchedData = mutableListOf<Int>()
 		var fetchedCount = 0
 		
 		// Iterate through each date in the specified date range.
 		for (date in dateRange) {
+			Log.e(PROFILE_TAG, "Goes into for loop data range")
 			// Fetch the document corresponding to the current date.
 			collection.document(date).get().addOnSuccessListener { document ->
 				// Check if the document exists in the collection.
 				if (document.exists()) {
+					Log.e(PROFILE_TAG, "Document exists")
 					// Retrieve the 'count' field from the document.
 					document.get("count")?.let {
+						var it = it.toString().toInt()
 						// Ensure the retrieved data is of type Int.
 						if (it is Int) {
+							Log.e(PROFILE_TAG, "Ganz dummer Log")
 							// Add the fetched count to the fetchedData list.
 							fetchedData.add(it)
 							// Log the fetched count for the current date.
@@ -379,6 +383,7 @@ class ProfileFragment : Fragment() {
 					when {
 						// If there are 60 or more data points fetched.
 						fetchedData.size >= 60 -> {
+							Log.d(PROFILE_TAG, "$fetchedData")
 							// Add the last 30 data points to the bar chart.
 							barChart.addAll(fetchedData.takeLast(30))
 							// Add the first 30 data points to the line chart.

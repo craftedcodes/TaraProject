@@ -3,11 +3,17 @@ package com.example.abschlussaufgabe.viewModel
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
 import com.example.abschlussaufgabe.data.EntryRepository
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.local.LocalDatabase
@@ -29,6 +35,9 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	
 	// Firebase Firestore instance to access the database.
 	private val db = FirebaseFirestore.getInstance()
+	
+	private val auth = Firebase.auth
+	
 	@SuppressLint("StaticFieldLeak")
 	private val context = application.applicationContext
 	
@@ -168,6 +177,8 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		// Create a data map with the count to be saved.
 		val data = hashMapOf("count" to countEntry)
 		
+		// TODO: Wenn der User das Datum anpasst, soll der Name des Dokuments angepasst werden.
+		
 		// Save the count to the Firestore document corresponding to the current date.
 		collection?.document("${LocalDate.now()}")?.set(data)
 	}
@@ -179,8 +190,10 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	 *               This can be positive (for adding entries) or negative (for removing entries).
 	 */
 	private fun updateEntryCount(change: Int) {
+		val userId = Firebase.auth.currentUser?.uid
+		
 		// Retrieve the shared preferences for storing the count of entries.
-		val countSharedPreferences = context.getSharedPreferences("countPref", Context.MODE_PRIVATE)
+		val countSharedPreferences = context.getSharedPreferences("$userId", Context.MODE_PRIVATE)
 		
 		// Fetch the current count of entries from shared preferences. Default to 0 if not found.
 		var count = countSharedPreferences.getInt("count", 0)
@@ -196,5 +209,49 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		
 		// Indicate that the loading or processing status is complete.
 		_loading.value = ApiStatus.DONE
+	}
+	
+	fun generatePDF(rv: RecyclerView): PdfDocument {
+		
+		val adapter = rv.adapter
+		val pdfDocument = PdfDocument()
+		val size: Int = adapter?.itemCount ?: 0
+		
+		if (size == 0 || adapter == null) {
+			Toast.makeText(context, "No Transactions", Toast.LENGTH_LONG).show()
+			return pdfDocument
+		} else {
+			val paint = Paint()
+			
+			for (i in 0 until size) {
+				val holder: RecyclerView.ViewHolder = adapter.createViewHolder(rv, adapter.getItemViewType(i))
+				adapter.onBindViewHolder(holder, i)
+				holder.itemView.measure(
+					View.MeasureSpec.makeMeasureSpec(rv.width, View.MeasureSpec.EXACTLY),
+					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+				)
+				holder.itemView.layout(
+					0,
+					0,
+					holder.itemView.measuredWidth,
+					holder.itemView.measuredHeight
+				)
+				holder.itemView.isDrawingCacheEnabled = true
+				holder.itemView.buildDrawingCache()
+				val drawingCache: Bitmap = holder.itemView.drawingCache ?: continue
+				
+				val pageInfo = PdfDocument.PageInfo.Builder(
+					drawingCache.width,
+					drawingCache.height,
+					i + 1
+				).create()
+				val page = pdfDocument.startPage(pageInfo)
+				val canvas = page.canvas
+				canvas.drawBitmap(drawingCache, 0f, 0f, paint)
+				pdfDocument.finishPage(page)
+			}
+		}
+		
+		return pdfDocument
 	}
 }

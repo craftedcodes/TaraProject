@@ -35,10 +35,13 @@ import java.io.FileOutputStream
 import java.time.LocalDate
 import java.util.Calendar
 import android.content.Intent
+import android.graphics.Bitmap
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import android.graphics.Canvas
+import android.graphics.Paint
+import androidx.recyclerview.widget.RecyclerView
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 
@@ -247,6 +250,12 @@ class JournalGratitudeFragment : Fragment() {
 			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
+		
+		// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
+		viewModel.entries.observe(viewLifecycleOwner) { entries ->
+			binding.outerRvGratitudeJournal.adapter =
+				EntryAdapter(requireContext(), entries, viewModel)
+		}
 	}
 	
 	/**
@@ -262,10 +271,21 @@ class JournalGratitudeFragment : Fragment() {
 		binding.startDateTf.text?.clear()
 		binding.endDateTf.text?.clear()
 		
-		// Set the filter button to be semi-transparent and disable its functionality.
+		// Set the filter button to be gone.
 		binding.filterBtn.apply {
 			alpha = 0.4f
 			isEnabled = false
+		}
+		
+		// Set the export button to be visible.
+		binding.exportBtn.apply {
+			visibility = View.VISIBLE
+			isEnabled = true
+		}
+		
+		// Set the reset button to be invisible.
+		binding.resetBtn.apply {
+			visibility = View.GONE
 		}
 		
 		// Fetch all journal entries asynchronously from the database.
@@ -397,8 +417,8 @@ class JournalGratitudeFragment : Fragment() {
 			showAlertDialog(pages.size)
 			
 			// 3. Generate the PDF file based on the provided pages.
-			val pdfDocument = PdfDocument()
-			generatePdfFromPages(pages, pdfDocument, widthPixels, heightPixels)
+			val pdfDocument = viewModel.generatePDF(binding.outerRvGratitudeJournal)
+			//generatePdfFromPages(pages, pdfDocument, widthPixels, heightPixels)
 			
 			// 4. Save and send the generated PDF.
 			saveAndSendPdf(pdfDocument)
@@ -453,7 +473,16 @@ class JournalGratitudeFragment : Fragment() {
 		heightPixels: Float
 	) {
 		for (entryView in entries) {
-			measureAndLayoutEntryView(entryView, widthPixels, heightPixels)
+			entryView.measure(
+				View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
+				View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
+			)
+			var tAxis = 0
+			if (entryView != entries.first()) {
+				tAxis += entryView.measuredHeight + 8
+			}
+			
+			measureAndLayoutEntryView(entryView, widthPixels, heightPixels, tAxis)
 			entryView.draw(canvas)
 		}
 	}
@@ -468,13 +497,15 @@ class JournalGratitudeFragment : Fragment() {
 	private fun measureAndLayoutEntryView(
 		entryView: View,
 		widthPixels: Float,
-		heightPixels: Float
+		heightPixels: Float,
+		tAxis: Int
 	) {
 		entryView.measure(
 			View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
 			View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
 		)
-		entryView.layout(0, 0, entryView.measuredWidth, entryView.measuredHeight)
+		val bAxis = entryView.measuredHeight + tAxis
+		entryView.layout(0, tAxis, entryView.measuredWidth, bAxis)
 		Log.d(
 			"PDF_EXPORT",
 			"Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}"
@@ -726,9 +757,11 @@ class JournalGratitudeFragment : Fragment() {
 				// Insert the new entry into the repository and retrieve its ID.
 				val entryId = repository.insertEntry(entry)
 				
+				val userId = auth.currentUser!!.uid
 				// Access the shared preferences to get and update the count of entries.
 				val countSharedPreferences =
-					requireContext().getSharedPreferences("countPref", Context.MODE_PRIVATE)
+					requireContext().getSharedPreferences(userId, Context.MODE_PRIVATE)
+				
 				
 				// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
 				var count = countSharedPreferences.getInt("count", 0)
@@ -769,4 +802,5 @@ class JournalGratitudeFragment : Fragment() {
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
+	
 }
