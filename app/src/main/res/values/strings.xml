@@ -194,4 +194,7 @@
     <string name="login_failed_please_check_your_password">Login failed. Please check your password.</string>
     <string name="please_verify_your_email_address_before_logging_in">Please verify your email address before logging in.</string>
     <string name="no_account_found_with_this_email_address">No account found with this email address.</string>
+    <string name="permission_required">Permission required.</string>
+    <string name="you_can_send_emergency_sms_now">You can send emergency SMS now.</string>
+    <string name="message_sent">Message sent!</string>
 </resources>

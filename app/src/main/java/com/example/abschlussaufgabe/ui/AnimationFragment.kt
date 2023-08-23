@@ -47,7 +47,7 @@ class AnimationFragment : Fragment() {
 	}
 	
 	// Lazy initialization of encrypted shared preferences specifically for storing contact-related data.
-// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
+	// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
 	private val contactSharedPreferences by lazy {
 		EncryptedSharedPreferences.create(
 			requireContext(),
@@ -158,7 +158,7 @@ class AnimationFragment : Fragment() {
 		binding.getHelpBtn.setOnClickListener {
 			if (onClickRequestPermission()) {
 				smsManager.sendTextMessage(contactNumber, null, contactMessage, null, null)
-				Toast.makeText(context, "Message sent!", Toast.LENGTH_SHORT).show()
+				Toast.makeText(context, getString(R.string.message_sent), Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
@@ -179,7 +179,7 @@ class AnimationFragment : Fragment() {
 				Log.i("Permission: ", "Granted")
 				Toast.makeText(
 					requireContext(),
-					"You can send emergency SMS now.",
+					getString(R.string.you_can_send_emergency_sms_now),
 					Toast.LENGTH_SHORT
 				).show()
 			} else {
@@ -200,7 +200,8 @@ class AnimationFragment : Fragment() {
 				requireActivity(),
 				Manifest.permission.SEND_SMS
 			) -> {
-				Toast.makeText(requireContext(), "Permission required.", Toast.LENGTH_SHORT).show()
+				Toast.makeText(requireContext(),
+					getString(R.string.permission_required), Toast.LENGTH_SHORT).show()
 				requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
 				return false
 			}
