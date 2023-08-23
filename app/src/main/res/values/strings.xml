@@ -191,4 +191,7 @@
     <string name="attached_are_the_exported_gratitude_journal_entries">Attached are the exported gratitude journal entries.</string>
     <string name="gratitude_journal_entries">Gratitude Journal Entries</string>
     <string name="pdf_export">PDF_EXPORT</string>
+    <string name="login_failed_please_check_your_password">Login failed. Please check your password.</string>
+    <string name="please_verify_your_email_address_before_logging_in">Please verify your email address before logging in.</string>
+    <string name="no_account_found_with_this_email_address">No account found with this email address.</string>
 </resources>

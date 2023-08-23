@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.abschlussaufgabe.viewModel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentLoginBinding
 
 /**
@@ -69,19 +70,21 @@ class LoginFragment : Fragment() {
 			when {
 				currentUser == null -> {
 					// No account found with this email address.
-					Toast.makeText(context, "No account found with this email address.", Toast.LENGTH_SHORT).show()
+					Toast.makeText(context,
+						getString(R.string.no_account_found_with_this_email_address), Toast.LENGTH_SHORT).show()
 				}
 				isEmailVerified == false -> {
 					// The email address hasn't been verified.
 					Toast.makeText(
 						context,
-						"Please verify your email address before logging in.",
+						getString(R.string.please_verify_your_email_address_before_logging_in),
 						Toast.LENGTH_SHORT
 					).show()
 				}
 				!success -> {
 					// The password was incorrect or there was another issue during login.
-					Toast.makeText(context, "Login failed. Please check your password.", Toast.LENGTH_SHORT).show()
+					Toast.makeText(context,
+						getString(R.string.login_failed_please_check_your_password), Toast.LENGTH_SHORT).show()
 				}
 				else -> {
 					// Login was successful and the email address was verified.

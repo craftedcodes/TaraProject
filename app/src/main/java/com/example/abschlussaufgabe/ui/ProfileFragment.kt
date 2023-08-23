@@ -155,7 +155,7 @@ class ProfileFragment : Fragment() {
 		val number = contactSharedPreferences.getString("contact_number", "")
 		val message = contactSharedPreferences.getString(
 			"contact_message",
-			"I am in an emotional emergency. Please call me."
+			R.string.i_am_in_an_emotional_emergency_please_call_me.toString()
 		)
 		
 		// Set the avatar image, contact name, number, and message to the respective UI elements.

@@ -73,6 +73,7 @@
 
         <!-- Attention card view, initially set to gone -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/attention_card"
             style="@style/AttentionCardView"
             android:layout_weight="2"
             android:visibility="gone">
@@ -90,6 +91,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
+                    app:tint="?attr/colorOnError"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/activate_get_help_button" />
 
