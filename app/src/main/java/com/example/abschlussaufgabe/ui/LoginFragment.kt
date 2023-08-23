@@ -63,20 +63,34 @@ class LoginFragment : Fragment() {
 		
 		// Observe the LiveData objects from the ViewModel.
 		viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
-			if (success) {
-				// Check if the email is verified.
-				if (FirebaseAuth.getInstance().currentUser?.isEmailVerified == true) {
-					// Navigate to the animation fragment upon successful login.
-					findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
-				} else {
-					// Inform the user to verify their email before logging in.
-					Toast.makeText(context, "Please verify your email address before logging in.", Toast.LENGTH_SHORT).show()
+			val currentUser = FirebaseAuth.getInstance().currentUser
+			val isEmailVerified = currentUser?.isEmailVerified
+			
+			when {
+				currentUser == null -> {
+					// No account found with this email address.
+					Toast.makeText(context, "No account found with this email address.", Toast.LENGTH_SHORT).show()
 				}
-			} else {
-				// Display a toast message if login fails.
-				Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+				isEmailVerified == false -> {
+					// The email address hasn't been verified.
+					Toast.makeText(
+						context,
+						"Please verify your email address before logging in.",
+						Toast.LENGTH_SHORT
+					).show()
+				}
+				!success -> {
+					// The password was incorrect or there was another issue during login.
+					Toast.makeText(context, "Login failed. Please check your password.", Toast.LENGTH_SHORT).show()
+				}
+				else -> {
+					// Login was successful and the email address was verified.
+					findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAnimationFragment())
+				}
 			}
+			
 		}
+		
 	}
 	
 	/**
