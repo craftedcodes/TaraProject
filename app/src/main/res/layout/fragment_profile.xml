@@ -188,6 +188,7 @@
                             android:layout_height="24dp"
                             android:layout_margin="8dp"
                             android:contentDescription="@string/no_emergency_contact_registered_yet"
+                            app:tint="?attr/colorErrorContainer"
                             android:src="@drawable/iconexclamation" />
 
                         <!-- Attention text and add contact button -->
@@ -211,7 +212,7 @@
                                 android:backgroundTint="?attr/colorErrorContainer"
                                 android:fontFamily="@font/psychedelic_lotus"
                                 android:text="@string/add_contact"
-                                android:textColor="?attr/colorOnError" />
+                                android:textColor="?attr/colorError" />
 
                         </LinearLayout>
 

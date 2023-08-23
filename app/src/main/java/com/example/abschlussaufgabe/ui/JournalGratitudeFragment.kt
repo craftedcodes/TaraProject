@@ -35,13 +35,10 @@ import java.io.FileOutputStream
 import java.time.LocalDate
 import java.util.Calendar
 import android.content.Intent
-import android.graphics.Bitmap
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import android.graphics.Canvas
-import android.graphics.Paint
-import androidx.recyclerview.widget.RecyclerView
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 
@@ -79,7 +76,7 @@ class JournalGratitudeFragment : Fragment() {
 			// This ensures that the UI remains responsive while the data is being fetched.
 			viewModel.getAllEntriesAsync()
 		} else {
-			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
@@ -194,6 +191,10 @@ class JournalGratitudeFragment : Fragment() {
 		binding.exportBtn.setOnClickListener {
 			showExportConfirmationDialog()
 		}
+		
+		binding.deleteAllBtn.setOnClickListener {
+			deleteAllEntries()
+		}
 	}
 	
 	/**
@@ -247,7 +248,7 @@ class JournalGratitudeFragment : Fragment() {
 				exportBtn.visibility = View.GONE
 			}
 		} else {
-			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
             findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 		
@@ -352,11 +353,11 @@ class JournalGratitudeFragment : Fragment() {
 			// Create a new AlertDialog builder with the current context.
 			AlertDialog.Builder(requireContext())
 				// Set the title of the dialog.
-				.setTitle("Export Entries")
+				.setTitle(R.string.export_entries)
 				// Set the message to inform the user about the consequences of exporting.
-				.setMessage("Do you really want to export the gratitude journal entries? If you confirm, all entries will be deleted from your device.")
+				.setMessage(R.string.do_you_really_want_to_export_the_gratitude_journal_entries)
 				// Set the positive button to confirm the export action.
-				.setPositiveButton("Confirm") { _, _ ->
+				.setPositiveButton(R.string.confirm) { _, _ ->
 					// Process the entry views and get the pages
 					val pages = processEntryViews()
 					
@@ -367,11 +368,11 @@ class JournalGratitudeFragment : Fragment() {
 					showAlertDialog(pages.size)
 				}
 				// Set the negative button to cancel the export action.
-				.setNegativeButton("Cancel", null)
+				.setNegativeButton(R.string.quit, null)
 				// Display the created dialog to the user.
 				.show()
 		} else {
-			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
             findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
@@ -423,7 +424,7 @@ class JournalGratitudeFragment : Fragment() {
 			// 4. Save and send the generated PDF.
 			saveAndSendPdf(pdfDocument)
 		} else {
-			Toast.makeText(requireContext(), "Please log in first!", Toast.LENGTH_SHORT).show()
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
             findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
@@ -507,7 +508,7 @@ class JournalGratitudeFragment : Fragment() {
 		val bAxis = entryView.measuredHeight + tAxis
 		entryView.layout(0, tAxis, entryView.measuredWidth, bAxis)
 		Log.d(
-			"PDF_EXPORT",
+			getString(R.string.pdf_export),
 			"Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}"
 		)
 	}
@@ -538,10 +539,11 @@ class JournalGratitudeFragment : Fragment() {
 			type = "text/plain"
 			
 			// Set the email subject.
-			putExtra(Intent.EXTRA_SUBJECT, "Gratitude Journal Entries")
+			putExtra(Intent.EXTRA_SUBJECT, getString(R.string.gratitude_journal_entries))
 			
 			// Set the email body text.
-			putExtra(Intent.EXTRA_TEXT, "Attached are the exported gratitude journal entries.")
+			putExtra(Intent.EXTRA_TEXT,
+				getString(R.string.attached_are_the_exported_gratitude_journal_entries))
 			
 			putExtra(Intent.EXTRA_EMAIL, arrayOf(auth.currentUser!!.email))
 			
@@ -565,7 +567,7 @@ class JournalGratitudeFragment : Fragment() {
 			emailResultLauncher.launch(emailIntent)
 		} else {
 			// If no email client is installed, display a toast message to the user.
-			Toast.makeText(context, "No email client found.", Toast.LENGTH_SHORT).show()
+			Toast.makeText(context, R.string.no_email_client_found, Toast.LENGTH_SHORT).show()
 		}
 	}
 	
@@ -579,18 +581,16 @@ class JournalGratitudeFragment : Fragment() {
 			val alertDialogBuilder = AlertDialog.Builder(requireContext())
 			
 			// Set the title and message for the AlertDialog.
-			alertDialogBuilder.setTitle("Export Confirmation")
-			alertDialogBuilder.setMessage("Was the export successful? Do you want to delete all entries from your device?")
+			alertDialogBuilder.setTitle(R.string.export_entries)
+			alertDialogBuilder.setMessage(R.string.was_the_export_successful)
 			
 			// Set the positive button to confirm the deletion.
-			alertDialogBuilder.setPositiveButton("Yes, Delete") { _, _ ->
-				// Call the deleteAll() function from the viewModel to delete all entries.
-				viewModel.deleteAllEntries()
-				Toast.makeText(context, "All entries have been deleted.", Toast.LENGTH_SHORT).show()
+			alertDialogBuilder.setPositiveButton(R.string.yes_it_was_successful) { _, _ ->
+				binding.deleteAllBtn.visibility = View.VISIBLE
 			}
 			
 			// Set the negative button to cancel the deletion.
-			alertDialogBuilder.setNegativeButton("Cancel", null)
+			alertDialogBuilder.setNegativeButton(R.string.quit, null)
 			
 			// Display the created AlertDialog to the user.
 			alertDialogBuilder.show()
@@ -798,9 +798,17 @@ class JournalGratitudeFragment : Fragment() {
 				}
 			}
 		} else {
-			Toast.makeText(context, "You must be signed in to create a gratitude journal entry.", Toast.LENGTH_SHORT).show()
+			Toast.makeText(context, R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
 	
+	/**
+     * Deletes all entries from the database.
+     */
+	private fun deleteAllEntries() {
+		viewModel.deleteAllEntries()
+		binding.deleteAllBtn.visibility = View.GONE
+		Toast.makeText(context, R.string.all_entries_have_been_deleted, Toast.LENGTH_SHORT).show()
+	}
 }

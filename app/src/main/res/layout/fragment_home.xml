@@ -82,7 +82,7 @@
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
                     android:layout_margin="8dp"
-                    app:tint="?attr/colorOnError"
+                    app:tint="?attr/colorErrorContainer"
                     android:contentDescription="@string/unlock" />
 
                 <!-- TextView for displaying the attention text -->

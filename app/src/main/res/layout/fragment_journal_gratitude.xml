@@ -182,6 +182,24 @@
 
             </LinearLayout>
 
+                <Button
+                    android:id="@+id/delete_all_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16sp"
+                    android:visibility="gone"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:text="@string/delete_all_entries"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnError"
+                    android:textStyle="bold"
+                    app:icon="@drawable/icontrash"
+                    app:iconTint="?attr/colorOnError"
+                    app:strokeColor="?attr/colorOnError"
+                    app:strokeWidth="3dp"
+                    tools:ignore="ButtonStyle" />
+
                 <!-- RecyclerView for the gratitude journal entries -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/outer_rv_gratitude_journal"

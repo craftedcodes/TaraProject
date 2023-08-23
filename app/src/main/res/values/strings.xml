@@ -169,4 +169,26 @@
     <string name="_50">€ 50</string>
     <string name="subscribe">Subscribe</string>
     <string name="subscription_plans">Subscription Plans</string>
+    <string name="delete_all_entries">Delete all entries</string>
+    <string name="please_log_in_first">Please log in first!</string>
+    <string name="export_entries">Export Entries</string>
+    <string name="do_you_really_want_to_export_the_gratitude_journal_entries">Do you really want to export the gratitude journal entries?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_email_client_found">No email client found.</string>
+    <string name="export_confirmation">Export Confirmation</string>
+    <string name="was_the_export_successful">Was the export successful?</string>
+    <string name="yes_it_was_successful">Yes, it was successful</string>
+    <string name="you_must_be_signed_in_to_create_a_gratitude_journal_entry">You must be signed in to create a gratitude journal entry.</string>
+    <string name="all_entries_have_been_deleted">All entries have been deleted.</string>
+    <string name="you_must_be_signed_in_to_save_an_avatar">You must be signed in to save an avatar.</string>
+    <string name="you_have_to_be_logged_in_to_view_your_emergency_contact_details">You have to be logged in to view your emergency contact details.</string>
+    <string name="you_have_to_be_logged_in_to_save_your_emergency_contact_details">You have to be logged in to save your emergency contact details.</string>
+    <string name="login_to_save_your_gratitude">Login to save your gratitude!</string>
+    <string name="please_enter_the_date_in_the_format_dd_mm_yyyy">Please enter the date in the format DD.MM.YYYY</string>
+    <string name="please_login_to_filter_entries">Please login to filter entries</string>
+    <string name="you_must_be_signed_in">You must be signed in.</string>
+    <string name="attached_are_the_exported_gratitude_journal_entries">Attached are the exported gratitude journal entries.</string>
+    <string name="gratitude_journal_entries">Gratitude Journal Entries</string>
+    <string name="pdf_export">PDF_EXPORT</string>
 </resources>

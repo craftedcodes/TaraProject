@@ -220,7 +220,8 @@ class AvatarEmergencyContactFragment : Fragment() {
 			// Commit the changes to the shared preferences.
 			editor.apply()
 		} else {
-			Toast.makeText(context, "You must be signed in to save an avatar.", Toast.LENGTH_SHORT).show()
+			Toast.makeText(context,
+				getString(R.string.you_must_be_signed_in_to_save_an_avatar), Toast.LENGTH_SHORT).show()
 			findNavController().navigate(AvatarEmergencyContactFragmentDirections.actionAvatarEmergencyContactFragmentToHomeFragment())
 		}
 	}

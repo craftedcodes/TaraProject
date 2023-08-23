@@ -154,7 +154,8 @@ class EmergencyContactFragment : Fragment() {
 			// Set the retrieved country code to the CountryCodePicker.
 			binding.ccp.setCountryForPhoneCode(savedCountryCode?.replace("+", "")?.toIntOrNull() ?: 49)
 		} else {
-			Toast.makeText(context, "You have to be logged in to view your emergency contact details.", Toast.LENGTH_LONG).show()
+			Toast.makeText(context,
+				getString(R.string.you_have_to_be_logged_in_to_view_your_emergency_contact_details), Toast.LENGTH_LONG).show()
 			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
 		}
 	}
@@ -196,7 +197,8 @@ class EmergencyContactFragment : Fragment() {
 			contactSharedPreferences.edit()
 				.putString("contact_message", binding.messageTv.text.toString()).apply()
 		} else {
-			Toast.makeText(context, "You have to be logged in to save your emergency contact details.", Toast.LENGTH_LONG).show()
+			Toast.makeText(context,
+				getString(R.string.you_have_to_be_logged_in_to_save_your_emergency_contact_details), Toast.LENGTH_LONG).show()
             findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
 		}
 		

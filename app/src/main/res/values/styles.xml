@@ -96,7 +96,7 @@
     <style name="AttentionTextView" parent="TextAppearance.AppCompat">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">?attr/colorOnError</item>
+        <item name="android:textColor">?attr/colorErrorContainer</item>
         <item name="android:fontFamily">@font/merriweathersans_variablefont_wght</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>

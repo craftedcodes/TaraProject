@@ -97,76 +97,8 @@ class AnimationFragment : Fragment() {
 		binding.affirmationNavImageBtn.setOnClickListener {
 			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToAffirmationFragment())
 		}
-		/* Wird auskommentiert, bis ich eine Lösung dafür habe, wenn jemand keine biometrische Authentifizierung hat.
-		// Initialize SharedPreferences
-		val sharedPreferences =
-			requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE)
 		
-		// Initialize BiometricPrompt for Authentication
-		val executor = context?.let { ContextCompat.getMainExecutor(it) }
-		
-		val biometricPrompt: BiometricPrompt? = null
-		executor?.let {
-			BiometricPrompt(this, it, object : BiometricPrompt.AuthenticationCallback() {
-				override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-					super.onAuthenticationError(errorCode, errString)
-					if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-						// user clicked negative button
-						// TODO: Alternative Authentifizierungsmethode neben biometrischer Authentifizierung einbauen
-					} else {
-						// Error message
-						Toast.makeText(context, "Authentication error", Toast.LENGTH_SHORT).show()
-					}
-				}
-				
-				override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-					super.onAuthenticationSucceeded(result)
-					// Authentication succeeded!
-					sharedPreferences.edit().putInt("failedAttempts", 0).apply() // reset failed attempts
-					findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToJournalGratitudeFragment())
-				}
-				
-				override fun onAuthenticationFailed() {
-					super.onAuthenticationFailed()
-					// Authentication failed
-					val failedAttempts = sharedPreferences.getInt("failedAttempts", 0)
-					if (failedAttempts >= 4) {
-						// 5 failed attempts, set the block time
-						sharedPreferences.edit().putLong("blockTime", System.currentTimeMillis()).apply()
-					} else {
-						// increment failed attempts
-						sharedPreferences.edit().putInt("failedAttempts", failedAttempts + 1).apply()
-					}
-					Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT).show()
-				}
-			})
-			
-			val promptInfo = BiometricPrompt.PromptInfo.Builder()
-				.setTitle("Biometric authentication")
-				.setSubtitle("Log in using your biometric credential")
-				.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)  // Allow device credential
-				.build()
-			*/
-		// Set onClickListener for the floating action button to the gratitude journal.
-		// When clicked, it navigates to the gratitude journal fragment.
 		binding.gratitudeNavBtn.setOnClickListener {
-			/*val failedAttempts = sharedPreferences.getInt("failedAttempts", 0)
-			val blockTime = sharedPreferences.getLong("blockTime", 0)
-			if (failedAttempts >= 5 && System.currentTimeMillis() - blockTime < 10 * 60 * 1000) {
-				// 10 minutes have not passed since the last failed attempt
-				Toast.makeText(
-					context,
-					"Please wait for 10 minutes before trying again",
-					Toast.LENGTH_SHORT
-				).show()
-			} else {
-				// reset failed attempts if 10 minutes have passed
-				if (System.currentTimeMillis() - blockTime >= 10 * 60 * 1000) {
-					sharedPreferences.edit().putInt("failedAttempts", 0).apply()
-				}
-				biometricPrompt?.authenticate(promptInfo)
-			}
-		}*/
 			// Navigate to the gratitude journal fragment when the gratitude navigation button is clicked.
 			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToJournalGratitudeFragment())
 		}

@@ -258,7 +258,8 @@ class EntryGratitudeFragment : Fragment() {
 					photoDownloadedTextView?.visibility = View.VISIBLE
 				}
 			} else {
-				Toast.makeText(context, "Login to save your gratitude!", Toast.LENGTH_LONG).show()
+				Toast.makeText(context,
+					getString(R.string.login_to_save_your_gratitude), Toast.LENGTH_LONG).show()
 				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
 		})
@@ -286,7 +287,8 @@ class EntryGratitudeFragment : Fragment() {
 				// Check if the entered date matches the pattern.
 				if (!datePattern.matches(date)) {
 					// If the date does not match the pattern, show an error message and return.
-					dateField.error = "Please enter the date in the format DD.MM.YYYY"
+					dateField.error =
+						getString(R.string.please_enter_the_date_in_the_format_dd_mm_yyyy)
 					return@setOnClickListener
 				}
 				
@@ -319,7 +321,7 @@ class EntryGratitudeFragment : Fragment() {
 					repository.updateEntry(entry)
 				}
 			} else {
-				Toast.makeText(context, "Login to save your gratitude!", Toast.LENGTH_LONG).show()
+				Toast.makeText(context, R.string.login_to_save_your_gratitude, Toast.LENGTH_LONG).show()
 				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
 		}
@@ -455,17 +457,7 @@ class EntryGratitudeFragment : Fragment() {
 			override fun afterTextChanged(s: Editable) {
 				// Check if the entered text matches the predefined date pattern.
 				Log.e("EntryGratitudeFragment", s.toString())
-				if (!datePattern.matches(s.toString())) {
-					// If the date format is incorrect, set the background tint of the dateField to red.
-					saveButton.isEnabled = false
-					saveButton.alpha = 0.4f
-					Log.e("EntryGratitudeFragment", "Date format is incorrect")
-				} else {
-					// If the date format is correct, set the background tint of the dateField to black.
-					saveButton.isEnabled = true
-					saveButton.alpha = 1f
-					Log.e("EntryGratitudeFragment", "Date format is correct")
-				}
+				
 				// Check if the input string matches the expected date pattern.
 				if (datePattern.matches(s.toString())) {
 					// Split the date string into its day, month, and year components.
@@ -479,9 +471,8 @@ class EntryGratitudeFragment : Fragment() {
 						// Display a message to the user indicating that future dates are not allowed.
 						Toast.makeText(
 							context,
-							"Awesome that you look forward to the future, but only entries from the present or past can be added to the gratitude journal! 😃",
-							Toast.LENGTH_LONG
-						).show()
+							"Only entries from the present or past can be added. 😃",
+							Toast.LENGTH_SHORT).show()
 						
 						// Disable the save button since the input is invalid.
 						saveButton.isEnabled = false
