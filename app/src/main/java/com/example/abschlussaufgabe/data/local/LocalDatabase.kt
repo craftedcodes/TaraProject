@@ -34,7 +34,6 @@ abstract class LocalDatabase : RoomDatabase() {
 		// If the instance is not initialized, it will be created.
 		fun getDatabase(context: Context): LocalDatabase {
 			val sharedPassphrase = EncryptionService.getInstance(context).getPassphrase()
-			Log.e(DB_TAG, "passphrase: $sharedPassphrase")
 			val passphrase: ByteArray = SQLiteDatabase.getBytes(sharedPassphrase.toCharArray())
 			val factory = SupportFactory(passphrase)
 			synchronized(LocalDatabase::class.java) {

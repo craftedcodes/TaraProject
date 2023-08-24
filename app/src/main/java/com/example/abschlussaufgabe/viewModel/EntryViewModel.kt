@@ -109,7 +109,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	 *
 	 * @param id The unique ID of the gratitude journal entry to be deleted.
 	 */
-	fun deleteEntryById(id: Long) {
+	fun deleteEntryById(id: Long, isTrashIcon: Boolean = false, date: String = LocalDate.now().toString()) {
 		// Launch a coroutine within the ViewModel's scope.
 		viewModelScope.launch {
 			// Delete the entry with the specified ID from the repository.
@@ -118,8 +118,10 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 			// Update the LiveData with the latest entries from the repository.
 			_entries.value = repository.getAllEntriesAsync()
 			
+			if (isTrashIcon) {
 			// Decrement the entry count by 1.
-			updateEntryCount(-1)
+			updateEntryCount(-1, date)
+			}
 		}
 	}
 	
@@ -170,7 +172,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	 *
 	 * @param countEntry The count of entries to be saved.
 	 */
-	fun saveCountEntryToFirestore(countEntry: Int) {
+	fun saveCountEntryToFirestore(countEntry: Int, date: String = LocalDate.now().toString()) {
 		// Retrieve the Firestore collection associated with the current user's UID.
 		val collection = Firebase.auth.currentUser?.let { db.collection(it.uid) }
 		
@@ -180,7 +182,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		// TODO: Wenn der User das Datum anpasst, soll der Name des Dokuments angepasst werden.
 		
 		// Save the count to the Firestore document corresponding to the current date.
-		collection?.document("${LocalDate.now()}")?.set(data)
+		collection?.document(date)?.set(data)
 	}
 	
 	/**
@@ -189,7 +191,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	 * @param change The amount by which the entry count should be adjusted.
 	 *               This can be positive (for adding entries) or negative (for removing entries).
 	 */
-	private fun updateEntryCount(change: Int) {
+	private fun updateEntryCount(change: Int, date: String = LocalDate.now().toString()) {
 		val userId = Firebase.auth.currentUser?.uid
 		
 		// Retrieve the shared preferences for storing the count of entries.
@@ -205,7 +207,7 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		countSharedPreferences.edit().putInt("count", count).apply()
 		
 		// Save the updated count to Firestore.
-		saveCountEntryToFirestore(count)
+		saveCountEntryToFirestore(count, date)
 		
 		// Indicate that the loading or processing status is complete.
 		_loading.value = ApiStatus.DONE

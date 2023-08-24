@@ -96,9 +96,6 @@ dependencies {
     implementation "app.rive:rive-android:5.0.0"
     implementation "androidx.startup:startup-runtime:1.1.1"
 
-    // Biometric Authentication Dependency
-    implementation 'androidx.biometric:biometric:1.1.0'
-
     // Firebase Dependencies
     implementation platform('com.google.firebase:firebase-bom:32.2.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'

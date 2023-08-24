@@ -67,7 +67,7 @@ class EntryAdapter(
 		
 		// Handle entry deletion.
 		holder.binding.deleteBtn.setOnClickListener {
-			viewModel.deleteEntryById(entry.id)
+			viewModel.deleteEntryById(entry.id, isTrashIcon = true, "${entry.year}-${entry.month}-${entry.day}")
 			viewModel.getAllEntriesAsync()
 		}
 		

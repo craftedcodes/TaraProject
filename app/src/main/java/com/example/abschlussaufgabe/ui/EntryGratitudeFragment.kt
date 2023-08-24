@@ -1,6 +1,7 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -38,6 +39,7 @@ import com.schubau.tara.databinding.FragmentEntryGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.time.LocalDate
 import java.util.Calendar
 
 // Constant for logging purposes.
@@ -317,6 +319,35 @@ class EntryGratitudeFragment : Fragment() {
 				val image = selectedImage?.let { bitmapToByteArray(it) }
 				entry.image = image
 				
+				
+				val userId = auth.currentUser!!.uid
+				// Access the shared preferences to get and update the count of entries.
+				val countSharedPreferences =
+					requireContext().getSharedPreferences(userId, Context.MODE_PRIVATE)
+				
+				// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
+				var count = countSharedPreferences.getInt("count", 0)
+				
+				// Check if the date from shared preferences is different from the current date.
+				// If it is, reset the count to 0, indicating a new day.
+				if (date != LocalDate.now().toString()) {
+					count = 0
+				}
+				
+				// Increment the count of entries.
+				count++
+				
+				// Update the date in shared preferences to the current date.
+				countSharedPreferences.edit().putString("date", date).apply()
+				
+				// Update the count of entries in shared preferences.
+				countSharedPreferences.edit().putInt("count", count).apply()
+				Log.e(ENTRY_GRATITUDE_FRAGMENT_TAG, "month = ${entry.month}")
+				
+				// Increment the count for the specific day in Firestore.
+				viewModel.saveCountEntryToFirestore(count, "${entry.year}-${entry.month}-${entry.day}")
+				
+				
 				lifecycleScope.launch(Dispatchers.IO) {
 					repository.updateEntry(entry)
 				}
@@ -324,6 +355,7 @@ class EntryGratitudeFragment : Fragment() {
 				Toast.makeText(context, R.string.login_to_save_your_gratitude, Toast.LENGTH_LONG).show()
 				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
+			
 		}
 	}
 	
