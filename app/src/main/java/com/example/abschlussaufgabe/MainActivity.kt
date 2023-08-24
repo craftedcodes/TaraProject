@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import com.example.abschlussaufgabe.services.EncryptionService
 
 /**
  * MainActivity is the primary activity of the application.
@@ -26,6 +27,13 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        sharedPreferences = getSharedPreferences("first_run", MODE_PRIVATE)
+        val isFirstRun = sharedPreferences.getBoolean("first_run", false)
+        if (!isFirstRun) {
+            EncryptionService.getInstance(applicationContext).generatePassphrase()
+            sharedPreferences.edit().putBoolean("first_run", true).apply()
+        }
     
         // Initialize the shared preferences with the name "mode_shared_prefs".
         sharedPreferences = getSharedPreferences("mode_shared_prefs", MODE_PRIVATE)

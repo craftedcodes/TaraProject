@@ -3,6 +3,7 @@ package com.example.abschlussaufgabe.data.local
 
 // Importing necessary libraries and classes.
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,16 +11,17 @@ import androidx.room.TypeConverters
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.helper.TConverter
+import com.example.abschlussaufgabe.services.EncryptionService
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
+const val DB_TAG = "DATABASE"
 // Annotation to define a Room database with the entities it contains and its version.
 @Database(entities = [Entry::class, Quote::class], version = 1)
 @TypeConverters(TConverter::class)
 // Abstract class for the Room database.
 // It extends RoomDatabase and contains all the DAOs for the database.
 abstract class LocalDatabase : RoomDatabase() {
-	
 	// Abstract method to get the DAO for all entities.
 	abstract fun databaseDao(): LocalDatabaseDao
 	
@@ -31,7 +33,9 @@ abstract class LocalDatabase : RoomDatabase() {
 		// Method to get the database instance.
 		// If the instance is not initialized, it will be created.
 		fun getDatabase(context: Context): LocalDatabase {
-			val passphrase: ByteArray = SQLiteDatabase.getBytes("userEnteredPassphrase".toCharArray())
+			val sharedPassphrase = EncryptionService.getInstance(context).getPassphrase()
+			Log.e(DB_TAG, "passphrase: $sharedPassphrase")
+			val passphrase: ByteArray = SQLiteDatabase.getBytes(sharedPassphrase.toCharArray())
 			val factory = SupportFactory(passphrase)
 			synchronized(LocalDatabase::class.java) {
 				if (!::INSTANCE.isInitialized) {

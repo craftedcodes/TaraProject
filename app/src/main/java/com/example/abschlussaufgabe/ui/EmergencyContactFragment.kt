@@ -38,7 +38,7 @@ class EmergencyContactFragment : Fragment() {
 	}
 	
 	// Lazy initialization of encrypted shared preferences specifically for storing avatar-related data.
-// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
+	// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
 	private val avatarSharedPreferences by lazy {
 		EncryptedSharedPreferences.create(
 			requireContext(),
@@ -50,7 +50,7 @@ class EmergencyContactFragment : Fragment() {
 	}
 	
 	// Lazy initialization of encrypted shared preferences specifically for storing contact-related data.
-// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
+	// Uses the AES256_SIV scheme for key encryption and AES256_GCM for value encryption.
 	private val contactSharedPreferences by lazy {
 		EncryptedSharedPreferences.create(
 			requireContext(),
