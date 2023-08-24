@@ -1,9 +1,11 @@
 package com.schubau.tara
 
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 
 /**
  * MainActivity is the primary activity of the application.
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
-        
+    
         // Retrieve the user's dark mode preference from shared preferences.
         val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
         
@@ -47,6 +49,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+    
+        val color = if (isDarkMode) {R.color.bg_dark} else {R.color.bg_light}
+    
+        window.navigationBarColor = ContextCompat.getColor(this, color)
     }
 }
 

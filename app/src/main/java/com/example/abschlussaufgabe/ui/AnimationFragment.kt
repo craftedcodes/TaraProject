@@ -25,7 +25,6 @@ import app.rive.runtime.kotlin.core.Loop
 import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentAnimationBinding
 
-
 // Constants for shared preferences key.
 private const val CONTACT_PREFS = "contact_prefs"
 
@@ -33,10 +32,10 @@ private const val CONTACT_PREFS = "contact_prefs"
  * A Fragment that displays an animation and provides biometric authentication functionality.
  */
 class AnimationFragment : Fragment() {
-	
 	// Property to hold the binding object for this fragment.
 	private lateinit var binding: FragmentAnimationBinding
 	
+	// Lazy initialization of the SmsManager.
 	private val smsManager: SmsManager by lazy { requireContext().getSystemService(SmsManager::class.java) as SmsManager }
 	
 	// Lazy initialization of the main encryption key using the AES256_GCM scheme.

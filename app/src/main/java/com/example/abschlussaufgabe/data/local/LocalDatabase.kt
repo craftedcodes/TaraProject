@@ -10,6 +10,8 @@ import androidx.room.TypeConverters
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.data.datamodels.Quote
 import com.example.abschlussaufgabe.helper.TConverter
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 
 // Annotation to define a Room database with the entities it contains and its version.
 @Database(entities = [Entry::class, Quote::class], version = 1)
@@ -29,6 +31,8 @@ abstract class LocalDatabase : RoomDatabase() {
 		// Method to get the database instance.
 		// If the instance is not initialized, it will be created.
 		fun getDatabase(context: Context): LocalDatabase {
+			val passphrase: ByteArray = SQLiteDatabase.getBytes("userEnteredPassphrase".toCharArray())
+			val factory = SupportFactory(passphrase)
 			synchronized(LocalDatabase::class.java) {
 				if (!::INSTANCE.isInitialized) {
 					// Building the database instance.
@@ -37,6 +41,7 @@ abstract class LocalDatabase : RoomDatabase() {
 						LocalDatabase::class.java,
 						"database"
 					)
+						.openHelperFactory(factory)
 						//.addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Add the migration to the database builder
 						.build()
 				}

@@ -114,7 +114,11 @@ dependencies {
     implementation "androidx.security:security-crypto:1.1.0-alpha06"
 
     // SQLCipher Dependency
-    implementation 'net.zetetic:sqlcipher-android:4.5.4@aar'
+    implementation "net.zetetic:android-database-sqlcipher:4.4.2"
 
+    // SQLite Dependency
+    implementation "androidx.sqlite:sqlite:2.3.1"
+
+    // iTextPdf Dependency
     implementation 'com.itextpdf:itextpdf:5.0.6'
 }

@@ -91,7 +91,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
-                    app:tint="?attr/colorOnError"
+                    app:tint="?attr/colorErrorContainer"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/activate_get_help_button" />
 

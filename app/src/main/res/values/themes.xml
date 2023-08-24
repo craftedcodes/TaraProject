@@ -14,6 +14,7 @@
         <item name="colorOnPrimary">@color/other_tx_light</item>
         <item name="colorOnSecondary">@color/other_tx_light</item>
         <item name="colorOnError">@color/error_c_tx_light</item>
+        <item name="homeAsUpIndicator">@color/error_bg_light</item>
 
         <!-- Container Background Colors -->
         <item name="colorSurface">@color/surface_c_bg_light</item>
