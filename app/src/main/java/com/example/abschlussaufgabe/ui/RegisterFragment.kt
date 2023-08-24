@@ -63,6 +63,8 @@ class RegisterFragment : Fragment() {
 		// Observes registration success and navigates or shows a toast accordingly.
 		viewModel.registerSuccess.observe(viewLifecycleOwner) { success ->
 			if (success) {
+				Toast.makeText(context,
+					getString(R.string.verify_your_email_address), Toast.LENGTH_SHORT).show()
 				findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
 			} else {
 				Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT).show()
@@ -101,20 +103,20 @@ class RegisterFragment : Fragment() {
 	 * Displays a dialog with clickable terms and privacy policy links for registration.
 	 */
 	private fun showRegistrationDialog() {
-		val message = SpannableString("By registering, you accept our Terms and Conditions and Privacy Policy.")
-		val termsStart = message.indexOf("Terms and Conditions")
-		val privacyStart = message.indexOf("Privacy Policy")
+		val message = SpannableString(getString(R.string.by_registering_you_accept_our_terms_and_conditions_and_privacy_policy))
+		val termsStart = message.indexOf(getString(R.string.terms_and_conditions))
+		val privacyStart = message.indexOf(getString(R.string.privacy_policy))
 		
 		// Adds clickable spans for terms and privacy policy.
 		message.apply {
-			setSpan(createClickableSpan(R.id.termsConditionsFragment), termsStart, termsStart + "Terms and Conditions".length, 0)
-			setSpan(createClickableSpan(R.id.privacyFragment), privacyStart, privacyStart + "Privacy Policy".length, 0)
+			setSpan(createClickableSpan(R.id.termsConditionsFragment), termsStart, termsStart + getString(R.string.terms_and_conditions).length, 0)
+			setSpan(createClickableSpan(R.id.privacyFragment), privacyStart, privacyStart + getString(R.string.privacy_policy).length, 0)
 		}
 		
 		// Builds and displays the AlertDialog.
 		AlertDialog.Builder(requireContext())
 			.setMessage(message)
-			.setPositiveButton("Accept") { _, _ ->
+			.setPositiveButton(getString(R.string.accept)) { _, _ ->
 				val email = binding.eMailTf.text.toString()
 				val password = binding.passwordTf.text.toString()
 				val repeatPassword = binding.repeatPasswordTf.text.toString()
@@ -122,10 +124,11 @@ class RegisterFragment : Fragment() {
 				if (password == repeatPassword) {
 					viewModel.registerUser(email, password)
 				} else {
-					Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+					Toast.makeText(context,
+						getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT).show()
 				}
 			}
-			.setNegativeButton("Decline", null)
+			.setNegativeButton(getString(R.string.decline), null)
 			.create()
 			.apply {
 				show()
@@ -148,32 +151,50 @@ class RegisterFragment : Fragment() {
 	}
 	
 	/**
-	 * Sets up text watchers to validate input fields and determine the state of the register button.
+	 * Sets up text watchers for the input fields to handle validation and UI updates.
 	 */
 	private fun setupTextWatchers() {
+		// Lambda function to validate the input fields and update the register button state.
 		val validateFields = {
 			val email = binding.eMailTf.text.toString()
 			val password = binding.passwordTf.text.toString()
 			val repeatPassword = binding.repeatPasswordTf.text.toString()
+			
+			// Checks if a plan (monthly or yearly) is selected.
 			val isPlanSelected = binding.perMonth.strokeWidth == resources.getDimensionPixelSize(R.dimen.selected_stroke_width) ||
 					binding.perYear.strokeWidth == resources.getDimensionPixelSize(R.dimen.selected_stroke_width)
 			
-			// Updates the state of the register button based on validation.
+			// Updates the state of the register button based on the validation results.
 			binding.registerBtn.apply {
 				isEnabled = email.isNotEmpty() && isValidPassword(password) && repeatPassword.isNotEmpty() && isPlanSelected
 				alpha = if (isEnabled) 1f else 0.4f
 			}
 		}
 		
+		// TextWatcher specific to the password field. It validates the password and shows a toast if it's invalid.
+		val passwordTextWatcher = object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+			override fun afterTextChanged(s: Editable) {
+				validateFields()
+				if (!isValidPassword(s.toString())) {
+					Toast.makeText(context,
+						getString(R.string.min_12_glyphs_upper_and_lower_case_numbers_special_characters), Toast.LENGTH_LONG).show()
+				}
+				validateFields()
+			}
+		}
+		
+		// General TextWatcher for other input fields. It simply calls the validateFields function.
 		val textWatcher = object : TextWatcher {
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 			override fun afterTextChanged(s: Editable) { validateFields() }
 		}
 		
-		// Attaches the TextWatcher to the input fields.
+		// Attaches the TextWatcher to the respective input fields.
 		binding.eMailTf.addTextChangedListener(textWatcher)
-		binding.passwordTf.addTextChangedListener(textWatcher)
+		binding.passwordTf.addTextChangedListener(passwordTextWatcher)
 		binding.repeatPasswordTf.addTextChangedListener(textWatcher)
 	}
 	

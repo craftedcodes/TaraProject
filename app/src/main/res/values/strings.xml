@@ -197,4 +197,11 @@
     <string name="permission_required">Permission required.</string>
     <string name="you_can_send_emergency_sms_now">You can send emergency SMS now.</string>
     <string name="message_sent">Message sent!</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="verify_your_email_address">Verify your email address</string>
+    <string name="by_registering_you_accept_our_terms_and_conditions_and_privacy_policy">By registering, you accept our Terms and Conditions and Privacy Policy.</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="min_12_glyphs_upper_and_lower_case_numbers_special_characters">Min. 12 glyphs, upper and lower case, numbers, special characters</string>
 </resources>
