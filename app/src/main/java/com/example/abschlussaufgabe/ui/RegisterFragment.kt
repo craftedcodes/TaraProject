@@ -113,25 +113,33 @@ class RegisterFragment : Fragment() {
 			setSpan(createClickableSpan(R.id.privacyFragment), privacyStart, privacyStart + getString(R.string.privacy_policy).length, 0)
 		}
 		
-		// Builds and displays the AlertDialog.
+		// Creates an AlertDialog to confirm user actions.
 		AlertDialog.Builder(requireContext())
+			// Sets the message to be displayed in the AlertDialog.
 			.setMessage(message)
+			// Configures the positive (accept) button of the AlertDialog.
 			.setPositiveButton(getString(R.string.accept)) { _, _ ->
 				val email = binding.eMailTf.text.toString()
 				val password = binding.passwordTf.text.toString()
 				val repeatPassword = binding.repeatPasswordTf.text.toString()
 				
+				// Checks if the entered password matches the repeated password.
 				if (password == repeatPassword) {
+					// Calls the viewModel function to register the user with the provided email and password.
 					viewModel.registerUser(email, password)
 				} else {
+					// Displays a toast message if the passwords do not match.
 					Toast.makeText(context,
 						getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT).show()
 				}
 			}
+			// Configures the negative (decline) button of the AlertDialog. No action is taken when this button is clicked.
 			.setNegativeButton(getString(R.string.decline), null)
 			.create()
 			.apply {
+				// Displays the AlertDialog.
 				show()
+				// Enables link interactions in the AlertDialog's message.
 				findViewById<TextView>(android.R.id.message)?.movementMethod = LinkMovementMethod.getInstance()
 			}
 	}
