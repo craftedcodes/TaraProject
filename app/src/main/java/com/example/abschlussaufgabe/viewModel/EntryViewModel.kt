@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.util.Log
@@ -213,21 +214,43 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		_loading.value = ApiStatus.DONE
 	}
 	
+	/**
+	 * Generates a PDF document from a given RecyclerView.
+	 *
+	 * @param rv The RecyclerView to be converted into a PDF document.
+	 * @return The generated PdfDocument.
+	 */
 	fun generatePDF(rv: RecyclerView): PdfDocument {
 		
+		// Get the adapter of the RecyclerView.
 		val adapter = rv.adapter
+		
+		// Create a new PdfDocument.
 		val pdfDocument = PdfDocument()
+		
+		// Get the number of items in the adapter or default to 0 if the adapter is null.
 		val size: Int = adapter?.itemCount ?: 0
 		
+		// Check if the adapter is empty or null.
 		if (size == 0 || adapter == null) {
+			// Display a toast message indicating no transactions.
 			Toast.makeText(context, "No Transactions", Toast.LENGTH_LONG).show()
+			
+			// Return the empty PdfDocument.
 			return pdfDocument
 		} else {
+			// Create a new Paint object.
 			val paint = Paint()
 			
+			// Iterate over each item in the adapter.
 			for (i in 0 until size) {
+				// Create a new ViewHolder for the current item type.
 				val holder: RecyclerView.ViewHolder = adapter.createViewHolder(rv, adapter.getItemViewType(i))
+				
+				// Bind the data to the ViewHolder.
 				adapter.onBindViewHolder(holder, i)
+				
+				// Measure and layout the itemView.
 				holder.itemView.measure(
 					View.MeasureSpec.makeMeasureSpec(rv.width, View.MeasureSpec.EXACTLY),
 					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
@@ -238,22 +261,49 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 					holder.itemView.measuredWidth,
 					holder.itemView.measuredHeight
 				)
-				holder.itemView.isDrawingCacheEnabled = true
-				holder.itemView.buildDrawingCache()
-				val drawingCache: Bitmap = holder.itemView.drawingCache ?: continue
 				
+				// Get a Bitmap representation of the itemView.
+				val bitmap = getBitmapFromView(holder.itemView)
+				
+				// Create a new page in the PdfDocument with the dimensions of the Bitmap.
 				val pageInfo = PdfDocument.PageInfo.Builder(
-					drawingCache.width,
-					drawingCache.height,
+					bitmap.width,
+					bitmap.height,
 					i + 1
 				).create()
 				val page = pdfDocument.startPage(pageInfo)
+				
+				// Draw the Bitmap onto the page.
 				val canvas = page.canvas
-				canvas.drawBitmap(drawingCache, 0f, 0f, paint)
+				canvas.drawBitmap(bitmap, 0f, 0f, paint)
+				
+				// Finish writing to the page.
 				pdfDocument.finishPage(page)
 			}
 		}
 		
+		// Return the generated PdfDocument.
 		return pdfDocument
 	}
+	
+	/**
+	 * Converts a View into a Bitmap.
+	 *
+	 * @param view The View to be converted.
+	 * @return The Bitmap representation of the View.
+	 */
+	private fun getBitmapFromView(view: View): Bitmap {
+		// Create a new Bitmap with the dimensions of the View.
+		val bitmap = Bitmap.createBitmap(
+			view.width, view.height, Bitmap.Config.ARGB_8888
+		)
+		
+		// Draw the View onto the Bitmap.
+		val canvas = Canvas(bitmap)
+		view.draw(canvas)
+		
+		// Return the Bitmap.
+		return bitmap
+	}
+	
 }
