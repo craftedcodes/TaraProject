@@ -143,6 +143,20 @@ class AffirmationFragment : Fragment() {
 			findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToAnimationFragment())
 		}
 		
+		// Set onClickListener for the home button text.
+		// When clicked, it navigates to the animation fragment.
+        binding.homeBtnText.setOnClickListener {
+            findNavController().navigate(AffirmationFragmentDirections.actionAffirmationFragmentToAnimationFragment())
+        }
+        
+        // Set onClickListener for the refresh quote button.
+        // When clicked, it refreshes the current quote from the ViewModel.
+        binding.refreshQuoteBtn.setOnClickListener {
+	        lifecycleScope.launch {
+		        viewModel.refreshQuote()
+	        }
+        }
+		
 		// Set onClickListener for the animation navigation image button.
 		// When clicked, it navigates to the animation fragment.
 		binding.animationNavImageBtn.setOnClickListener {
