@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
             app:endIconMode="clear_text"
-            app:helperText="@string/e_mail"
+            app:helperText="@string/email"
             app:helperTextEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText

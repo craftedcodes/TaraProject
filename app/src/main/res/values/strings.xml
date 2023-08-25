@@ -1,19 +1,19 @@
 <resources>
-    <string name="app_name">Tara</string>
-    <string name="login">Login</string>
+    <string name="app_name" translatable="false">Tara</string>
+    <string name="login" translatable="false">Login</string>
     <string name="no_account_yet">No account yet?</string>
     <string name="register_now">Register now</string>
     <string name="unlock">Unlock get help button, gratitude journal, affirmations and more features by logging in.</string>
     <string name="info_payment">To cover data storage and the service we provide you, as well as feed our developers (they become wild beasts without pizza and Coke 😂), we are forced to request a subscription fee from you. But, please, be assured we try our best to keep it as low as possible.</string>
-    <string name="your_mail_address_ym_com">your-mail-address@ym.com</string>
+    <string name="your_mail_address_ym_com" translatable="false">your-mail-address@ym.com</string>
     <string name="password">Password</string>
     <string name="min_12_glyphs">Min. 12 Glyphs</string>
     <string name="repeat_password">Repeat Password</string>
-    <string name="paypal">PayPal</string>
+    <string name="paypal" translatable="false">PayPal</string>
     <string name="credit_card">Credit Card</string>
     <string name="quit">Quit</string>
     <string name="register">Register</string>
-    <string name="tara">Tara</string>
+    <string name="tara" translatable="false">Tara</string>
     <string name="successfully_unlocked_features">You successfully unlocked all features: Animation screen with Get Help button, healthy positivity affirmations, gratitude journal, user statistics.</string>
     <string name="activate_get_help_button">To activate the get help button, you have to add an emergency contact in your profile.</string>
     <string name="get_help">Get Help</string>
@@ -26,26 +26,26 @@
     <string name="gratitude_data">Gratitude Data</string>
     <string name="no_emergency_contact_registered_yet">No emergency contact registered yet.</string>
     <string name="add_contact">Add Contact</string>
-    <string name="logout">Logout</string>
+    <string name="logout" translatable="false">Logout</string>
     <string name="settings">Settings</string>
     <string name="your_gratitude_notes_in_the_last_12_months">Your gratitude notes in the last 12 months</string>
     <string name="your_gratitude_notes_compared_to_past_30_days">Your gratitude notes compared to past 30 days</string>
     <string name="your_gratitude_note_activity">Your gratitude note activity</string>
     <string name="your_emergency_contact">Your Emergency Contact</string>
     <string name="add_avatar_image">Add avatar image</string>
-    <string name="name">Name</string>
+    <string name="name" translatable="false">Name</string>
     <string name="phone_number">Phone number</string>
     <string name="message">Message</string>
     <string name="push_messages">Push Messages</string>
-    <string name="faq">FAQ</string>
+    <string name="faq" translatable="false">FAQ</string>
     <string name="about">About</string>
     <string name="privacy">Privacy</string>
     <string name="terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="imprint">Imprint</string>
     <string name="contact">Contact</string>
-    <string name="english">English</string>
-    <string name="deutsch">Deutsch</string>
-    <string name="im_augenblick_wird_die_deutsche_sprache_noch_nicht_unterst_tzt">Im Augenblick wird die deutsche Sprache noch nicht unterstützt. Wir werden dies alsbald möglich ändern.</string>
+    <string name="english" translatable="false">English</string>
+    <string name="deutsch" translatable="false">Deutsch</string>
+    <string name="im_augenblick_wird_die_deutsche_sprache_noch_nicht_unterst_tzt" translatable="false">Im Augenblick wird die deutsche Sprache noch nicht unterstützt. Wir werden dies alsbald möglich ändern.</string>
     <string name="is_my_data_safe">Is my data safe?</string>
     <string name="no_data_is_100_safe">No data is 100% safe, but we do our best to optimize the security of the app by encryption, not asking for obsolete data and provide you avatar pictures.</string>
     <string name="what_is_a_meditation_and_gratitude_journal_app_and_how_does_it_work">What is a meditation and gratitude journal app and how does it work?</string>
@@ -55,8 +55,7 @@
     <string name="a_wish_for_positive_impact">A wish for positive impact</string>
     <string name="introducing_tara_the_mental_health_app_designed_to_guide_you">Introducing Tara, the mental health app designed to guide you on your journey towards emotional wellness. Named after the goddess of compassion, this app is designed to help those struggling with mental health issues by providing a range of tools to improve emotional well-being. Tara features an animation of a glowing lotus that serves as a guide for breathing exercises to help you relax and focus. In addition, the app provides daily healthy positivity affirmations to encourage a positive outlook on life. And in case of an emotional emergency, the app offers an emergency call button for immediate help. One of the standout features of Tara is the gratitude journal, which encourages users to document happy moments in their life and slowly shift their focus towards positivity. By reflecting on the good things in life, users can cultivate a sense of gratitude and appreciation, which can have a positive impact on overall mental health. The inspiration behind the creation of Tara comes from the loss of friends to depression, anxiety, and suicide. The founder of the app knows that there is no guarantee that Tara will solve all mental health issues, but she hopes that the app can make a positive impact on the world and help at least a little bit. With Tara, users can take proactive steps towards improving their mental health and emotional well-being.</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="email">Email</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
@@ -68,11 +67,11 @@
     <string name="navigation_to_animation">Navigation to animation</string>
     <string name="refresh_button">Refresh button</string>
     <string name="navigation_to_gratitude_journal">Navigation to gratitude journal</string>
-    <string name="filter">Filter</string>
+    <string name="filter" translatable="false">Filter</string>
     <string name="placeholder_affirmation">It\'s okay to not be okay.</string>
-    <string name="placeholder_appreciation">Photo by Janine Joles on Unsplash</string>
+    <string name="placeholder_appreciation" translatable="false">Photo by Janine Joles on Unsplash</string>
     <string name="password_forgotten">Password forgotten</string>
-    <string name="placeholder_date">August 15, 2022</string>
+    <string name="placeholder_date" translatable="false">August 15, 2022</string>
     <string name="placeholder_entry_text">Got a flower</string>
     <string name="trash_icon">Trash Icon</string>
     <string name="edit_button">Edit Button</string>
@@ -83,17 +82,17 @@
     <string name="gallery">Gallery</string>
     <string name="line_chart">Line chart</string>
     <string name="heart_graphic">Heart graphic</string>
-    <string name="heat_map">Heat map</string>
+    <string name="heat_map" translatable="false">Heat map</string>
     <string name="export_gratitude_journal_entries">Export Gratitude Journal Entries</string>
     <string name="avatar_image">avatar image</string>
-    <string name="mom">Mom</string>
-    <string name="_0123_234786239">0123/234786239</string>
+    <string name="mom" translatable="false">Mom</string>
+    <string name="_0123_234786239" translatable="false">0123/234786239</string>
     <string name="i_have_a_panic_attack_right_now_please_call_me">I have a panic attack right now. Please call me.</string>
     <string name="please_note">Please note that every time you tap the \'Get Help\' button, an SMS is sent and you will incur costs accordingly.</string>
     <string name="repeat_the_chosen_password">Repeat the chosen password</string>
     <string name="dd_mm_yyyy">DD.MM.YYYY</string>
     <string name="enter_the_name_of_your_contact">Enter the name of your contact</string>
-    <string name="_01234567890">01234567890</string>
+    <string name="_01234567890" translatable="false">01234567890</string>
     <string name="write_here_your_emergency_message">Write here your emergency message</string>
     <string name="which_beautiful_things_have_happened">Which beautiful things have happened?</string>
     <string name="which_great_things_have_happened_today">Which great things have happened today?</string>
@@ -183,7 +182,7 @@
     <string name="you_must_be_signed_in">You must be signed in.</string>
     <string name="attached_are_the_exported_gratitude_journal_entries">Attached are the exported gratitude journal entries.</string>
     <string name="gratitude_journal_entries">Gratitude Journal Entries</string>
-    <string name="pdf_export">PDF_EXPORT</string>
+    <string name="pdf_export" translatable="false">PDF_EXPORT</string>
     <string name="login_failed_please_check_your_password">Login failed. Please check your password.</string>
     <string name="please_verify_your_email_address_before_logging_in">Please verify your email address before logging in.</string>
     <string name="no_account_found_with_this_email_address">No account found with this email address.</string>
