@@ -3,7 +3,7 @@
     <string-array name="languages">
         <item>English</item>
         <item>Deutsch</item>
-        <item>Ελληνική</item>
+        <item>Ελληνικά</item>
         <item>Español</item>
     </string-array>
 </resources>
