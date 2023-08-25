@@ -1,11 +1,12 @@
 package com.example.abschlussaufgabe.ui
 
 // Required imports for the class.
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,7 +20,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -77,28 +79,27 @@ class EntryGratitudeFragment : Fragment() {
 	// Declare a variable for the entryId. Initially, it is set to 0.
 	private var entryId: Long = 0L
 	
-	// Register a callback for the result of the "get content" activity.
-	// This will be triggered when an image is selected from the gallery.
+	/**
+	 * Callback for the result of the "get content" activity.
+	 * Triggered when an image is selected from the gallery.
+	 */
 	private val getContent =
 		registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 			uri?.let {
 				Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the gallery")
-				photoDownloadedTextView?.visibility = View.VISIBLE
-				
-				// Open an InputStream for the selected image URI.
-				val inputStream = requireActivity().contentResolver.openInputStream(it)
-				
-				// Decode the InputStream into a Bitmap.
-				selectedImage = BitmapFactory.decodeStream(inputStream)
-				
-				// Update the state of the save button based on the selected image and text field content.
-				updateSaveButtonState()
 				
 				// Get the TextView reference from the binding to indicate that a photo has been downloaded.
 				photoDownloadedTextView = binding.photoDownloadedTv
 				
-				// Set the visibility of the TextView to VISIBLE to show the user that the photo has been downloaded.
+				// Make the TextView visible to indicate that a photo has been downloaded.
 				photoDownloadedTextView?.visibility = View.VISIBLE
+				
+				// Get the image from the URI and store it in selectedImage
+				val inputStream = requireContext().contentResolver.openInputStream(uri)
+				selectedImage = BitmapFactory.decodeStream(inputStream)
+				
+				// Update the save button state based on the selected image and text field content.
+				updateSaveButtonState()
 			}
 		}
 	
@@ -163,7 +164,7 @@ class EntryGratitudeFragment : Fragment() {
 			bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
 			
 			// Compress the scaled bitmap into the ByteArrayOutputStream.
-			bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
+			bitmapValue.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
 		}
 		
 		// Convert the ByteArrayOutputStream into a ByteArray and return it.
@@ -188,6 +189,8 @@ class EntryGratitudeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Call the super method to ensure proper initialization of the view.
 		super.onViewCreated(view, savedInstanceState)
+		
+		binding.lifecycleOwner = viewLifecycleOwner
 		
 		// Initialize the EntryRepository by getting the database and passing it to the repository.
 		val database = LocalDatabase.getDatabase(requireContext())
@@ -320,6 +323,7 @@ class EntryGratitudeFragment : Fragment() {
 				entry.image = image
 				
 				
+				
 				val userId = auth.currentUser!!.uid
 				// Access the shared preferences to get and update the count of entries.
 				val countSharedPreferences =
@@ -417,7 +421,7 @@ class EntryGratitudeFragment : Fragment() {
 		// Set an onClickListener for the gallery button.
 		// When this button is clicked, it navigates to the gallery fragment.
 		galleryButton.setOnClickListener {
-			getContent.launch("image/*")
+			onClickRequestPermission()
 		}
 		
 		// Set an onClickListener for the quit button.
@@ -537,5 +541,47 @@ class EntryGratitudeFragment : Fragment() {
 	 */
 	private fun formatDate(day: Int, month: Int, year: Int): String {
 		return String.format("%02d.%02d.%04d", day, month, year)
+	}
+	
+	private val requestStoragePermissionLauncher =
+		registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+			if (isGranted) {
+				getContent.launch("image/*")
+			} else {
+				Toast.makeText(requireContext(),
+					getString(R.string.permission_to_read_the_gallery_was_denied), Toast.LENGTH_SHORT).show()
+			}
+		}
+	
+	/**
+	 * Check for permissions before attempting to pick an image.
+	 * If permissions are granted, launch the image picker.
+	 *
+	 * @return Boolean indicating if the image picker was launched.
+	 */
+	private fun onClickRequestPermission(): Boolean {
+		return when {
+			ContextCompat.checkSelfPermission(
+				requireContext(),
+				Manifest.permission.READ_EXTERNAL_STORAGE
+			) == PackageManager.PERMISSION_GRANTED -> {
+				getContent.launch("image/*")
+				true
+			}
+			
+			ActivityCompat.shouldShowRequestPermissionRationale(
+				requireActivity(),
+				Manifest.permission.READ_EXTERNAL_STORAGE
+			) -> {
+				Toast.makeText(requireContext(), "Permission to read the gallery is required to load images from the gallery", Toast.LENGTH_SHORT).show()
+				requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+				return false
+			}
+			
+			else -> {
+				requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+				return false
+			}
+		}
 	}
 }

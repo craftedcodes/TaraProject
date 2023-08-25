@@ -196,4 +196,5 @@
     <string name="by_registering_you_accept_our_terms_and_conditions_and_privacy_policy">By registering, you accept our Terms and Conditions and Privacy Policy.</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="min_12_glyphs_upper_and_lower_case_numbers_special_characters">Min. 12 glyphs, upper and lower case, numbers, special characters</string>
+    <string name="permission_to_read_the_gallery_was_denied">Permission to read the gallery was denied</string>
 </resources>

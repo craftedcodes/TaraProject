@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -304,6 +305,12 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		
 		// Return the Bitmap.
 		return bitmap
+	}
+	
+	private val selectedImageUri = MutableLiveData<Uri?>()
+	
+	fun loadImageFromGallery(uri: Uri?) {
+		selectedImageUri.value = uri
 	}
 	
 }

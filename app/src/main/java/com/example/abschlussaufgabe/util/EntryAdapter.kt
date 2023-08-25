@@ -7,11 +7,14 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.abschlussaufgabe.data.datamodels.Entry
 import com.example.abschlussaufgabe.ui.JournalGratitudeFragmentDirections
 import com.example.abschlussaufgabe.viewModel.EntryViewModel
+import com.schubau.tara.R
 import com.schubau.tara.databinding.EntryRvBinding
 
 const val ENTRY_ADAPTER_TAG = "EntryAdapter"
@@ -57,8 +60,30 @@ class EntryAdapter(
 		if (imageByteArray == null) {
 			holder.binding.gratitudeIv.visibility = View.GONE
 		} else {
-			val image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
-			holder.binding.gratitudeIv.setImageBitmap(image)
+			// Determine the dimensions of the image without actually loading it
+			val options = BitmapFactory.Options().apply {
+				inJustDecodeBounds = true
+			}
+			BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size, options)
+			val imageHeight = options.outHeight
+			val imageWidth = options.outWidth
+			
+			// Calculate a scaling factor based on the dimensions of the image and the desired maximum size
+			val desiredSize = 500  // Adjust this value as needed
+			val scaleFactor = (imageWidth / desiredSize).coerceAtMost(imageHeight / desiredSize)
+			
+			// Load the image with the scaling factor
+			options.apply {
+				inJustDecodeBounds = false
+				inSampleSize = scaleFactor
+			}
+			val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size, options)
+			
+			// Use Coil to load the image asynchronously
+			holder.binding.gratitudeIv.load(bitmap) {
+				placeholder(R.drawable.placeholder_image) // Set placeholder image while loading
+				error(R.drawable.placeholder_image) // Set the error image
+			}
 		}
 		
 		// Set the date and text of the entry.
