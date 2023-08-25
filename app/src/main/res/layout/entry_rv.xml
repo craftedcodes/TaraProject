@@ -34,7 +34,8 @@
                 <ImageView
                     android:id="@+id/gratitude_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="320dp"
                     android:src="@drawable/placeholder_image"
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/placeholder_entry_text" />
