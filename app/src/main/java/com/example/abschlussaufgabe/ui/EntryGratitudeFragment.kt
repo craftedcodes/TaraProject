@@ -164,7 +164,7 @@ class EntryGratitudeFragment : Fragment() {
 	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray? {
 		try {
 			// Target size for the resulting ByteArray in KB.
-			val targetSizeKB = 240
+			val targetSizeKB = 50
 			
 			// Create a ByteArrayOutputStream to hold the bitmap's bytes.
 			val outputStream = ByteArrayOutputStream()
