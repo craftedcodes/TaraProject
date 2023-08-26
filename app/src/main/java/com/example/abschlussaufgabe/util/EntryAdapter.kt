@@ -69,7 +69,7 @@ class EntryAdapter(
 			val imageWidth = options.outWidth
 			
 			// Calculate a scaling factor based on the dimensions of the image and the desired maximum size
-			val desiredSize = 500  // Adjust this value as needed
+			val desiredSize = 600
 			val scaleFactor = (imageWidth / desiredSize).coerceAtMost(imageHeight / desiredSize)
 			
 			// Load the image with the scaling factor

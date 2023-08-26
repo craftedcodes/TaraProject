@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -40,6 +41,7 @@ import com.schubau.tara.R
 import com.schubau.tara.databinding.FragmentEntryGratitudeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.util.Calendar
@@ -72,6 +74,7 @@ class EntryGratitudeFragment : Fragment() {
 	private lateinit var quitButton: Button
 	private lateinit var saveButton: Button
 	private var photoDownloadedTextView: TextView? = null
+	private lateinit var loadingProgressBar: ProgressBar
 	
 	// Declare a variable for the selected image. Initially, it is null.
 	private var selectedImage: Bitmap? = null
@@ -85,21 +88,41 @@ class EntryGratitudeFragment : Fragment() {
 	 */
 	private val getContent =
 		registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-			uri?.let {
-				Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the gallery")
-				
-				// Get the TextView reference from the binding to indicate that a photo has been downloaded.
-				photoDownloadedTextView = binding.photoDownloadedTv
-				
-				// Make the TextView visible to indicate that a photo has been downloaded.
-				photoDownloadedTextView?.visibility = View.VISIBLE
-				
-				// Get the image from the URI and store it in selectedImage
-				val inputStream = requireContext().contentResolver.openInputStream(uri)
-				selectedImage = BitmapFactory.decodeStream(inputStream)
-				
-				// Update the save button state based on the selected image and text field content.
-				updateSaveButtonState()
+			loadingProgressBar.visibility = View.VISIBLE
+			
+			lifecycleScope.launch(Dispatchers.IO) {
+				try {
+					uri?.let {
+						Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the gallery")
+						
+						// Get the TextView reference from the binding to indicate that a photo has been downloaded.
+						photoDownloadedTextView = binding.photoDownloadedTv
+						
+						// Make the TextView visible to indicate that a photo has been downloaded.
+						photoDownloadedTextView?.visibility = View.VISIBLE
+						
+						// Get the image from the URI and store it in selectedImage
+						val inputStream = requireContext().contentResolver.openInputStream(uri)
+						selectedImage = BitmapFactory.decodeStream(inputStream)
+						
+					}
+					withContext(Dispatchers.Main) {
+						// Update the save button state based on the selected image and text field content.
+						updateSaveButtonState()
+					}
+				} catch (e: Exception) {
+					withContext(Dispatchers.Main) {
+						Toast.makeText(
+							requireContext(),
+							"A mistake happened: ${e.message}",
+							Toast.LENGTH_SHORT
+						).show()
+					}
+				} finally {
+					withContext(Dispatchers.Main) {
+						loadingProgressBar.visibility = View.GONE
+					}
+				}
 			}
 		}
 	
@@ -138,37 +161,43 @@ class EntryGratitudeFragment : Fragment() {
 	 * @param bitmap The original bitmap to be converted.
 	 * @return A ByteArray representation of the bitmap.
 	 */
-	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
-		// Target size for the resulting ByteArray in KB.
-		val targetSizeKB = 400
-		
-		// Create a ByteArrayOutputStream to hold the bitmap's bytes.
-		val outputStream = ByteArrayOutputStream()
-		
-		// Start with the original bitmap.
-		var bitmapValue = bitmap
-		
-		// Initial compression quality.
-		val quality = 100
-		
-		// Compress the bitmap into the ByteArrayOutputStream.
-		bitmapValue.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-		
-		// While the size of the ByteArray exceeds the target size and the bitmap's width is greater than or equal to 50,
-		// scale down the bitmap and compress it again.
-		while (outputStream.toByteArray().size > targetSizeKB * 1024 && bitmapValue.width >= 50) {
-			// Reset the ByteArrayOutputStream to remove the previous bytes.
-			outputStream.reset()
+	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray? {
+		try {
+			// Target size for the resulting ByteArray in KB.
+			val targetSizeKB = 240
 			
-			// Scale down the bitmap by half.
-			bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
+			// Create a ByteArrayOutputStream to hold the bitmap's bytes.
+			val outputStream = ByteArrayOutputStream()
 			
-			// Compress the scaled bitmap into the ByteArrayOutputStream.
-			bitmapValue.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
+			// Start with the original bitmap.
+			var bitmapValue = bitmap
+			
+			// Initial compression quality.
+			val quality = 100
+			
+			// Compress the bitmap into the ByteArrayOutputStream.
+			bitmapValue.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+			
+			// While the size of the ByteArray exceeds the target size and the bitmap's width is greater than or equal to 50,
+			// scale down the bitmap and compress it again.
+			while (outputStream.toByteArray().size > targetSizeKB * 1024 && bitmapValue.width >= 50) {
+				// Reset the ByteArrayOutputStream to remove the previous bytes.
+				outputStream.reset()
+				
+				// Scale down the bitmap by half.
+				bitmapValue = scaleBitmap(bitmapValue, bitmapValue.width / 2)
+				
+				// Compress the scaled bitmap into the ByteArrayOutputStream.
+				bitmapValue.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
+			}
+			
+			// Convert the ByteArrayOutputStream into a ByteArray and return it.
+			return outputStream.toByteArray()
+		} catch (e: Exception) {
+			// Log the exception for debugging purposes.
+			Log.e("BitmapToByteArray", "Error while converting bitmap to byte array: ${e.message}")
+			return null
 		}
-		
-		// Convert the ByteArrayOutputStream into a ByteArray and return it.
-		return outputStream.toByteArray()
 	}
 	
 	// Inflate the layout for this fragment using data binding within onCreateView
@@ -263,8 +292,10 @@ class EntryGratitudeFragment : Fragment() {
 					photoDownloadedTextView?.visibility = View.VISIBLE
 				}
 			} else {
-				Toast.makeText(context,
-					getString(R.string.login_to_save_your_gratitude), Toast.LENGTH_LONG).show()
+				Toast.makeText(
+					context,
+					getString(R.string.login_to_save_your_gratitude), Toast.LENGTH_LONG
+				).show()
 				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
 		})
@@ -279,87 +310,92 @@ class EntryGratitudeFragment : Fragment() {
 		val datePattern = "(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}".toRegex()
 		
 		// Set an onClickListener for the save button.
-		// When this button is clicked, it navigates to the journalGratitudeFragment.
 		saveButton.setOnClickListener {
-			if (auth.currentUser != null) {
-				// Navigate to the JournalGratitudeFragment using the generated navigation action.
-				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
-				
-				// Retrieve the entered date and text from the respective input fields.
-				val date = dateField.text.toString()
-				val text = textField.text.toString()
-				
-				// Check if the entered date matches the pattern.
-				if (!datePattern.matches(date)) {
-					// If the date does not match the pattern, show an error message and return.
-					dateField.error =
-						getString(R.string.please_enter_the_date_in_the_format_dd_mm_yyyy)
-					return@setOnClickListener
-				}
-				
-				// Split the date string into day, month, and year.
-				val dateParts = date.split(".")
-				val day = dateParts[0].toInt()
-				val month = dateParts[1].toInt()
-				val year = dateParts[2].toInt()
-				
-				// Retrieve the existing entry
-				val entry = existingEntry.value
-				
-				// Check if the date has been changed
-				if (day != entry!!.day || month != entry.month || year != entry.year) {
-					// If the date has been changed, update the date of the entry
-					entry.day = day
-					entry.month = month
-					entry.year = year
-				}
-				
-				// Update the text of the entry
-				entry.text = text
-				
-				// If an image has been selected, convert it to a ByteArray for storage.
-				// If no image has been selected, this will be null.
-				val image = selectedImage?.let { bitmapToByteArray(it) }
-				entry.image = image
-				
-				
-				
-				val userId = auth.currentUser!!.uid
-				// Access the shared preferences to get and update the count of entries.
-				val countSharedPreferences =
-					requireContext().getSharedPreferences(userId, Context.MODE_PRIVATE)
-				
-				// Retrieve the current count of entries from shared preferences. Default to 0 if not found.
-				var count = countSharedPreferences.getInt("count", 0)
-				
-				// Check if the date from shared preferences is different from the current date.
-				// If it is, reset the count to 0, indicating a new day.
-				if (date != LocalDate.now().toString()) {
-					count = 0
-				}
-				
-				// Increment the count of entries.
-				count++
-				
-				// Update the date in shared preferences to the current date.
-				countSharedPreferences.edit().putString("date", date).apply()
-				
-				// Update the count of entries in shared preferences.
-				countSharedPreferences.edit().putInt("count", count).apply()
-				Log.e(ENTRY_GRATITUDE_FRAGMENT_TAG, "month = ${entry.month}")
-				
-				// Increment the count for the specific day in Firestore.
-				viewModel.saveCountEntryToFirestore(count, "${entry.year}-${entry.month}-${entry.day}")
-				
-				
-				lifecycleScope.launch(Dispatchers.IO) {
+			lifecycleScope.launch(Dispatchers.IO) {
+				if (auth.currentUser != null) {
+					// Retrieve the entered date and text from the input fields.
+					val date = dateField.text.toString()
+					val text = textField.text.toString()
+					
+					// Validate the entered date against the pattern.
+					if (!datePattern.matches(date)) {
+						// Switch to the main thread to display an error message.
+						withContext(Dispatchers.Main) {
+							dateField.error = getString(R.string.please_enter_the_date_in_the_format_dd_mm_yyyy)
+						}
+						return@launch
+					}
+					
+					// Parse the date string into day, month, and year.
+					val dateParts = date.split(".")
+					val day = dateParts[0].toInt()
+					val month = dateParts[1].toInt()
+					val year = dateParts[2].toInt()
+					
+					// Retrieve the existing entry.
+					val entry = existingEntry.value
+					
+					// Check if the date has changed.
+					if (day != entry!!.day || month != entry.month || year != entry.year) {
+						// Update the entry's date if it has changed.
+						entry.day = day
+						entry.month = month
+						entry.year = year
+					}
+					
+					// Update the entry's text.
+					entry.text = text
+					
+					// Convert the selected image to a ByteArray for storage, if any.
+					val image = selectedImage?.let { bitmapToByteArray(it) }
+					entry.image = image
+					
+					// Retrieve the user ID.
+					val userId = auth.currentUser!!.uid
+					
+					// Access shared preferences to get and update the entry count.
+					val countSharedPreferences = requireContext().getSharedPreferences(userId, Context.MODE_PRIVATE)
+					
+					// Retrieve the current entry count from shared preferences, defaulting to 0 if not found.
+					var count = countSharedPreferences.getInt("count", 0)
+					
+					// Reset the count to 0 if the date has changed.
+					if (date != LocalDate.now().toString()) {
+						count = 0
+					}
+					
+					// Increment the entry count.
+					count++
+					
+					// Update the date and count in shared preferences.
+					countSharedPreferences.edit().putString("date", date).apply()
+					countSharedPreferences.edit().putInt("count", count).apply()
+					
+					// Update the Firestore entry count for the specific day.
+					viewModel.saveCountEntryToFirestore(
+						count,
+						"${entry.year}-${entry.month}-${entry.day}"
+					)
+					
+					// Update the entry in the repository.
 					repository.updateEntry(entry)
+					
+					// Switch to the main thread to navigate to the JournalGratitudeFragment.
+					withContext(Dispatchers.Main) {
+						findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
+					}
+				} else {
+					// Switch to the main thread to display a Toast message and navigate to the HomeFragment.
+					withContext(Dispatchers.Main) {
+						Toast.makeText(
+							context,
+							R.string.login_to_save_your_gratitude,
+							Toast.LENGTH_LONG
+						).show()
+						findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
+					}
 				}
-			} else {
-				Toast.makeText(context, R.string.login_to_save_your_gratitude, Toast.LENGTH_LONG).show()
-				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
-			
 		}
 	}
 	
@@ -376,6 +412,7 @@ class EntryGratitudeFragment : Fragment() {
 		galleryButton = binding.galleryBtn
 		quitButton = binding.quitBtn
 		saveButton = binding.saveBtn
+		loadingProgressBar = binding.loadingProgressBar
 	}
 	
 	/**
@@ -508,7 +545,8 @@ class EntryGratitudeFragment : Fragment() {
 						Toast.makeText(
 							context,
 							"Only entries from the present or past can be added. 😃",
-							Toast.LENGTH_SHORT).show()
+							Toast.LENGTH_SHORT
+						).show()
 						
 						// Disable the save button since the input is invalid.
 						saveButton.isEnabled = false
@@ -548,8 +586,11 @@ class EntryGratitudeFragment : Fragment() {
 			if (isGranted) {
 				getContent.launch("image/*")
 			} else {
-				Toast.makeText(requireContext(),
-					getString(R.string.permission_to_read_the_gallery_was_denied), Toast.LENGTH_SHORT).show()
+				Toast.makeText(
+					requireContext(),
+					getString(R.string.permission_to_read_the_gallery_was_denied),
+					Toast.LENGTH_SHORT
+				).show()
 			}
 		}
 	
@@ -573,7 +614,11 @@ class EntryGratitudeFragment : Fragment() {
 				requireActivity(),
 				Manifest.permission.READ_EXTERNAL_STORAGE
 			) -> {
-				Toast.makeText(requireContext(), "Permission to read the gallery is required to load images from the gallery", Toast.LENGTH_SHORT).show()
+				Toast.makeText(
+					requireContext(),
+					"Permission to read the gallery is required to load images from the gallery",
+					Toast.LENGTH_SHORT
+				).show()
 				requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
 				return false
 			}

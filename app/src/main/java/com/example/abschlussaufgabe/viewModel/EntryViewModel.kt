@@ -312,5 +312,4 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	fun loadImageFromGallery(uri: Uri?) {
 		selectedImageUri.value = uri
 	}
-	
 }
