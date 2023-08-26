@@ -60,18 +60,19 @@
         <!-- Main content scroll view -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="640dp"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
             android:background="?attr/backgroundColor">
 
             <!-- Main layout style -->
             <LinearLayout style="@style/MainLayoutStyle"
+                android:layout_height="wrap_content"
                 android:background="?attr/backgroundColor">
 
                 <!-- Chart view card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="400dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_weight="3"
                     android:backgroundTint="?attr/colorOnSurface">
@@ -170,7 +171,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/attention_card"
                     style="@style/AttentionCardView"
-                    android:layout_weight="1"
+                    android:layout_height="160dp"
                     android:visibility="visible">
 
                     <!-- Attention card layout -->
@@ -224,10 +225,9 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/contact_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="280dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="8dp"
-                    android:layout_weight="1"
                     android:backgroundTint="?attr/backgroundColor"
                     android:visibility="gone">
 
@@ -300,7 +300,7 @@
                                 <!-- Contact action buttons -->
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="52dp"
                                     android:layout_gravity="end"
                                     android:gravity="end"
                                     android:background="?attr/backgroundColor"
@@ -352,43 +352,45 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Bottom action bar -->
+                <LinearLayout
+                    android:id="@+id/bottom_action_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:background="?attr/backgroundColor">
+
+                    <!-- Logout button -->
+                    <ImageButton
+                        android:id="@+id/logout_btn"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="?attr/backgroundColor"
+                        android:contentDescription="@string/logout"
+                        android:src="@drawable/iconlogout"
+                        app:tint="?attr/colorSurfaceContainer"
+                        tools:ignore="NestedWeights" />
+
+                    <!-- Settings button -->
+                    <ImageButton
+                        android:id="@+id/settings_btn"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="?attr/backgroundColor"
+                        android:contentDescription="@string/settings"
+                        android:src="@drawable/iconsettings"
+                        app:tint="?attr/colorSurfaceContainer" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </ScrollView>
 
-        <!-- Bottom action bar -->
-        <LinearLayout
-            android:id="@+id/bottom_action_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="?attr/backgroundColor">
 
-            <!-- Logout button -->
-            <ImageButton
-                android:id="@+id/logout_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="?attr/backgroundColor"
-                android:contentDescription="@string/logout"
-                android:src="@drawable/iconlogout"
-                app:tint="?attr/colorSurfaceContainer"
-                tools:ignore="NestedWeights" />
-
-            <!-- Settings button -->
-            <ImageButton
-                android:id="@+id/settings_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="?attr/backgroundColor"
-                android:contentDescription="@string/settings"
-                android:src="@drawable/iconsettings"
-                app:tint="?attr/colorSurfaceContainer" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
