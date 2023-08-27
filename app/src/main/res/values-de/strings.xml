@@ -162,7 +162,7 @@
     <string name="please_enter_the_date_in_the_format_dd_mm_yyyy">Bitte gib das Datum im Format TT.MM.JJJJ ein</string>
     <string name="please_login_to_filter_entries">Bitte einloggen, um Einträge zu filtern</string>
     <string name="you_must_be_signed_in">Du musst eingeloggt sein.</string>
-    <string name="attached_are_the_exported_gratitude_journal_entries">Im Anhang findest du die exportierten Dankbarkeitsbucheinträge.</string>
+    <string name="attached_are_the_exported_gratitude_journal_entries">Im Anhang findest du die exportierten Dankbarkeitstagebucheinträge.</string>
     <string name="gratitude_journal_entries">Dankbarkeitstagebucheinträge</string>
     <string name="login_failed_please_check_your_password">Anmeldung fehlgeschlagen. Bitte überprüfe dein Passwort.</string>
     <string name="please_verify_your_email_address_before_logging_in">Bitte verifiziere deine E-Mail-Adresse, bevor du dich anmeldest.</string>

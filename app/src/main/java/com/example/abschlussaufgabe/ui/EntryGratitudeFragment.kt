@@ -82,49 +82,51 @@ class EntryGratitudeFragment : Fragment() {
 	// Declare a variable for the entryId. Initially, it is set to 0.
 	private var entryId: Long = 0L
 	
-	/**
-	 * Callback for the result of the "get content" activity.
-	 * Triggered when an image is selected from the gallery.
-	 */
-	private val getContent =
-		registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-			loadingProgressBar.visibility = View.VISIBLE
-			
-			lifecycleScope.launch(Dispatchers.IO) {
-				try {
-					uri?.let {
-						Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the gallery")
-						
-						// Get the TextView reference from the binding to indicate that a photo has been downloaded.
-						photoDownloadedTextView = binding.photoDownloadedTv
-						
-						// Make the TextView visible to indicate that a photo has been downloaded.
-						photoDownloadedTextView?.visibility = View.VISIBLE
-						
-						// Get the image from the URI and store it in selectedImage
-						val inputStream = requireContext().contentResolver.openInputStream(uri)
-						selectedImage = BitmapFactory.decodeStream(inputStream)
-						
-					}
-					withContext(Dispatchers.Main) {
-						// Update the save button state based on the selected image and text field content.
-						updateSaveButtonState()
-					}
-				} catch (e: Exception) {
-					withContext(Dispatchers.Main) {
-						Toast.makeText(
-							requireContext(),
-							"A mistake happened: ${e.message}",
-							Toast.LENGTH_SHORT
-						).show()
-					}
-				} finally {
-					withContext(Dispatchers.Main) {
-						loadingProgressBar.visibility = View.GONE
-					}
+	// Register for activity result to get content (in this case, an image).
+	private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+		// Show the loading progress bar.
+		loadingProgressBar.visibility = View.VISIBLE
+		
+		// Launch a coroutine in the IO dispatcher for background tasks.
+		lifecycleScope.launch(Dispatchers.IO) {
+			try {
+				// Check if a URI is provided.
+				uri?.let {
+					// Log that an image has been selected from the gallery.
+					Log.d(ENTRY_GRATITUDE_FRAGMENT_TAG, "Image selected from the gallery")
+					
+					// Get the TextView reference from the binding to indicate that a photo has been downloaded.
+					photoDownloadedTextView = binding.photoDownloadedTv
+					
+					// Make the TextView visible to indicate that a photo has been downloaded.
+					photoDownloadedTextView?.visibility = View.VISIBLE
+					
+					// Open an InputStream for the image URI and decode it into a Bitmap.
+					val inputStream = requireContext().contentResolver.openInputStream(uri)
+					selectedImage = BitmapFactory.decodeStream(inputStream)
+				}
+				// Switch to the main thread to update the UI.
+				withContext(Dispatchers.Main) {
+					// Update the save button state based on the selected image and text field content.
+					updateSaveButtonState()
+				}
+			} catch (e: Exception) {
+				// Switch to the main thread to show an error Toast.
+				withContext(Dispatchers.Main) {
+					Toast.makeText(
+						requireContext(),
+						"A mistake happened: ${e.message}",
+						Toast.LENGTH_SHORT
+					).show()
+				}
+			} finally {
+				// Hide the loading progress bar, regardless of success or failure.
+				withContext(Dispatchers.Main) {
+					loadingProgressBar.visibility = View.GONE
 				}
 			}
 		}
+	}
 	
 	/**
 	 * Scales a given bitmap to ensure that its width or height does not exceed a specified maximum size.
@@ -164,7 +166,7 @@ class EntryGratitudeFragment : Fragment() {
 	private fun bitmapToByteArray(bitmap: Bitmap): ByteArray? {
 		try {
 			// Target size for the resulting ByteArray in KB.
-			val targetSizeKB = 50
+			val targetSizeKB = 100
 			
 			// Create a ByteArrayOutputStream to hold the bitmap's bytes.
 			val outputStream = ByteArrayOutputStream()
@@ -237,6 +239,20 @@ class EntryGratitudeFragment : Fragment() {
 		// Get the entryId from the arguments
 		entryId = args.entryId
 		
+		// Programmatically change the size of the ProgressBar.
+		// Define the size in dp units.
+		val sizeInDp = 20
+		
+		// Get the screen's density scale.
+		val density = resources.displayMetrics.density
+		
+		// Convert the dps to pixels, based on density scale.
+		val sizeInPx = (sizeInDp * density).toInt()
+		
+		// Apply the size to the ProgressBar's layout parameters for width and height.
+		loadingProgressBar.layoutParams.width = sizeInPx
+		loadingProgressBar.layoutParams.height = sizeInPx
+		
 		// Initialize the existingEntry variable
 		val existingEntry: LiveData<Entry> = repository.getEntryById(entryId)
 		
@@ -292,10 +308,14 @@ class EntryGratitudeFragment : Fragment() {
 					photoDownloadedTextView?.visibility = View.VISIBLE
 				}
 			} else {
+				// Display a Toast message to inform the user that they need to log in to save their gratitude entry.
 				Toast.makeText(
 					context,
-					getString(R.string.login_to_save_your_gratitude), Toast.LENGTH_LONG
+					getString(R.string.login_to_save_your_gratitude),
+					Toast.LENGTH_LONG
 				).show()
+				
+				// Navigate to the HomeFragment since the user is not logged in.
 				findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToHomeFragment())
 			}
 		})
@@ -311,13 +331,18 @@ class EntryGratitudeFragment : Fragment() {
 		
 		// Set an onClickListener for the save button.
 		saveButton.setOnClickListener {
+			// Show the loading progress bar.
+			loadingProgressBar.visibility = View.VISIBLE
+			
+			// Launch a coroutine to handle the save operation.
 			lifecycleScope.launch(Dispatchers.IO) {
+				// Check if the user is logged in.
 				if (auth.currentUser != null) {
 					// Retrieve the entered date and text from the input fields.
 					val date = dateField.text.toString()
 					val text = textField.text.toString()
 					
-					// Validate the entered date against the pattern.
+					// Validate the entered date against the predefined pattern.
 					if (!datePattern.matches(date)) {
 						// Switch to the main thread to display an error message.
 						withContext(Dispatchers.Main) {
@@ -326,13 +351,13 @@ class EntryGratitudeFragment : Fragment() {
 						return@launch
 					}
 					
-					// Parse the date string into day, month, and year.
+					// Parse the date string into day, month, and year components.
 					val dateParts = date.split(".")
 					val day = dateParts[0].toInt()
 					val month = dateParts[1].toInt()
 					val year = dateParts[2].toInt()
 					
-					// Retrieve the existing entry.
+					// Retrieve the existing entry from the LiveData.
 					val entry = existingEntry.value
 					
 					// Check if the date has changed.
@@ -346,11 +371,11 @@ class EntryGratitudeFragment : Fragment() {
 					// Update the entry's text.
 					entry.text = text
 					
-					// Convert the selected image to a ByteArray for storage, if any.
+					// Convert the selected image to a ByteArray for storage, if available.
 					val image = selectedImage?.let { bitmapToByteArray(it) }
 					entry.image = image
 					
-					// Retrieve the user ID.
+					// Retrieve the user ID from Firebase Auth.
 					val userId = auth.currentUser!!.uid
 					
 					// Access shared preferences to get and update the entry count.
@@ -372,16 +397,14 @@ class EntryGratitudeFragment : Fragment() {
 					countSharedPreferences.edit().putInt("count", count).apply()
 					
 					// Update the Firestore entry count for the specific day.
-					viewModel.saveCountEntryToFirestore(
-						count,
-						"${entry.year}-${entry.month}-${entry.day}"
-					)
+					viewModel.saveCountEntryToFirestore(count, "${entry.year}-${entry.month}-${entry.day}")
 					
-					// Update the entry in the repository.
+					// Update the entry in the local database.
 					repository.updateEntry(entry)
 					
 					// Switch to the main thread to navigate to the JournalGratitudeFragment.
 					withContext(Dispatchers.Main) {
+						loadingProgressBar.visibility = View.GONE
 						findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToJournalGratitudeFragment())
 					}
 				} else {
@@ -400,27 +423,46 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	/**
-	 * Initialize UI elements with data binding.
+	 * Initializes the UI elements by binding them to their respective views.
 	 */
 	private fun initializeUIElements() {
+		// Bind the back button to its view.
 		backButton = binding.backBtn
+		
+		// Bind the home logo button to its view.
 		homeLogoButton = binding.homeBtnLogo
+		
+		// Bind the home text button to its view.
 		homeTextButton = binding.homeBtnText
+		
+		// Bind the profile button to its view.
 		profileButton = binding.profileBtnLogo
+		
+		// Bind the date input field to its view.
 		dateField = binding.dateTf!!
+		
+		// Bind the text input field to its view.
 		textField = binding.textTf
+		
+		// Bind the gallery button to its view.
 		galleryButton = binding.galleryBtn
+		
+		// Bind the quit button to its view.
 		quitButton = binding.quitBtn
+		
+		// Bind the save button to its view.
 		saveButton = binding.saveBtn
+		
+		// Bind the loading progress bar to its view.
 		loadingProgressBar = binding.loadingProgressBar
 	}
 	
 	/**
-	 * Set up listeners for UI interactions.
+	 * Sets up listeners for various UI interactions.
 	 */
 	private fun setupListeners() {
-		// Set an onClickListener for the back button.
-		// When this button is clicked, it navigates back in the back stack.
+		// Set an onClickListener for the back button to navigate back in the back stack.
+		// If the entry should be deleted, it deletes the entry before navigating back.
 		backButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
 				deleteEntry(entryId)
@@ -428,8 +470,8 @@ class EntryGratitudeFragment : Fragment() {
 			findNavController().popBackStack()
 		}
 		
-		// Set an onClickListener for the home button logo.
-		// When this button is clicked, it navigates to the animation fragment.
+		// Set an onClickListener for the home logo button to navigate to the AnimationFragment.
+		// If the entry should be deleted, it deletes the entry before navigating.
 		homeLogoButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
 				deleteEntry(entryId)
@@ -437,8 +479,8 @@ class EntryGratitudeFragment : Fragment() {
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
 		}
 		
-		// Set an onClickListener for the home button text.
-		// When this text is clicked, it also navigates to the animation fragment.
+		// Set an onClickListener for the home text button to navigate to the AnimationFragment.
+		// If the entry should be deleted, it deletes the entry before navigating.
 		homeTextButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
 				deleteEntry(entryId)
@@ -446,8 +488,8 @@ class EntryGratitudeFragment : Fragment() {
 			findNavController().navigate(EntryGratitudeFragmentDirections.actionEntryGratitudeFragmentToAnimationFragment())
 		}
 		
-		// Set an onClickListener for the profile button logo.
-		// When this button is clicked, it navigates to the profile fragment.
+		// Set an onClickListener for the profile logo button to navigate to the ProfileFragment.
+		// If the entry should be deleted, it deletes the entry before navigating.
 		profileButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
 				deleteEntry(entryId)
@@ -456,13 +498,13 @@ class EntryGratitudeFragment : Fragment() {
 		}
 		
 		// Set an onClickListener for the gallery button.
-		// When this button is clicked, it navigates to the gallery fragment.
+		// This button triggers the permission request for accessing the gallery.
 		galleryButton.setOnClickListener {
 			onClickRequestPermission()
 		}
 		
-		// Set an onClickListener for the quit button.
-		// When this button is clicked, it navigates to the gratitude journal fragment.
+		// Set an onClickListener for the quit button to navigate to the JournalGratitudeFragment.
+		// If the entry should be deleted, it deletes the entry before navigating.
 		quitButton.setOnClickListener {
 			if (shouldDeleteEntry()) {
 				deleteEntry(entryId)
@@ -513,46 +555,48 @@ class EntryGratitudeFragment : Fragment() {
 	}
 	
 	/**
-	 * Set up a TextWatcher for the date input field to validate date format.
+	 * Sets up a TextWatcher for the date input field to validate the date format.
 	 */
 	private fun setUpTextWatcher() {
+		// Define the regular expression pattern for a valid date.
 		val datePattern = "(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.\\d{4}".toRegex()
 		
+		// Add a TextWatcher to the date input field.
 		dateField.addTextChangedListener(object : TextWatcher {
 			override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-				// Not needed
+				// No action needed before text changes.
 			}
 			
 			override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-				// Not needed
+				// No action needed during text changes.
 			}
 			
 			override fun afterTextChanged(s: Editable) {
-				// Check if the entered text matches the predefined date pattern.
+				// Log the entered text for debugging purposes.
 				Log.e("EntryGratitudeFragment", s.toString())
 				
-				// Check if the input string matches the expected date pattern.
+				// Check if the entered text matches the predefined date pattern.
 				if (datePattern.matches(s.toString())) {
-					// Split the date string into its day, month, and year components.
+					// Split the entered date into day, month, and year components.
 					val dateParts = s.toString().split(".")
 					val day = dateParts[0].toInt()
 					val month = dateParts[1].toInt()
 					val year = dateParts[2].toInt()
 					
-					// Check if the provided date is in the future.
+					// Check if the entered date is in the future.
 					if (isFutureDate(day, month, year)) {
-						// Display a message to the user indicating that future dates are not allowed.
+						// Display a Toast message indicating that future dates are not allowed.
 						Toast.makeText(
 							context,
 							"Only entries from the present or past can be added. 😃",
 							Toast.LENGTH_SHORT
 						).show()
 						
-						// Disable the save button since the input is invalid.
+						// Disable the save button as the input is invalid.
 						saveButton.isEnabled = false
 						saveButton.alpha = 0.4f
 					} else {
-						// Enable the save button since the input is valid.
+						// Enable the save button as the input is valid.
 						saveButton.isEnabled = true
 						saveButton.alpha = 1f
 					}
@@ -581,11 +625,15 @@ class EntryGratitudeFragment : Fragment() {
 		return String.format("%02d.%02d.%04d", day, month, year)
 	}
 	
+	// Register for the result of requesting storage permission.
 	private val requestStoragePermissionLauncher =
 		registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+			// Check if the permission was granted.
 			if (isGranted) {
+				// Launch the content picker for images if permission is granted.
 				getContent.launch("image/*")
 			} else {
+				// Display a Toast message if permission is denied.
 				Toast.makeText(
 					requireContext(),
 					getString(R.string.permission_to_read_the_gallery_was_denied),
@@ -602,30 +650,36 @@ class EntryGratitudeFragment : Fragment() {
 	 */
 	private fun onClickRequestPermission(): Boolean {
 		return when {
+			// Check if the READ_EXTERNAL_STORAGE permission is already granted.
 			ContextCompat.checkSelfPermission(
 				requireContext(),
 				Manifest.permission.READ_EXTERNAL_STORAGE
 			) == PackageManager.PERMISSION_GRANTED -> {
+				// Launch the image picker if permission is granted.
 				getContent.launch("image/*")
 				true
 			}
 			
+			// Check if we should show an explanation for the permission request.
 			ActivityCompat.shouldShowRequestPermissionRationale(
 				requireActivity(),
 				Manifest.permission.READ_EXTERNAL_STORAGE
 			) -> {
+				// Show a Toast message explaining why the permission is needed.
 				Toast.makeText(
 					requireContext(),
 					"Permission to read the gallery is required to load images from the gallery",
 					Toast.LENGTH_SHORT
 				).show()
+				// Request the permission.
 				requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-				return false
+				false
 			}
 			
+			// Request the permission if it's neither granted nor explained.
 			else -> {
 				requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-				return false
+				false
 			}
 		}
 	}
