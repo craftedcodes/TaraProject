@@ -307,9 +307,12 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		return bitmap
 	}
 	
+	// Mutable LiveData to privately manage the URI of the selected image.
 	private val selectedImageUri = MutableLiveData<Uri?>()
 	
+	// Function to load an image from the gallery into the ViewModel.
 	fun loadImageFromGallery(uri: Uri?) {
+		// Update the LiveData with the new URI.
 		selectedImageUri.value = uri
 	}
 }

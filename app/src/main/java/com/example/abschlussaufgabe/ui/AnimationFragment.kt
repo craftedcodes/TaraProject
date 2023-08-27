@@ -141,22 +141,31 @@ class AnimationFragment : Fragment() {
 			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToAffirmationFragment())
 		}
 		
+		// Set onClickListener for the gratitude navigation button.
+		// When clicked, it navigates to the journal gratitude fragment.
 		binding.gratitudeNavBtn.setOnClickListener {
 			// Navigate to the gratitude journal fragment when the gratitude navigation button is clicked.
 			findNavController().navigate(AnimationFragmentDirections.actionAnimationFragmentToJournalGratitudeFragment())
 		}
 		
+		// Check if the emergency contact is set
 		if (isEmergencyContactSet()) {
+			// If emergency contact is set, show the "Get Help" button and hide the attention card
 			binding.getHelpBtn.visibility = View.VISIBLE
 			binding.attentionCard.visibility = View.GONE
 		} else {
+			// If emergency contact is not set, hide the "Get Help" button and show the attention card
 			binding.getHelpBtn.visibility = View.GONE
 			binding.attentionCard.visibility = View.VISIBLE
 		}
-		
+
+		// Set a click listener for the "Get Help" button
 		binding.getHelpBtn.setOnClickListener {
+			// Check if necessary permissions are granted
 			if (onClickRequestPermission()) {
+				// Send an emergency text message to the contact number
 				smsManager.sendTextMessage(contactNumber, null, contactMessage, null, null)
+				// Show a toast indicating that the message has been sent
 				Toast.makeText(context, getString(R.string.message_sent), Toast.LENGTH_SHORT).show()
 			}
 		}
@@ -170,49 +179,73 @@ class AnimationFragment : Fragment() {
 		return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 	}
 	
+	// Declare a variable to hold the request permission launcher.
 	private val requestPermissionLauncher =
+		// Register an activity result launcher for handling permission requests.
 		registerForActivityResult(
 			ActivityResultContracts.RequestPermission()
 		) { isGranted: Boolean ->
+			// Callback function to handle the result of the permission request.
+			
+			// Check if the permission is granted.
 			if (isGranted) {
+				// Log that the permission has been granted.
 				Log.i("Permission: ", "Granted")
+				
+				// Display a toast message to inform the user that they can now send emergency SMS.
 				Toast.makeText(
 					requireContext(),
 					getString(R.string.you_can_send_emergency_sms_now),
 					Toast.LENGTH_SHORT
 				).show()
 			} else {
+				// Log that the permission has been denied.
 				Log.i("Permission: ", "Denied")
 			}
 		}
-	
+	// Define a function to handle the click event for requesting permission.
 	private fun onClickRequestPermission(): Boolean {
+		// Use a 'when' expression to handle different permission states.
 		when {
+			// Check if the SEND_SMS permission is already granted.
 			ContextCompat.checkSelfPermission(
 				requireContext(),
 				Manifest.permission.SEND_SMS
 			) == PackageManager.PERMISSION_GRANTED -> {
+				// Permission is granted, return true.
 				return true
 			}
 			
+			// Check if the app should show UI with rationale for requesting permission.
 			ActivityCompat.shouldShowRequestPermissionRationale(
 				requireActivity(),
 				Manifest.permission.SEND_SMS
 			) -> {
+				// Show a toast message to inform the user why the permission is needed.
 				Toast.makeText(requireContext(),
 					getString(R.string.permission_required), Toast.LENGTH_SHORT).show()
+				
+				// Launch the permission request.
 				requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
+				
+				// Permission is not granted yet, return false.
 				return false
 			}
 			
+			// Handle the case where the app can request the permission without additional explanation.
 			else -> {
+				// Launch the permission request.
 				requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
+				
+				// Permission is not granted yet, return false.
 				return false
 			}
 		}
 	}
 	
+	// Define a function to check if the emergency contact number is set.
 	private fun isEmergencyContactSet(): Boolean {
+		// Return true if 'contactNumber' is not null or empty, otherwise return false.
 		return !contactNumber.isNullOrEmpty()
 	}
 }

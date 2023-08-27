@@ -37,12 +37,17 @@ class SettingsFragment : Fragment() {
 	 * Inflates the fragment layout and initializes the data binding.
 	 */
 	override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+		inflater: LayoutInflater,  // The LayoutInflater object that can be used to inflate layout resources in this fragment
+		container: ViewGroup?,     // The parent view that the fragment's UI should be attached to
+		savedInstanceState: Bundle? // The previous saved state of the fragment, if any
+	): View {
+		// Inflate the layout for this fragment using data binding.
 		binding = FragmentSettingsBinding.inflate(inflater, container, false)
+		
+		// Initialize the FirebaseAuth instance for authentication operations.
 		auth = FirebaseAuth.getInstance()
 		
+		// Return the root view of the inflated layout.
 		return binding.root
 	}
 	
@@ -50,10 +55,14 @@ class SettingsFragment : Fragment() {
 	 * Called immediately after onCreateView() to perform additional view initialization.
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the superclass implementation of onViewCreated.
 		super.onViewCreated(view, savedInstanceState)
 		
+		// Initialize the SharedPreferences object for storing app settings.
+		// The SharedPreferences file is named "mode_shared_prefs" and operates in private mode.
 		sharedPreferences = requireContext().getSharedPreferences("mode_shared_prefs", Context.MODE_PRIVATE)
 		
+		// Set up listeners for UI elements in the fragment.
 		setUpListeners()
 	}
 	
@@ -123,22 +132,39 @@ class SettingsFragment : Fragment() {
 		
 		// Build and configure the alert dialog.
 		AlertDialog.Builder(requireContext()).apply {
-			setTitle("Delete Account")
+			// Set the title of the AlertDialog.
+			setTitle(R.string.delete_account)
+			
+			// Set the message to display in the AlertDialog.
 			setMessage("Are you sure you want to delete your account and end your subscription?")
+			
+			// Set a custom view to be displayed in the AlertDialog.
 			setView(dialogView)
-			setPositiveButton("Delete Account") { _, _ ->
+			
+			// Set the action for the 'Delete Account' button.
+			setPositiveButton(R.string.delete_account) { _, _ ->
+				// Retrieve the email and password entered by the user.
 				val email = emailEditText.text.toString()
 				val password = passwordEditText.text.toString()
 				
+				// Validate the email and password fields.
 				if (isValidInput(email, password)) {
+					// Call the function to delete the user account.
 					deleteUserAccount(email, password)
 				} else {
-					Toast.makeText(requireContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+					// Show a toast message to inform the user to fill in all fields.
+					Toast.makeText(requireContext(),
+						getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
 				}
 			}
-			setNegativeButton("Dismiss") { dialog, _ ->
+			
+			// Set the action for the 'Dismiss' button.
+			setNegativeButton(getString(R.string.dismiss)) { dialog, _ ->
+				// Dismiss the AlertDialog.
 				dialog.dismiss()
 			}
+			
+			// Create and show the AlertDialog.
 			create().show()
 		}
 	}
@@ -161,21 +187,36 @@ class SettingsFragment : Fragment() {
 	 * @param password The password input from the user.
 	 */
 	private fun deleteUserAccount(email: String, password: String) {
+		// Get the current user from FirebaseAuth.
 		val user = auth.currentUser
+		
+		// Create a credential object using the provided email and password.
 		val credential = EmailAuthProvider.getCredential(email, password)
 		
+		// Reauthenticate the user with the given credentials.
 		user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+			// Check if reauthentication was successful.
 			if (task.isSuccessful) {
+				// Delete the user account.
 				user.delete().addOnCompleteListener { deleteTask ->
+					// Check if the account deletion was successful.
 					if (deleteTask.isSuccessful) {
-						Toast.makeText(requireContext(), "We're sad to see you go.", Toast.LENGTH_SHORT).show()
+						// Show a toast message to inform the user that the account has been deleted.
+						Toast.makeText(requireContext(),
+							getString(R.string.we_re_sad_to_see_you_go), Toast.LENGTH_SHORT).show()
+						
+						// Navigate to the HomeFragment.
 						findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
 					} else {
-						Toast.makeText(requireContext(), "Error deleting account.", Toast.LENGTH_SHORT).show()
+						// Show a toast message to inform the user that the account deletion failed.
+						Toast.makeText(requireContext(),
+							getString(R.string.error_deleting_account), Toast.LENGTH_SHORT).show()
 					}
 				}
 			} else {
-				Toast.makeText(requireContext(), "Incorrect email or password.", Toast.LENGTH_SHORT).show()
+				// Show a toast message to inform the user that the reauthentication failed.
+				Toast.makeText(requireContext(),
+					getString(R.string.incorrect_email_or_password), Toast.LENGTH_SHORT).show()
 			}
 		}
 	}

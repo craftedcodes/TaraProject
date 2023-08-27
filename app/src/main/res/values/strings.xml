@@ -197,4 +197,9 @@
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="min_12_glyphs_upper_and_lower_case_numbers_special_characters">Min. 12 glyphs, upper and lower case, numbers, special characters</string>
     <string name="permission_to_read_the_gallery_was_denied">Permission to read the gallery was denied</string>
+    <string name="please_fill_in_all_fields">Please fill in all fields.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="we_re_sad_to_see_you_go">We\'re sad to see you go.</string>
+    <string name="error_deleting_account">Error deleting account.</string>
+    <string name="incorrect_email_or_password">Incorrect email or password.</string>
 </resources>

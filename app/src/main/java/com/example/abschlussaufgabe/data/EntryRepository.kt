@@ -98,11 +98,14 @@ class EntryRepository(private val database: LocalDatabase) {
 		val toMonth = toParts[1].toInt()
 		val toYear = toParts[2].toInt()
 		
+		// Log the extracted date parts for debugging
 		Log.e(ENTRY_TAG, "fromDay: $fromDay, fromMonth: $fromMonth, fromYear: $fromYear, toDay: $toDay, toMonth: $toMonth, toYear: $toYear")
 		
 		return try {
-		database.databaseDao().getEntriesByDateRange(fromDay, fromMonth, fromYear, toDay, toMonth, toYear)
+			// Attempt to retrieve entries from the database based on the date range
+			database.databaseDao().getEntriesByDateRange(fromDay, fromMonth, fromYear, toDay, toMonth, toYear)
 		} catch (e: Exception) {
+			// If an error occurs during database access, log the error and return a fallback LiveData
 			Log.e(ENTRY_TAG, "Error getting entries by date range")
 			_entries
 		}

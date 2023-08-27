@@ -64,30 +64,35 @@ class ProfileFragment : Fragment() {
 	
 	// Lazy initialization of the main encryption key using AES256_GCM scheme.
 	private val mainKey by lazy {
+		// Create a MasterKey using the Builder pattern and the required context.
 		MasterKey.Builder(requireContext())
+			// Set the key scheme to AES256_GCM for encryption.
 			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+			// Build the MasterKey.
 			.build()
 	}
 	
 	// Lazy initialization of encrypted shared preferences for storing avatar data.
 	private val avatarSharedPreferences by lazy {
+		// Create an instance of EncryptedSharedPreferences using the required context and encryption schemes.
 		EncryptedSharedPreferences.create(
-			requireContext(),
-			AVATAR_PREFS,
-			mainKey,
-			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+			requireContext(),  // The context required to access shared preferences
+			AVATAR_PREFS,      // The name of the shared preferences file
+			mainKey,           // The main key used for encryption
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,  // The encryption scheme for preference keys
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM  // The encryption scheme for preference values
 		)
 	}
 	
 	// Lazy initialization of encrypted shared preferences for storing contact data.
 	private val contactSharedPreferences by lazy {
+		// Create an instance of EncryptedSharedPreferences using the required context and encryption schemes.
 		EncryptedSharedPreferences.create(
-			requireContext(),
-			CONTACT_PREFS,
-			mainKey,
-			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+			requireContext(),  // The context required to access shared preferences
+			CONTACT_PREFS,     // The name of the shared preferences file
+			mainKey,           // The main key used for encryption
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,  // The encryption scheme for preference keys
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM  // The encryption scheme for preference values
 		)
 	}
 	

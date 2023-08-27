@@ -154,9 +154,12 @@ class LoginFragment : Fragment() {
 	 * @param password The password of the user.
 	 */
 	private fun loginUser(email: String, password: String) {
+		// Check if both email and password fields are not empty.
 		if (email.isNotEmpty() && password.isNotEmpty()) {
+			// Call the ViewModel's loginUser function to handle the login process.
 			viewModel.loginUser(email, password)
 		} else {
+			// Show a toast message to inform the user that the login failed.
 			Toast.makeText(requireContext(), "Login failed. Please try again.", Toast.LENGTH_SHORT).show()
 		}
 	}

@@ -30,10 +30,14 @@ class PasswordResetFragment : Fragment() {
 	 * @return Return the View for the fragment's UI, or null.
 	 */
 	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
+		inflater: LayoutInflater,  // The LayoutInflater object that can be used to inflate layout resources in this fragment
+		container: ViewGroup?,     // The parent view that the fragment's UI should be attached to
+		savedInstanceState: Bundle? // The previous saved state of the fragment, if any
 	): View {
+		// Inflate the layout for this fragment using data binding.
 		binding = FragmentPasswordResetBinding.inflate(inflater, container, false)
+		
+		// Return the root view of the inflated layout.
 		return binding.root
 	}
 	
@@ -43,7 +47,10 @@ class PasswordResetFragment : Fragment() {
 	 * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state.
 	 */
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		// Call the superclass implementation of onViewCreated.
 		super.onViewCreated(view, savedInstanceState)
+		
+		// Set up listeners for UI elements in the fragment.
 		setUpListeners()
 	}
 	
@@ -52,17 +59,24 @@ class PasswordResetFragment : Fragment() {
 	 * This method defines the actions to be taken when various UI elements are clicked.
 	 */
 	private fun setUpListeners() {
+		// Set up a click listener for the 'Reset Password' button.
 		binding.resetBtn.setOnClickListener {
+			// Retrieve and trim the email entered by the user.
 			val email: String = binding.eMailTf.text.toString().trim()
 			
+			// Check if the email field is not empty.
 			if (email.isNotEmpty()) {
+				// Call the function to send a password reset email.
 				sendPasswordResetEmail(email)
 			} else {
+				// Prompt the user to enter an email address.
 				promptForEmail()
 			}
 		}
 		
+		// Set up a click listener for the 'Quit' button.
 		binding.quitBtn.setOnClickListener {
+			// Navigate to the home screen.
 			navigateToHome()
 		}
 	}
@@ -71,8 +85,13 @@ class PasswordResetFragment : Fragment() {
 	 * Sends a password reset email and navigates the user to the login fragment.
 	 */
 	private fun sendPasswordResetEmail(email: String) {
+		// Call the ViewModel's function to send the password reset email.
 		viewModel.sendPasswordResetEmail(email)
+		
+		// Show a toast message to inform the user that the reset link has been sent.
 		Toast.makeText(context, "Reset link has been sent to $email", Toast.LENGTH_SHORT).show()
+		
+		// Navigate to the LoginFragment using the generated directions from the navigation component.
 		findNavController().navigate(PasswordResetFragmentDirections.actionPasswordResetFragmentToLoginFragment())
 	}
 	

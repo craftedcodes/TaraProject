@@ -55,6 +55,7 @@ class JournalGratitudeFragment : Fragment() {
 	// ViewModel instance to manage and store data related to journal entries.
 	private val viewModel: EntryViewModel by viewModels()
 	
+	// Private variable to hold a list of journal entries.
 	private var journal = listOf<Entry>()
 	
 	// Global variables for the AlertDialog and its content
@@ -192,6 +193,7 @@ class JournalGratitudeFragment : Fragment() {
 			showExportConfirmationDialog()
 		}
 		
+		// Set up the click listener for delete button.
 		binding.deleteAllBtn.setOnClickListener {
 			deleteAllEntries()
 		}
@@ -333,14 +335,18 @@ class JournalGratitudeFragment : Fragment() {
 	 * @return True if the start date is before or equal to the end date, false otherwise.
 	 */
 	private fun isValidDateRange(startDate: String, endDate: String): Boolean {
+		// Split the start and end dates by the '.' character to extract day, month, and year.
 		val startParts = startDate.split(".")
 		val endParts = endDate.split(".")
 		
+		// Convert the split parts into LocalDate objects for easier comparison.
 		val startLocalDate =
 			LocalDate.of(startParts[2].toInt(), startParts[1].toInt(), startParts[0].toInt())
 		val endLocalDate =
 			LocalDate.of(endParts[2].toInt(), endParts[1].toInt(), endParts[0].toInt())
 		
+		// Check if the start date is after the end date.
+		// Return true if the start date is not after the end date, otherwise return false.
 		return !startLocalDate.isAfter(endLocalDate)
 	}
 	
@@ -438,23 +444,30 @@ class JournalGratitudeFragment : Fragment() {
 	 * @param heightPixels The height in pixels for the PDF pages.
 	 */
 	private fun generatePdfFromPages(
-		pages: List<List<View>>,
-		pdfDocument: PdfDocument,
-		widthPixels: Float,
-		heightPixels: Float
+		pages: List<List<View>>,  // List of pages, each containing a list of Views to be drawn
+		pdfDocument: PdfDocument, // The PdfDocument to which the pages will be added
+		widthPixels: Float,       // The width of each page in pixels
+		heightPixels: Float       // The height of each page in pixels
 	) {
+		// Loop through each page and its corresponding index.
 		for ((pageIndex, pageEntries) in pages.withIndex()) {
+			// Create PageInfo object to specify page settings.
 			val pageInfo = PdfDocument.PageInfo.Builder(
 				widthPixels.toInt(),
 				heightPixels.toInt(),
-				pageIndex + 1
+				pageIndex + 1  // Page numbers start from 1
 			).create()
+			
+			// Start a new page with the given PageInfo.
 			val page = pdfDocument.startPage(pageInfo)
 			
+			// Draw the entries (Views) on the current page.
 			drawEntriesOnPage(pageEntries, page.canvas, widthPixels, heightPixels)
 			
+			// Finish and add the page to the PdfDocument.
 			pdfDocument.finishPage(page)
 			
+			// Update the alert dialog to show the progress.
 			updateAlertDialog(pageIndex + 1, pages.size)
 		}
 	}
@@ -468,22 +481,31 @@ class JournalGratitudeFragment : Fragment() {
 	 * @param heightPixels The height in pixels for the entries.
 	 */
 	private fun drawEntriesOnPage(
-		entries: List<View>,
-		canvas: Canvas,
-		widthPixels: Float,
-		heightPixels: Float
+		entries: List<View>,  // List of Views to be drawn on the page
+		canvas: Canvas,       // Canvas object to draw the Views on
+		widthPixels: Float,   // The width of the page in pixels
+		heightPixels: Float   // The height of the page in pixels
 	) {
+		// Initialize a variable to keep track of the top axis position for each entry.
+		var tAxis = 0
+		
+		// Loop through each entry (View) in the list.
 		for (entryView in entries) {
+			// Measure the entryView to fit within the specified width and height.
 			entryView.measure(
 				View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
 				View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
 			)
-			var tAxis = 0
+			
+			// If the entryView is not the first one, update the top axis position.
 			if (entryView != entries.first()) {
-				tAxis += entryView.measuredHeight + 8
+				tAxis += entryView.measuredHeight + 8  // Add 8 pixels for spacing
 			}
 			
+			// Measure and layout the entryView at the specified position.
 			measureAndLayoutEntryView(entryView, widthPixels, heightPixels, tAxis)
+			
+			// Draw the entryView on the canvas.
 			entryView.draw(canvas)
 		}
 	}
@@ -496,17 +518,24 @@ class JournalGratitudeFragment : Fragment() {
 	 * @param heightPixels The height in pixels for the entry view.
 	 */
 	private fun measureAndLayoutEntryView(
-		entryView: View,
-		widthPixels: Float,
-		heightPixels: Float,
-		tAxis: Int
+		entryView: View,      // The View to be measured and laid out
+		widthPixels: Float,   // The maximum width of the View in pixels
+		heightPixels: Float,  // The maximum height of the View in pixels
+		tAxis: Int            // The top axis position where the View should be laid out
 	) {
+		// Measure the entryView to fit within the specified width and height.
 		entryView.measure(
 			View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
 			View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
 		)
+		
+		// Calculate the bottom axis position based on the measured height and top axis position.
 		val bAxis = entryView.measuredHeight + tAxis
+		
+		// Layout the entryView at the specified position.
 		entryView.layout(0, tAxis, entryView.measuredWidth, bAxis)
+		
+		// Log the dimensions of the entryView for debugging purposes.
 		Log.d(
 			getString(R.string.pdf_export),
 			"Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}"
@@ -519,12 +548,20 @@ class JournalGratitudeFragment : Fragment() {
 	 * @param pdfDocument The generated PDF document.
 	 */
 	private fun saveAndSendPdf(pdfDocument: PdfDocument) {
+		// Dismiss any alert dialog that might be showing.
 		dismissAlertDialog()
 		
+		// Create a File object to represent the PDF file.
+		// The file will be saved in the app's internal storage directory.
 		val file = File(context?.filesDir, "entries.pdf")
+		
+		// Write the contents of the PdfDocument to the file.
 		pdfDocument.writeTo(FileOutputStream(file))
+		
+		// Close the PdfDocument to free resources.
 		pdfDocument.close()
 		
+		// Send the saved PDF file via email.
 		sendPdfViaEmail(file)
 	}
 	
