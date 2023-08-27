@@ -115,6 +115,7 @@
                 android:visibility="invisible"
                 />
 
+            <!-- Loading Progress Bar -->
             <ProgressBar
                 android:id="@+id/loadingProgressBar"
                 android:layout_width="match_parent"

@@ -102,7 +102,7 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp">
 
-            <!--Photo Download Confirmation Text View -->
+            <!-- Photo Download Confirmation Text View -->
             <TextView
                 android:id="@+id/photo_downloaded_tv"
                 android:layout_width="0dp"
@@ -113,9 +113,9 @@
                 android:textColor="?attr/colorSurfaceContainer"
                 android:text="@string/photo_successfully_downloaded"
                 android:layout_weight="1"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
 
+            <!-- Loading Progress Bar -->
             <ProgressBar
                 android:id="@+id/loadingProgressBar"
                 android:layout_width="match_parent"
@@ -131,7 +131,7 @@
                 app:maxImageSize="40dp"
                 android:backgroundTint="?attr/colorSurfaceContainer"
                 app:tint="@color/surface_c_bg_light"
-                android:contentDescription="@string/gallery"/>
+                android:contentDescription="@string/gallery" />
 
         </LinearLayout>
 
