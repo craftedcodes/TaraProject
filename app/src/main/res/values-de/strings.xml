@@ -177,4 +177,10 @@
     <string name="by_registering_you_accept_our_terms_and_conditions_and_privacy_policy">Mit der Registrierung akzeptierst du unsere Allgemeinen Geschäftsbedingungen und unsere Datenschutzrichtlinie.</string>
     <string name="terms_and_conditions">Allgemeine Geschäftsbedingungen</string>
     <string name="min_12_glyphs_upper_and_lower_case_numbers_special_characters">Min. 12 Zeichen, Groß- und Kleinbuchstaben, Zahlen, Sonderzeichen</string>
+    <string name="permission_to_read_the_gallery_was_denied">Die Erlaubnis, die Galerie zu lesen, wurde verweigert</string>
+    <string name="please_fill_in_all_fields">Bitte füllen Sie alle Felder aus.</string>
+    <string name="dismiss">Ablehnen</string>
+    <string name="we_re_sad_to_see_you_go">Wir sind traurig, dass du gehst.</string>
+    <string name="error_deleting_account">Fehler beim Löschen des Kontos.</string>
+    <string name="incorrect_email_or_password">Falsche E-Mail oder Passwort.</string>
 </resources>

@@ -25,9 +25,10 @@
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
-                android:src="@drawable/iconarrowback"
                 android:contentDescription="@string/back_button"
-                app:tint="?attr/colorSurfaceContainer"/>
+                android:src="@drawable/iconarrowback"
+                app:tint="?attr/colorSurfaceContainer"
+                android:layout_margin="4dp"/>
 
             <!-- Home button -->
             <ImageButton

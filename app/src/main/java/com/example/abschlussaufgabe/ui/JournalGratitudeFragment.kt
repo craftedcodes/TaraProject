@@ -77,7 +77,8 @@ class JournalGratitudeFragment : Fragment() {
 			// This ensures that the UI remains responsive while the data is being fetched.
 			viewModel.getAllEntriesAsync()
 		} else {
-			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT)
+				.show()
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
@@ -250,8 +251,9 @@ class JournalGratitudeFragment : Fragment() {
 				exportBtn.visibility = View.GONE
 			}
 		} else {
-			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT)
+				.show()
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 		
 		// Observe the entries from the ViewModel. When the data changes, update the RecyclerView's adapter.
@@ -378,8 +380,9 @@ class JournalGratitudeFragment : Fragment() {
 				// Display the created dialog to the user.
 				.show()
 		} else {
-			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT)
+				.show()
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
 	
@@ -416,7 +419,7 @@ class JournalGratitudeFragment : Fragment() {
 	 * Exports journal entries to a PDF file.
 	 */
 	private fun exportEntriesToPdf(pages: List<List<View>>) {
-		if (auth.currentUser!= null) {
+		if (auth.currentUser != null) {
 			// 1. Get DIN A4 size in pixels.
 			val (widthPixels, heightPixels) = getDinA4SizeInPixels()
 			
@@ -430,8 +433,9 @@ class JournalGratitudeFragment : Fragment() {
 			// 4. Save and send the generated PDF.
 			saveAndSendPdf(pdfDocument)
 		} else {
-			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
+			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT)
+				.show()
+			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
 	
@@ -579,8 +583,10 @@ class JournalGratitudeFragment : Fragment() {
 			putExtra(Intent.EXTRA_SUBJECT, getString(R.string.gratitude_journal_entries))
 			
 			// Set the email body text.
-			putExtra(Intent.EXTRA_TEXT,
-				getString(R.string.attached_are_the_exported_gratitude_journal_entries))
+			putExtra(
+				Intent.EXTRA_TEXT,
+				getString(R.string.attached_are_the_exported_gratitude_journal_entries)
+			)
 			
 			putExtra(Intent.EXTRA_EMAIL, arrayOf(auth.currentUser!!.email))
 			
@@ -804,18 +810,27 @@ class JournalGratitudeFragment : Fragment() {
 					)
 				}
 			}
+			// If the condition is not met, show a toast message and navigate to the HomeFragment.
 		} else {
+			// Display a short-duration toast message indicating the need to log in first.
 			Toast.makeText(context, R.string.please_log_in_first, Toast.LENGTH_SHORT).show()
+			
+			// Navigate to the HomeFragment using the NavController and corresponding action.
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
 	}
 	
 	/**
-     * Deletes all entries from the database.
-     */
+	 * Deletes all entries from the database.
+	 */
 	private fun deleteAllEntries() {
+		// Delete all entries using the view model's deleteAllEntries() method.
 		viewModel.deleteAllEntries()
+		
+		// Hide the delete all button by setting its visibility to GONE.
 		binding.deleteAllBtn.visibility = View.GONE
+		
+		// Display a short-duration toast message to inform the user that all entries have been deleted.
 		Toast.makeText(context, R.string.all_entries_have_been_deleted, Toast.LENGTH_SHORT).show()
 	}
 }

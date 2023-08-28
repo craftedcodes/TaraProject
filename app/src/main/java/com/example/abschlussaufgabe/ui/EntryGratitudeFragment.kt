@@ -4,6 +4,7 @@ package com.example.abschlussaufgabe.ui
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources.Theme
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
