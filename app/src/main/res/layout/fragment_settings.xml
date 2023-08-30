@@ -45,16 +45,6 @@
                 android:text="@string/tara"
                 tools:ignore="NestedWeights" />
 
-            <!-- Toggle button instead of Profile button -->
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/toggle_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:thumb="@drawable/thumb_selector"
-                app:thumbTint="@color/secondary_bg_dark"
-                app:trackTint="@color/surface_c_tx_dark" />
-
-
         </LinearLayout>
 
             <LinearLayout
@@ -165,28 +155,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <!-- CardView for Delete Account -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/delete_account_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/backgroundColor"
-                    app:cardElevation="4dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="@string/delete_account"
-                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Add other cards similarly -->
-
             </LinearLayout>
 
         <!-- Dropdown for language selection -->
@@ -214,16 +182,6 @@
                 android:src="@drawable/iconlogout"
                 app:tint="?attr/colorSurfaceContainer"
                 tools:ignore="NestedWeights" />
-
-            <!-- Settings button -->
-            <Spinner
-                android:id="@+id/language_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="64dp"
-                android:layout_gravity="center"
-                android:background="?attr/backgroundColor"
-                android:entries="@array/languages" />
 
         </LinearLayout>
 
