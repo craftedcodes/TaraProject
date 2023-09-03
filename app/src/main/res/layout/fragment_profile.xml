@@ -364,8 +364,6 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-
-
                 <!-- CardView for Delete Account -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/delete_account_card"
