@@ -81,5 +81,3 @@ class MainActivity : AppCompatActivity() {
         window.navigationBarColor = ContextCompat.getColor(this, color)
     }
 }
-
-// TODO: Bezahlfunktion

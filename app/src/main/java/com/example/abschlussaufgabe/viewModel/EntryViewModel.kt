@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -38,8 +37,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	// Firebase Firestore instance to access the database.
 	private val db = FirebaseFirestore.getInstance()
 	
-	private val auth = Firebase.auth
-	
 	@SuppressLint("StaticFieldLeak")
 	private val context = application.applicationContext
 	
@@ -60,11 +57,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	private val _error = MutableLiveData<String>()
 	val error: LiveData<String>
 		get() = _error
-	
-	// LiveData to observe the completion state of the API.
-	private val _done = MutableLiveData<Boolean>()
-	val done: LiveData<Boolean>
-		get() = _done
 	
 	/**
 	 * Asynchronously fetches all gratitude journal entries from the local database.
@@ -89,19 +81,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 				// Update the loading status based on whether entries are available in LiveData.
 				_loading.value = if (_entries.value.isNullOrEmpty()) ApiStatus.ERROR else ApiStatus.DONE
 			}
-		}
-	}
-	
-	/**
-	 * Deletes a specific entry from the repository.
-	 *
-	 * @param entry The entry to be deleted.
-	 */
-	fun deleteEntry(entry: Entry) {
-		viewModelScope.launch {
-			repository.deleteEntryById(entry.id)
-			_entries.value = repository.getAllEntriesAsync()
-			updateEntryCount(-1)
 		}
 	}
 	
@@ -147,18 +126,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 	}
 	
 	/**
-	 * Updates a specific entry in the repository.
-	 *
-	 * @param entry The entry to be updated.
-	 */
-	fun updateEntry(entry: Entry) {
-		viewModelScope.launch {
-			repository.updateEntry(entry)
-			_loading.value = ApiStatus.DONE
-		}
-	}
-	
-	/**
 	 * Fetches entries from the repository within a specific date range.
 	 *
 	 * @param from The start date of the range.
@@ -180,8 +147,6 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		
 		// Create a data map with the count to be saved.
 		val data = hashMapOf("count" to countEntry)
-		
-		// TODO: Wenn der User das Datum anpasst, soll der Name des Dokuments angepasst werden.
 		
 		// Save the count to the Firestore document corresponding to the current date.
 		collection?.document(date)?.set(data)
@@ -305,14 +270,5 @@ class EntryViewModel(application: Application) : AndroidViewModel(application) {
 		
 		// Return the Bitmap.
 		return bitmap
-	}
-	
-	// Mutable LiveData to privately manage the URI of the selected image.
-	private val selectedImageUri = MutableLiveData<Uri?>()
-	
-	// Function to load an image from the gallery into the ViewModel.
-	fun loadImageFromGallery(uri: Uri?) {
-		// Update the LiveData with the new URI.
-		selectedImageUri.value = uri
 	}
 }

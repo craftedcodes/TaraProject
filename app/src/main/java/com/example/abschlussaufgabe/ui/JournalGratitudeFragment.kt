@@ -4,7 +4,6 @@ package com.example.abschlussaufgabe.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.text.Editable
@@ -38,7 +37,6 @@ import android.content.Intent
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
-import android.graphics.Canvas
 
 const val JOURNAL_GRATITUDE_FRAGMENT_TAG = "JournalGratitudeFragment"
 
@@ -420,130 +418,20 @@ class JournalGratitudeFragment : Fragment() {
 	 */
 	private fun exportEntriesToPdf(pages: List<List<View>>) {
 		if (auth.currentUser != null) {
-			// 1. Get DIN A4 size in pixels.
-			val (widthPixels, heightPixels) = getDinA4SizeInPixels()
-			
-			// 2. Show alert dialog with the number of pages to be generated.
+			// 1. Show alert dialog with the number of pages to be generated.
 			showAlertDialog(pages.size)
 			
-			// 3. Generate the PDF file based on the provided pages.
+			// 2. Generate the PDF file based on the provided pages.
 			val pdfDocument = viewModel.generatePDF(binding.outerRvGratitudeJournal)
 			//generatePdfFromPages(pages, pdfDocument, widthPixels, heightPixels)
 			
-			// 4. Save and send the generated PDF.
+			// 3. Save and send the generated PDF.
 			saveAndSendPdf(pdfDocument)
 		} else {
 			Toast.makeText(requireContext(), R.string.please_log_in_first, Toast.LENGTH_SHORT)
 				.show()
 			findNavController().navigate(JournalGratitudeFragmentDirections.actionJournalGratitudeFragmentToHomeFragment())
 		}
-	}
-	
-	/**
-	 * Generates a PDF document from the provided pages.
-	 *
-	 * @param pages The list of pages with their entries.
-	 * @param pdfDocument The PDF document to be generated.
-	 * @param widthPixels The width in pixels for the PDF pages.
-	 * @param heightPixels The height in pixels for the PDF pages.
-	 */
-	private fun generatePdfFromPages(
-		pages: List<List<View>>,  // List of pages, each containing a list of Views to be drawn
-		pdfDocument: PdfDocument, // The PdfDocument to which the pages will be added
-		widthPixels: Float,       // The width of each page in pixels
-		heightPixels: Float       // The height of each page in pixels
-	) {
-		// Loop through each page and its corresponding index.
-		for ((pageIndex, pageEntries) in pages.withIndex()) {
-			// Create PageInfo object to specify page settings.
-			val pageInfo = PdfDocument.PageInfo.Builder(
-				widthPixels.toInt(),
-				heightPixels.toInt(),
-				pageIndex + 1  // Page numbers start from 1
-			).create()
-			
-			// Start a new page with the given PageInfo.
-			val page = pdfDocument.startPage(pageInfo)
-			
-			// Draw the entries (Views) on the current page.
-			drawEntriesOnPage(pageEntries, page.canvas, widthPixels, heightPixels)
-			
-			// Finish and add the page to the PdfDocument.
-			pdfDocument.finishPage(page)
-			
-			// Update the alert dialog to show the progress.
-			updateAlertDialog(pageIndex + 1, pages.size)
-		}
-	}
-	
-	/**
-	 * Draws the provided entries on the given canvas.
-	 *
-	 * @param entries The list of entry views to be drawn.
-	 * @param canvas The canvas of the PDF page.
-	 * @param widthPixels The width in pixels for the entries.
-	 * @param heightPixels The height in pixels for the entries.
-	 */
-	private fun drawEntriesOnPage(
-		entries: List<View>,  // List of Views to be drawn on the page
-		canvas: Canvas,       // Canvas object to draw the Views on
-		widthPixels: Float,   // The width of the page in pixels
-		heightPixels: Float   // The height of the page in pixels
-	) {
-		// Initialize a variable to keep track of the top axis position for each entry.
-		var tAxis = 0
-		
-		// Loop through each entry (View) in the list.
-		for (entryView in entries) {
-			// Measure the entryView to fit within the specified width and height.
-			entryView.measure(
-				View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
-				View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
-			)
-			
-			// If the entryView is not the first one, update the top axis position.
-			if (entryView != entries.first()) {
-				tAxis += entryView.measuredHeight + 8  // Add 8 pixels for spacing
-			}
-			
-			// Measure and layout the entryView at the specified position.
-			measureAndLayoutEntryView(entryView, widthPixels, heightPixels, tAxis)
-			
-			// Draw the entryView on the canvas.
-			entryView.draw(canvas)
-		}
-	}
-	
-	/**
-	 * Measures and layouts the provided entry view.
-	 *
-	 * @param entryView The view to be measured and laid out.
-	 * @param widthPixels The width in pixels for the entry view.
-	 * @param heightPixels The height in pixels for the entry view.
-	 */
-	private fun measureAndLayoutEntryView(
-		entryView: View,      // The View to be measured and laid out
-		widthPixels: Float,   // The maximum width of the View in pixels
-		heightPixels: Float,  // The maximum height of the View in pixels
-		tAxis: Int            // The top axis position where the View should be laid out
-	) {
-		// Measure the entryView to fit within the specified width and height.
-		entryView.measure(
-			View.MeasureSpec.makeMeasureSpec(widthPixels.toInt(), View.MeasureSpec.EXACTLY),
-			View.MeasureSpec.makeMeasureSpec(heightPixels.toInt(), View.MeasureSpec.AT_MOST)
-		)
-		
-		// Calculate the bottom axis position based on the measured height and top axis position.
-		val bAxis = entryView.measuredHeight + tAxis
-		
-		// Layout the entryView at the specified position.
-		entryView.layout(0, tAxis, entryView.measuredWidth, bAxis)
-		
-		// Log the dimensions of the entryView for debugging purposes.
-		Log.d(
-			getString(R.string.pdf_export),
-			"Drawing view with width: ${entryView.measuredWidth} and height: ${entryView.measuredHeight}"
-		)
 	}
 	
 	/**
@@ -675,17 +563,6 @@ class JournalGratitudeFragment : Fragment() {
 		
 		// Display the AlertDialog to the user.
 		alertDialog.show()
-	}
-	
-	/**
-	 * Updates the displayed text in the AlertDialog to reflect the current progress.
-	 *
-	 * @param pageNumber The current page number being converted.
-	 * @param totalPages The total number of pages to be converted.
-	 */
-	@SuppressLint("SetTextI18n")
-	private fun updateAlertDialog(pageNumber: Int, totalPages: Int) {
-		progressText.text = "Page $pageNumber of $totalPages converted..."
 	}
 	
 	/**

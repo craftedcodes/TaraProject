@@ -227,7 +227,7 @@ class ProfileFragment : Fragment() {
 			// Display a toast message indicating the user is not logged in.
 			Toast.makeText(context, "You are not logged in.", Toast.LENGTH_SHORT).show()
 			// Navigate the user to the home fragment.
-			findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
+			findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
 		}
 	}
 	
@@ -620,7 +620,7 @@ class ProfileFragment : Fragment() {
 							getString(R.string.we_re_sad_to_see_you_go), Toast.LENGTH_SHORT).show()
 						
 						// Navigate to the HomeFragment.
-						findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToHomeFragment())
+						findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToHomeFragment())
 					} else {
 						// Show a toast message to inform the user that the account deletion failed.
 						Toast.makeText(requireContext(),

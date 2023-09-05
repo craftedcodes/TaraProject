@@ -125,34 +125,4 @@ class AuthViewModel : ViewModel() {
 		auth.signOut()
 		_currentUser.value = auth.currentUser
 	}
-	
-	/**
-	 * Deletes the currently authenticated user's account.
-	 */
-	fun deleteAccount() {
-		// Get the currently authenticated user.
-		val user = auth.currentUser
-		
-		// Check if the user is not null.
-		if (user != null) {
-			// Delete the user's account.
-			user.delete()
-				.addOnCompleteListener { task ->
-					// Check if the account deletion task was successful.
-					if (task.isSuccessful) {
-						// Update the delete account success LiveData to true.
-						_deleteAccountSuccess.value = true
-						Log.d(AUTH_VIEW_MODEL, "User account deleted successfully.")
-					} else {
-						// If the account deletion task was not successful, log the error and update the delete account success LiveData to false.
-						_deleteAccountSuccess.value = false
-						Log.e(AUTH_VIEW_MODEL, "User account deletion failed.", task.exception)
-					}
-				}
-		} else {
-			// If the user is null, log the error and update the delete account success LiveData to false.
-			_deleteAccountSuccess.value = false
-			Log.e(AUTH_VIEW_MODEL, "No authenticated user found.")
-		}
-	}
 }

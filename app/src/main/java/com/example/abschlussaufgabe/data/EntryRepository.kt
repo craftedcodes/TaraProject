@@ -28,7 +28,7 @@ class EntryRepository(private val database: LocalDatabase) {
 	
 	// Method to retrieve all entries from the database.
 	// Logs an error message if an exception is thrown.
-	fun getAllEntries() {
+	private fun getAllEntries() {
 		Log.e(ENTRY_TAG, "getAllEntries")
 		try {
 			database.databaseDao().getAllEntries()
@@ -110,16 +110,4 @@ class EntryRepository(private val database: LocalDatabase) {
 			_entries
 		}
 	}
-	
-	// Method to count all entries from the database by date.
-	// Logs an error message if an exception is thrown.
-	suspend fun countEntriesByDate(year: Int, month: Int, day: Int): Int {
-		return try {
-			database.databaseDao().countEntriesByDate(year, month, day)
-		} catch (e: Exception) {
-			Log.e(ENTRY_TAG, "Error counting entries by date")
-			0
-		}
-	}
-	
 }
