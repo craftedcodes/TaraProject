@@ -100,7 +100,11 @@
                     <ImageButton
                         android:id="@+id/animation_nav_image_btn"
                         style="@style/NavButtonStyle"
+                        android:layout_gravity="center_vertical"
                         android:src="@drawable/chevronleft"
+                        android:background="#00000000"
+                        app:tint="?attr/colorSurfaceContainer"
+                        android:layout_marginHorizontal="8dp"
                         android:contentDescription="@string/navigation_to_animation" />
 
                     <!-- Affirmation text view displaying the main affirmation. -->
@@ -108,6 +112,18 @@
                         android:id="@+id/affirmation_tv"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/psychedelic_lotus"
+                        android:textSize="32sp"
+                        android:textColor="?attr/colorOnBackground"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="48dp"
+                        android:shadowColor="#8D000000"
+                        android:shadowRadius="8"
+                        android:shadowDx="8"
+                        android:shadowDy="4"
+                        android:textAlignment="center"
                         android:text="@string/placeholder_affirmation"
                         tools:ignore="NestedWeights" />
 
@@ -119,7 +135,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:contentDescription="@string/refresh_button" />
+                    android:backgroundTint="?attr/colorSecondary"
+                    android:contentDescription="@string/refresh_button"
+                    android:shadowColor="?attr/colorOnBackground"
+                    android:shadowDx="8"
+                    android:shadowDy="4"
+                    android:shadowRadius="8"
+                    android:src="@drawable/iconrefresh"
+                    app:tint="?attr/colorOnSecondary" />
 
             </LinearLayout>
 
@@ -132,6 +155,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.6"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="8dp"
             android:background="?attr/backgroundColor">
 
             <!-- Floating action button for navigation to the gratitude journal. -->
@@ -146,7 +171,10 @@
                 android:id="@+id/gratitude_journal_nav_btn"
                 style="@style/NavButtonStyle"
                 android:src="@drawable/chevrondown"
-                android:contentDescription="@string/navigation_to_animation" />
+                android:contentDescription="@string/navigation_to_animation"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/backgroundColor"
+                app:tint="?attr/colorSurfaceContainer" />
 
         </LinearLayout>
 

@@ -26,7 +26,8 @@
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/back_button"
-                android:src="@drawable/iconarrowback" />
+                android:src="@drawable/iconarrowback"
+                app:tint="?attr/colorSurfaceContainer" />
 
             <!-- Home button with a logo. -->
             <ImageButton
@@ -39,6 +40,8 @@
             <TextView
                 android:id="@+id/home_btn_text"
                 style="@style/LogoTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:text="@string/tara"
                 tools:ignore="NestedWeights" />
 
@@ -57,15 +60,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/your_emergency_contact"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:fontFamily="@font/psychedelic_lotus"
+            android:textSize="24sp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"/>
 
         <!-- ImageView to display the avatar or image of the emergency contact. -->
         <ImageView
             android:id="@+id/avatar_iv"
             android:layout_width="160dp"
             android:layout_height="80dp"
+            android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:src="@drawable/avatar01" />
+            android:src="@drawable/avatar01"
+            android:contentDescription="@string/add_avatar_image" />
 
         <!-- Hint or instruction text below the avatar image. -->
         <TextView
@@ -98,7 +108,8 @@
                 android:id="@+id/ccp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp"
+                app:ccp_contentColor="?attr/colorSurfaceContainer"/>
 
             <!-- TextInputLayout for the phone number of the emergency contact. -->
             <com.google.android.material.textfield.TextInputLayout
@@ -145,13 +156,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/quit" />
+                android:backgroundTint="?attr/backgroundColor"
+                android:fontFamily="@font/merriweathersans_variablefont_wght"
+                android:minHeight="54dp"
+                android:shadowDx="8"
+                android:shadowDy="4"
+                android:shadowRadius="8"
+                android:text="@string/quit"
+                android:textColor="?attr/colorOnError"
+                android:textSize="20sp"
+                app:strokeColor="?attr/colorOnError"
+                app:strokeWidth="1dp"
+                tools:ignore="ButtonStyle" />
 
             <!-- Save button to save the changes made. -->
             <Button
                 android:id="@+id/save_btn"
                 style="@style/PrimaryButtonStyle"
-                android:text="@string/save" />
+                android:text="@string/save"
+                android:textColor="?attr/colorOnPrimary"
+                app:icon="@drawable/iconsave"
+                app:iconTint="?attr/colorOnPrimary"
+                tools:ignore="InefficientWeight" />
 
         </LinearLayout>
 
@@ -169,8 +195,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_margin="16dp"
-                tools:ignore="UseCompoundDrawables">
+                tools:ignore="UseCompoundDrawables"
+                android:layout_margin="16dp">
 
                 <!-- ImageView representing the information icon.
                      This icon serves as a visual indicator for the nature of the following text message. -->
@@ -178,15 +204,21 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/iconexclamation"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="@string/to_cover_data_storage" />
+                    app:tint="?attr/colorOnSecondary"
+                    android:contentDescription="@string/to_cover_data_storage"
+                    android:layout_marginEnd="16dp" />
 
                 <!-- TextView displaying the information message.
                      This message provides additional details or warnings to the user. -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/please_remember" />
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:gravity="center_vertical"
+                    android:text="@string/please_remember"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
