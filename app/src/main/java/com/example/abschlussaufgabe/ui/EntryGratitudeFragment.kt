@@ -440,7 +440,7 @@ class EntryGratitudeFragment : Fragment() {
 		profileButton = binding.profileBtnLogo
 		
 		// Bind the date input field to its view.
-		dateField = binding.dateTf!!
+		dateField = binding.dateTf
 		
 		// Bind the text input field to its view.
 		textField = binding.textTf
