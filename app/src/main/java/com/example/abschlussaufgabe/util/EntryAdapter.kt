@@ -63,9 +63,13 @@ class EntryAdapter(
 			val options = BitmapFactory.Options().apply {
 				inJustDecodeBounds = true
 			}
-			BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size, options)
+
+			// Retrieve the decoded image's height from the options.
 			val imageHeight = options.outHeight
+
+			// Retrieve the decoded image's width from the options.
 			val imageWidth = options.outWidth
+			
 			
 			// Calculate a scaling factor based on the dimensions of the image and the desired maximum size
 			val desiredSize = 600
@@ -76,9 +80,15 @@ class EntryAdapter(
 				inJustDecodeBounds = false
 				inSampleSize = scaleFactor
 			}
-			val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size, options)
 			
+			// Decode the byte array into a bitmap using BitmapFactory with the given options.
+			// The offset is set to 0, meaning the decoding starts from the beginning of the byte array.
+			// The length is set to the size of the byte array.
+			val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size, options)
+
+			// Set the decoded bitmap to the ImageView in the holder's binding.
 			holder.binding.gratitudeIv.setImageBitmap(bitmap)
+			
 		}
 		
 		// Set the date and text of the entry.
