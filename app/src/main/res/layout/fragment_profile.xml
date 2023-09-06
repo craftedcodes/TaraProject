@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout that wraps the entire XML content. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Data binding section -->
     <data>
-
     </data>
 
-    <!-- Main layout container -->
+    <!-- Main layout container for the ProfileFragment -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,12 +17,12 @@
         android:background="?attr/backgroundColor"
         tools:context=".ui.ProfileFragment">
 
-        <!-- Top action bar -->
+        <!-- Top action bar containing back button, title, and toggle switch -->
         <LinearLayout
             style="@style/ActionBarStyle"
             android:background="?attr/backgroundColor">
 
-            <!-- Back button -->
+            <!-- Back button to navigate to the previous screen -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
@@ -30,14 +31,14 @@
                 app:tint="?attr/colorSurfaceContainer"
                 android:layout_margin="4dp"/>
 
-            <!-- Home button -->
+            <!-- Home button leading to the main screen -->
             <ImageButton
                 android:id="@+id/home_btn_logo"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01"/>
 
-            <!-- Home button text -->
+            <!-- TextView displaying the title of the app -->
             <TextView
                 android:id="@+id/home_btn_text"
                 style="@style/LogoTextViewStyle"
@@ -46,7 +47,7 @@
                 android:text="@string/tara"
                 tools:ignore="NestedWeights" />
 
-            <!-- Toggle button instead of Profile button -->
+            <!-- Toggle switch for user settings or preferences -->
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/toggle_switch"
                 android:layout_width="wrap_content"
@@ -57,38 +58,39 @@
 
         </LinearLayout>
 
-        <!-- Main content scroll view -->
+        <!-- ScrollView containing the main content of the profile -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:background="?attr/backgroundColor">
 
-            <!-- Main layout style -->
+            <!-- Main layout for the content inside the ScrollView -->
             <LinearLayout style="@style/MainLayoutStyle"
                 android:layout_height="wrap_content"
                 android:background="?attr/backgroundColor">
 
+                <!-- TextView displaying the "Profile" title -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="96sp"
-                    android:text="Profile"
+                    android:text="@string/profile"
                     android:fontFamily="@font/psychedelic_lotus"
                     android:textColor="?attr/colorPrimary"
                     android:textAlignment="center"
                     android:layout_margin="16dp" />
 
-                <!-- Chart view card -->
+                <!-- CardView for displaying user charts -->
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="400dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_weight="3"
                     android:visibility="gone"
                     android:backgroundTint="?attr/colorOnSurface">
 
-                    <!-- Chart view -->
+                    <!-- Chart view for displaying user data -->
                     <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
                         android:id="@+id/aa_chart_view"
                         android:layout_width="match_parent"
@@ -96,6 +98,7 @@
                         android:layout_margin="16dp"
                         android:backgroundTint="?attr/colorOnSurface" />
 
+                    <!-- LinearLayout for displaying empty data message -->
                     <LinearLayout
                         android:id="@+id/empty_data_text_view"
                         android:layout_width="match_parent"
@@ -115,6 +118,7 @@
                             android:fontFamily="@font/merriweathersans_variablefont_wght"
                             android:textSize="24sp" />
 
+                        <!-- Additional message for empty data -->
                         <TextView
                             android:id="@+id/empty_data_text_view2"
                             android:layout_width="match_parent"
@@ -127,11 +131,9 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
-
-
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Chart type selection buttons -->
+                <!-- LinearLayout for chart type selection buttons -->
                 <LinearLayout style="@style/HorizontalLayoutStyle">
 
                     <!-- Line chart button -->
@@ -178,7 +180,7 @@
 
                 </LinearLayout>
 
-                <!-- Attention card view -->
+                <!-- CardView for attention message -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/attention_card"
                     style="@style/AttentionCardView"
@@ -186,7 +188,7 @@
                     android:layout_marginBottom="32dp"
                     android:visibility="visible">
 
-                    <!-- Attention card layout -->
+                    <!-- LinearLayout for attention icon and message -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -204,14 +206,14 @@
                             app:tint="?attr/colorErrorContainer"
                             android:src="@drawable/iconexclamation" />
 
-                        <!-- Attention text and add contact button -->
+                        <!-- LinearLayout for attention message and add contact button -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <!-- Attention text -->
+                            <!-- Attention message -->
                             <TextView
                                 style="@style/AttentionTextView"
                                 android:text="@string/no_emergency_contact_registered_yet"
@@ -233,7 +235,7 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Contact card view -->
+                <!-- CardView for contact details -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/contact_card"
                     android:layout_width="match_parent"
@@ -243,13 +245,13 @@
                     android:backgroundTint="?attr/backgroundColor"
                     android:visibility="gone">
 
-                    <!-- Contact card layout -->
+                    <!-- LinearLayout for contact avatar and details -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <!-- Contact details layout -->
+                        <!-- LinearLayout for contact avatar and main details -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -264,11 +266,11 @@
                                 android:layout_height="100dp"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/avatar_image"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/avatar01"
-                            tools:ignore="NestedWeights" />
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/avatar01"
+                                tools:ignore="NestedWeights" />
 
-                            <!-- Contact details -->
+                            <!-- LinearLayout for contact name, number, and message -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -298,7 +300,7 @@
                                     android:textColor="?attr/colorSurfaceContainer"
                                     android:textSize="16sp" />
 
-                                <!-- Contact message -->
+                                <!-- Contact emergency message -->
                                 <TextView
                                     android:id="@+id/message_tv"
                                     android:layout_width="match_parent"
@@ -309,7 +311,7 @@
                                     android:textColor="?attr/colorSurfaceContainer"
                                     android:textSize="16sp" />
 
-                                <!-- Contact action buttons -->
+                                <!-- LinearLayout for delete and edit contact buttons -->
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="52dp"
@@ -348,7 +350,7 @@
 
                         </LinearLayout>
 
-                        <!-- Note text -->
+                        <!-- Note text for user information -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -364,7 +366,7 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- CardView for Delete Account -->
+                <!-- CardView for the delete account option -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/delete_account_card"
                     android:layout_width="match_parent"
@@ -375,6 +377,7 @@
                     app:cardBackgroundColor="?attr/colorError"
                     app:cardElevation="4dp">
 
+                    <!-- TextView for the delete account option -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -386,7 +389,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <!-- Bottom action bar -->
+                <!-- Bottom action bar containing logout and settings buttons -->
                 <LinearLayout
                     android:id="@+id/bottom_action_bar"
                     android:layout_width="match_parent"
@@ -424,8 +427,7 @@
 
         </ScrollView>
 
-
-
     </LinearLayout>
 
 </layout>
+

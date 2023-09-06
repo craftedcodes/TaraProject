@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root LinearLayout for the layout. It's oriented vertically and has a padding of 16dp. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- EditText for entering email.
+         It has a hint set to a string resource for 'email' and is configured to accept email addresses.
+         Autofill hints are disabled for this field. -->
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
@@ -13,6 +18,10 @@
         android:inputType="textEmailAddress"
         android:autofillHints="" />
 
+    <!-- EditText for entering password.
+         It has a hint set to a string resource for 'password' and is configured to accept passwords.
+         There's a margin at the top to separate it from the previous EditText.
+         Autofill hints are disabled for this field. -->
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"

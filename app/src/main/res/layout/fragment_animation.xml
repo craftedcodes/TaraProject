@@ -1,27 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout that wraps the entire XML content. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Data binding section. Currently empty, but can be used to bind data to the layout. -->
     <data>
     </data>
 
+    <!-- Main LinearLayout with a defined style. -->
     <LinearLayout
         style="@style/MainLayoutStyle"
         android:background="?attr/backgroundColor"
         tools:context=".ui.AnimationFragment">
 
-        <!-- Action bar -->
+        <!-- Action bar layout containing home and profile buttons. -->
         <LinearLayout
             style="@style/ActionBarStyle">
 
-            <!-- Home button with logo -->
+            <!-- Home button with a logo. -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/logo_home_btn"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
-            <!-- Text view for home button -->
+            <!-- Text view associated with the home button. -->
             <TextView
                 style="@style/LogoTextViewStyle"
                 android:id="@+id/text_home_btn"
@@ -30,7 +35,7 @@
                 android:layout_weight="1"
                 tools:ignore="NestedWeights" />
 
-            <!-- Profile button -->
+            <!-- Profile button with a logo. -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/profile_btn"
@@ -40,7 +45,7 @@
 
         </LinearLayout>
 
-        <!-- Animation section -->
+        <!-- Section containing the Rive animation and a navigation button. -->
         <RelativeLayout
             android:id="@+id/animation_right_btn"
             android:background="?attr/backgroundColor"
@@ -48,7 +53,7 @@
             android:layout_height="0dp"
             android:layout_weight="14">
 
-            <!-- Rive animation view -->
+            <!-- Rive animation view displaying the animation. -->
             <app.rive.runtime.kotlin.RiveAnimationView
                 android:id="@+id/rive_animation_view"
                 android:layout_width="match_parent"
@@ -57,7 +62,7 @@
                 android:layout_marginVertical="8dp"
                 android:layout_centerInParent="true"/>
 
-            <!-- Navigation button for animation -->
+            <!-- Navigation button to the right of the animation. -->
             <ImageButton
                 android:id="@+id/affirmation_nav_image_btn"
                 style="@style/NavButtonStyle"
@@ -71,13 +76,14 @@
 
         </RelativeLayout>
 
-        <!-- Attention card view, initially set to gone -->
+        <!-- Attention card view, initially set to gone. -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/attention_card"
             style="@style/AttentionCardView"
             android:layout_weight="1"
             android:visibility="gone">
 
+            <!-- Layout containing an icon and a text view for attention. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -86,7 +92,7 @@
                 android:gravity="center_vertical"
                 tools:ignore="UseCompoundDrawables">
 
-                <!-- Icon for attention -->
+                <!-- Icon indicating attention. -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -95,7 +101,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/activate_get_help_button" />
 
-                <!-- Text for attention -->
+                <!-- Text view displaying an attention message. -->
                 <TextView
                     style="@style/AttentionTextView"
                     android:text="@string/activate_get_help_button"/>
@@ -104,7 +110,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Get help button -->
+        <!-- Button to get help. -->
         <Button
             android:id="@+id/get_help_btn"
             android:layout_width="wrap_content"
@@ -122,7 +128,7 @@
             app:tint="?attr/colorError"
             />
 
-        <!-- Navigation to gratitude journal -->
+        <!-- Navigation layout leading to the gratitude journal. -->
         <LinearLayout
             android:id="@+id/fab_to_gratitude_journal"
             android:layout_height="0dp"
@@ -133,7 +139,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="48dp">
 
-            <!-- Floating action button for navigation to gratitude journal -->
+            <!-- Floating action button for navigation to the gratitude journal. -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/gratitude_nav_btn"
                 style="@style/FabStyle"
@@ -141,7 +147,7 @@
                 android:src="@drawable/icongratitudenote"
                 />
 
-            <!-- Navigation button to gratitude journal -->
+            <!-- Navigation button leading to the gratitude journal. -->
             <ImageButton
                 android:id="@+id/gratitude_journal_nav_btn"
                 style="@style/NavButtonStyle"
@@ -151,6 +157,7 @@
                 android:background="?attr/backgroundColor"
                 app:tint="?attr/colorSurfaceContainer"
                 />
+
         </LinearLayout>
 
     </LinearLayout>

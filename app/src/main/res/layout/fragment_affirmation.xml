@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout that wraps the entire XML content. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Data binding section. Currently empty, but can be used to bind data to the layout. -->
     <data>
     </data>
 
-    <!--Main layout-->
+    <!-- Main LinearLayout with vertical orientation and a defined style. -->
     <LinearLayout
         style="@style/MainLayoutStyle"
         android:orientation="vertical"
@@ -14,19 +17,19 @@
         android:background="?attr/backgroundColor"
         tools:context=".ui.AffirmationFragment">
 
-        <!--Action bar-->
+        <!-- Action bar layout containing home and profile buttons. -->
         <LinearLayout
             style="@style/ActionBarStyle"
             android:background="?attr/backgroundColor">
 
-            <!-- Home button with logo -->
+            <!-- Home button with a logo. -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/home_btn_logo"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
-            <!-- Text view for home button -->
+            <!-- Text view associated with the home button. -->
             <TextView
                 style="@style/LogoTextViewStyle"
                 android:id="@+id/home_btn_text"
@@ -35,7 +38,7 @@
                 android:layout_weight="1"
                 tools:ignore="NestedWeights" />
 
-            <!-- Profile button with logo -->
+            <!-- Profile button with a logo. -->
             <ImageButton
                 style="@style/ActionBarButtonStyle"
                 android:id="@+id/profile_btn_logo"
@@ -45,14 +48,14 @@
 
         </LinearLayout>
 
-        <!-- Frame layout for image and affirmation text -->
+        <!-- Frame layout containing the affirmation image and text. -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
             android:background="?attr/backgroundColor">
 
-            <!-- Background image -->
+            <!-- Background image for the affirmation. -->
             <ImageView
                 android:id="@+id/affirmation_iv"
                 android:layout_width="match_parent"
@@ -63,31 +66,29 @@
                 android:alpha="0.4"
                 android:contentDescription="@string/lotus_image" />
 
+            <!-- ProgressBar indicating loading state. -->
             <ProgressBar
                 android:id="@+id/loadingProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="invisible" />
 
-            <!-- Layout for affirmation text and navigation -->
+            <!-- Layout containing the affirmation text and navigation elements. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
 
-                <!-- Top text view -->
+                <!-- Text view displaying the photographer's name or any top text. -->
                 <TextView
                     android:id="@+id/photographer_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
-                    android:fontFamily="@font/merriweathersans_variablefont_wght"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
                     android:text="@string/placeholder_appreciation" />
 
-                <!-- Layout for affirmation text and navigation button -->
+                <!-- Layout containing the affirmation text and a navigation button. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -95,85 +96,57 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <!-- Navigation button -->
+                    <!-- Navigation button to the left of the affirmation text. -->
                     <ImageButton
                         android:id="@+id/animation_nav_image_btn"
                         style="@style/NavButtonStyle"
-                        android:layout_gravity="center_vertical"
                         android:src="@drawable/chevronleft"
-                        android:background="#00000000"
-                        app:tint="?attr/colorSurfaceContainer"
-                        android:layout_marginHorizontal="8dp"
                         android:contentDescription="@string/navigation_to_animation" />
 
-                    <!-- Affirmation text view -->
+                    <!-- Affirmation text view displaying the main affirmation. -->
                     <TextView
                         android:id="@+id/affirmation_tv"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/psychedelic_lotus"
-                        android:textSize="32sp"
-                        android:textColor="?attr/colorOnBackground"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="48dp"
-                        android:shadowColor="#8D000000"
-                        android:shadowRadius="8"
-                        android:shadowDx="8"
-                        android:shadowDy="4"
-                        android:textAlignment="center"
                         android:text="@string/placeholder_affirmation"
                         tools:ignore="NestedWeights" />
 
                 </LinearLayout>
 
-                <!-- Refresh button at the bottom right -->
+                <!-- Refresh button to refresh the affirmation. -->
                 <ImageButton
                     android:id="@+id/refresh_quote_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:backgroundTint="?attr/colorSecondary"
-                    android:contentDescription="@string/refresh_button"
-                    android:shadowColor="?attr/colorOnBackground"
-                    android:shadowDx="8"
-                    android:shadowDy="4"
-                    android:shadowRadius="8"
-                    android:src="@drawable/iconrefresh"
-                    app:tint="?attr/colorOnSecondary" />
+                    android:contentDescription="@string/refresh_button" />
 
             </LinearLayout>
+
         </FrameLayout>
 
-        <!-- Navigation to gratitude journal -->
+        <!-- Navigation layout leading to the gratitude journal. -->
         <LinearLayout
             android:id="@+id/fab_to_gratitude_journal"
             style="@style/MainLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.6"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="8dp"
             android:background="?attr/backgroundColor">
 
-            <!-- Floating action button for navigation to gratitude journal -->
+            <!-- Floating action button for navigation to the gratitude journal. -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/gratitude_nav_btn"
                 style="@style/FabStyle"
                 android:contentDescription="@string/navigation_to_gratitude_journal"
-                android:src="@drawable/icongratitudenote"
-                />
+                android:src="@drawable/icongratitudenote" />
 
-            <!-- Navigation button to gratitude journal -->
+            <!-- Navigation button leading to the gratitude journal. -->
             <ImageButton
                 android:id="@+id/gratitude_journal_nav_btn"
                 style="@style/NavButtonStyle"
                 android:src="@drawable/chevrondown"
-                android:contentDescription="@string/navigation_to_animation"
-                android:layout_marginBottom="8dp"
-                android:background="?attr/backgroundColor"
-                app:tint="?attr/colorSurfaceContainer"/>
+                android:contentDescription="@string/navigation_to_animation" />
 
         </LinearLayout>
 

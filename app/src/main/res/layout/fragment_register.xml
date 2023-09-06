@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout that wraps the entire XML content. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Data binding section -->
     <data>
-
     </data>
 
     <!-- Main layout container -->
@@ -29,14 +30,17 @@
             android:textColor="?attr/colorPrimary"
             android:textSize="24sp" />
 
+        <!-- Scroll view to contain the content below -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Linear layout to organize the content vertically -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <!-- Information card view -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
@@ -45,10 +49,7 @@
                     android:backgroundTint="?attr/colorSecondary"
                     android:padding="16dp">
 
-                    <!-- This LinearLayout contains an information card. The card has a MaterialCardView as its root layout,
-             which contains a horizontal LinearLayout. Inside this LinearLayout, there are two child views:
-             an ImageView that serves as an information icon and a TextView that displays the information text.
-             The ImageView and TextView are arranged horizontally and centered vertically within the LinearLayout. -->
+                    <!-- Horizontal layout for information icon and text -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,7 +82,7 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-
+                <!-- Subscription plans title -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,14 +92,14 @@
                     android:textStyle="bold"
                     android:textAlignment="center"/>
 
-                <!-- Button container -->
+                <!-- Button container for subscription plans -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal">
 
-
+                    <!-- Monthly subscription card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/per_month"
                         android:layout_width="0dp"
@@ -107,12 +108,16 @@
                         android:layout_margin="16dp"
                         app:cardBackgroundColor="?attr/colorSurface"
                         android:clickable="true">
+
+                        <!-- Layout for monthly subscription details -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:gravity="center"
                             android:layout_margin="16dp">
+
+                            <!-- Monthly price -->
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -122,6 +127,8 @@
                                 android:textSize="16sp"
                                 android:textAlignment="center"
                                 android:textColor="?attr/colorOnSurface"/>
+
+                            <!-- Monthly label -->
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -130,9 +137,12 @@
                                 android:textSize="12sp"
                                 android:textAlignment="center"
                                 android:textColor="?attr/colorOnSurface"/>
+
                         </LinearLayout>
+
                     </com.google.android.material.card.MaterialCardView>
 
+                    <!-- Yearly subscription card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/per_year"
                         android:layout_width="0dp"
@@ -141,12 +151,16 @@
                         android:layout_margin="16dp"
                         app:cardBackgroundColor="?attr/colorSurface"
                         android:clickable="true">
+
+                        <!-- Layout for yearly subscription details -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:gravity="center"
                             android:layout_margin="16dp">
+
+                            <!-- Yearly price -->
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -156,6 +170,8 @@
                                 android:textSize="16sp"
                                 android:textAlignment="center"
                                 android:textColor="?attr/colorOnSurface"/>
+
+                            <!-- Yearly label -->
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -164,8 +180,11 @@
                                 android:textSize="12sp"
                                 android:textAlignment="center"
                                 android:textColor="?attr/colorOnSurface"/>
+
                         </LinearLayout>
+
                     </com.google.android.material.card.MaterialCardView>
+
                 </LinearLayout>
 
                 <!-- Email input field -->
@@ -177,6 +196,7 @@
                     app:helperText="@string/email"
                     app:helperTextEnabled="true">
 
+                    <!-- Email input EditText -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/e_mail_tf"
                         android:layout_width="match_parent"
@@ -186,7 +206,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- TextInputLayout for the password input -->
+                <!-- Password input field -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,6 +214,7 @@
                     app:endIconMode="password_toggle"
                     app:helperText="@string/password">
 
+                    <!-- Password input EditText -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password_tf"
                         android:layout_width="match_parent"
@@ -211,6 +232,7 @@
                     app:endIconMode="password_toggle"
                     app:helperText="@string/repeat_password">
 
+                    <!-- Repeat password input EditText -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/repeat_password_tf"
                         android:layout_width="match_parent"
@@ -220,7 +242,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Button container -->
+                <!-- Button container for quit and register buttons -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -252,8 +274,13 @@
                         android:fontFamily="@font/psychedelic_lotus"
                         android:text="@string/register"
                         android:textColor="?attr/colorOnPrimary" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </ScrollView>
+
     </LinearLayout>
+
 </layout>

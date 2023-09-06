@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout that wraps the entire XML content. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Data binding section -->
     <data>
-
     </data>
 
+    <!-- Main vertical layout container for the SettingsFragment -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,12 +19,12 @@
         android:background="?attr/backgroundColor"
         android:baselineAligned="true">
 
-        <!-- Top action bar -->
+        <!-- Top action bar containing navigation buttons and app logo -->
         <LinearLayout
             style="@style/ActionBarStyle"
             android:background="?attr/backgroundColor">
 
-            <!-- Back button -->
+            <!-- Back button for navigation -->
             <ImageButton
                 android:id="@+id/back_btn"
                 style="@style/ActionBarButtonStyle"
@@ -29,14 +32,14 @@
                 android:src="@drawable/iconarrowback"
                 app:tint="?attr/colorSurfaceContainer" />
 
-            <!-- Home button -->
+            <!-- App logo button -->
             <ImageButton
                 android:id="@+id/home_btn_logo"
                 style="@style/ActionBarButtonStyle"
                 android:contentDescription="@string/tara"
                 android:src="@drawable/logo01" />
 
-            <!-- Home button text -->
+            <!-- App name next to the logo -->
             <TextView
                 android:id="@+id/home_btn_text"
                 style="@style/LogoTextViewStyle"
@@ -47,120 +50,123 @@
 
         </LinearLayout>
 
-            <LinearLayout
+        <!-- Main content layout for settings options -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:background="?attr/backgroundColor"
+            tools:ignore="InefficientWeight">
+
+            <!-- CardView for FAQ section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/faq_card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="8"
-                android:orientation="vertical"
-                android:background="?attr/backgroundColor"
-                tools:ignore="InefficientWeight">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/backgroundColor"
+                app:cardElevation="4dp">
 
-                <!-- CardView for FAQ -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/faq_card"
+                <!-- FAQ text -->
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/backgroundColor"
-                    app:cardElevation="4dp">
+                    android:padding="16dp"
+                    android:text="@string/faq"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="@string/faq"
-                        android:fontFamily="@font/merriweathersans_variablefont_wght"/>
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+            <!-- CardView for About section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/about_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/backgroundColor"
+                app:cardElevation="4dp">
 
-                <!-- CardView for About -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/about_card"
+                <!-- About text -->
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/backgroundColor"
-                    app:cardElevation="4dp">
+                    android:padding="16dp"
+                    android:text="@string/about"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="@string/about"
-                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+            <!-- CardView for Terms & Conditions section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/terms_conditions__card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/backgroundColor"
+                app:cardElevation="4dp">
 
-                <!-- CardView for Terms & Conditions -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/terms_conditions__card"
+                <!-- Terms & Conditions text -->
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/backgroundColor"
-                    app:cardElevation="4dp">
+                    android:padding="16dp"
+                    android:text="@string/terms_amp_conditions"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="@string/terms_amp_conditions"
-                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+            <!-- CardView for Privacy Policy section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/privacy_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/backgroundColor"
+                app:cardElevation="4dp">
 
-                <!-- CardView for Privacy Policy -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/privacy_card"
+                <!-- Privacy Policy text -->
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/backgroundColor"
-                    app:cardElevation="4dp">
+                    android:padding="16dp"
+                    android:text="@string/privacy_policy"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="@string/privacy_policy"
-                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+            <!-- CardView for Imprint section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imprint_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/backgroundColor"
+                app:cardElevation="4dp">
 
-                <!-- CardView for Imprint -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/imprint_card"
+                <!-- Imprint text -->
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/backgroundColor"
-                    app:cardElevation="4dp">
+                    android:padding="16dp"
+                    android:text="@string/imprint"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="@string/imprint"
-                        android:fontFamily="@font/merriweathersans_variablefont_wght" />
+            </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        <!-- Dropdown for language selection -->
-
-
-        <!-- Bottom action bar -->
+        <!-- Bottom action bar containing the logout button -->
         <LinearLayout
             android:id="@+id/bottom_action_bar"
             android:layout_weight="0.01"
@@ -186,4 +192,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </layout>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root vertical layout container for displaying a progress bar and its associated text. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,6 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Indeterminate progress bar to indicate ongoing activity without a specific end point. -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -13,6 +16,7 @@
         android:layout_gravity="center"
         android:indeterminate="true" />
 
+    <!-- Text view to display the current progress status, e.g., "Page 1 of x converted...". -->
     <TextView
         android:id="@+id/progressText"
         android:layout_width="wrap_content"

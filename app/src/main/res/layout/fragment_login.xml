@@ -1,12 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout that wraps the entire XML content. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Data binding section -->
     <data>
-        <!-- Data binding section for the layout -->
     </data>
 
-    <!-- Main LinearLayout with the style of MainLayoutStyle -->
+    <!-- Main LinearLayout container for the LoginFragment. This is the primary container for the entire layout. -->
     <LinearLayout
         style="@style/MainLayoutStyle"
         android:layout_width="match_parent"
@@ -15,129 +18,133 @@
         android:orientation="vertical"
         android:background="?attr/backgroundColor"
         tools:context=".ui.LoginFragment">
+
+        <!-- LinearLayout for the title TextView. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <!-- TextView for the title -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/psychedelic_lotus"
-            android:shadowColor="#7E000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="8"
-            android:text="@string/tara"
-            android:textAlignment="center"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="24sp"
-            />
+            <!-- TextView displaying the title of the app. -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/psychedelic_lotus"
+                android:shadowColor="#7E000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="8"
+                android:text="@string/tara"
+                android:textAlignment="center"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="24sp" />
+
         </LinearLayout>
 
+        <!-- ScrollView to ensure the content is scrollable if the keyboard appears or if the content exceeds the screen height. -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <!-- ImageView for the logo -->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:layout_marginVertical="32dp"
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/tara"
-            android:src="@drawable/logo01" />
-
-        <!-- TextInputLayout for the email input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            app:endIconMode="clear_text"
-            app:helperText="@string/email"
-            app:helperTextEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/e_mail_tf"
+            <!-- Main LinearLayout inside the ScrollView. -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/your_mail_address_ym_com"
-                android:inputType="textEmailAddress" />
+                android:orientation="vertical">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <!-- ImageView displaying the app's logo. -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="320dp"
+                    android:layout_marginVertical="32dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tara"
+                    android:src="@drawable/logo01" />
 
-        <!-- TextInputLayout for the password input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginHorizontal="32dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:helperText="@string/password"
-            app:endIconMode="password_toggle">
+                <!-- TextInputLayout for the email input with an end icon to clear the text. -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    app:endIconMode="clear_text"
+                    app:helperText="@string/email"
+                    app:helperTextEnabled="true">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_tf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/min_12_glyphs"
-                android:inputType="textPassword"
-                />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/e_mail_tf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/your_mail_address_ym_com"
+                        android:inputType="textEmailAddress" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- LinearLayout for the quit and login buttons -->
-        <LinearLayout
-            style="@style/HorizontalLayoutStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+                <!-- TextInputLayout for the password input with a toggle to show/hide the password. -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:helperText="@string/password"
+                    app:endIconMode="password_toggle">
 
-            <!-- Quit button -->
-            <Button
-                android:id="@+id/quit_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:backgroundTint="?attr/backgroundColor"
-                android:fontFamily="@font/merriweathersans_variablefont_wght"
-                android:minHeight="54dp"
-                android:text="@string/quit"
-                android:textColor="?attr/colorOnError"
-                android:textSize="20sp"
-                app:strokeColor="?attr/colorOnError"
-                app:strokeWidth="1dp"
-                tools:ignore="ButtonStyle" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password_tf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/min_12_glyphs"
+                        android:inputType="textPassword" />
 
-            <!-- Login button -->
-            <Button
-                android:id="@+id/login_btn"
-                style="@style/PrimaryButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login" />
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- TextView for the forgotten password option -->
-        <Button
-            android:id="@+id/password_forgotten_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:fontFamily="@font/merriweathersans_variablefont_wght"
-            android:text="@string/password_forgotten"
-            android:textAlignment="center"
-            android:textColor="?attr/colorSurfaceContainer"
-            android:backgroundTint="?attr/backgroundColor"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+                <!-- LinearLayout for the quit and login buttons. -->
+                <LinearLayout
+                    style="@style/HorizontalLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <!-- Quit button to exit the login screen. -->
+                    <Button
+                        android:id="@+id/quit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:backgroundTint="?attr/backgroundColor"
+                        android:fontFamily="@font/merriweathersans_variablefont_wght"
+                        android:minHeight="54dp"
+                        android:text="@string/quit"
+                        android:textColor="?attr/colorOnError"
+                        android:textSize="20sp"
+                        app:strokeColor="?attr/colorOnError"
+                        app:strokeWidth="1dp"
+                        tools:ignore="ButtonStyle" />
+
+                    <!-- Login button to initiate the login process. -->
+                    <Button
+                        android:id="@+id/login_btn"
+                        style="@style/PrimaryButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login" />
+
+                </LinearLayout>
+
+                <!-- Button for the forgotten password option. -->
+                <Button
+                    android:id="@+id/password_forgotten_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/merriweathersans_variablefont_wght"
+                    android:text="@string/password_forgotten"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorSurfaceContainer"
+                    android:backgroundTint="?attr/backgroundColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
         </ScrollView>
 

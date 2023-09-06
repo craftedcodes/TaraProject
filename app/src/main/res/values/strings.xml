@@ -196,4 +196,5 @@
     <string name="we_re_sad_to_see_you_go">We\'re sad to see you go.</string>
     <string name="error_deleting_account">Error deleting account.</string>
     <string name="incorrect_email_or_password">Incorrect email or password.</string>
+    <string name="profile">Profile</string>
 </resources>

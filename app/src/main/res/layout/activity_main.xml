@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root LinearLayout for the layout. It uses the MainLayoutStyle and sets the background color based on the attribute 'backgroundColor'.
+     The 'tools:context' attribute specifies the activity this layout is associated with, in this case, MainActivity. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,6 +9,9 @@
     android:background="?attr/backgroundColor"
     tools:context=".MainActivity">
 
+    <!-- FragmentContainerView is used as a container for fragments.
+         It's set as the default navigation host and uses the navigation graph defined in 'nav_graph'.
+         The background color is set based on the attribute 'backgroundColor'. -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:name="androidx.navigation.fragment.NavHostFragment"
