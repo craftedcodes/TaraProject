@@ -22,7 +22,6 @@ private val retrofit = Retrofit.Builder()
 	.baseUrl(QUOTE_BASE_URL)
 	.build()
 
-
 // Define the API service interface
 interface QuoteApiService{
 	// Define a GET request to the "data" endpoint that returns a GoogleSheetResponse

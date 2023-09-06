@@ -78,11 +78,7 @@ class EntryAdapter(
 			}
 			val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size, options)
 			
-			// Use Coil to load the image asynchronously
-			holder.binding.gratitudeIv.load(bitmap) {
-				placeholder(R.drawable.placeholder_image) // Set placeholder image while loading
-				error(R.drawable.placeholder_image) // Set the error image
-			}
+			holder.binding.gratitudeIv.setImageBitmap(bitmap)
 		}
 		
 		// Set the date and text of the entry.
